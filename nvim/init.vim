@@ -18,9 +18,11 @@ set smartcase
 set mouse=nv
 set number
 set relativenumber
+set fillchars=fold:\ 
 set foldcolumn=auto:4
 set foldminlines=4
 set foldnestmax=4
+set foldtext=getline(v:foldstart).'\ ['.(v:foldend-v:foldstart+1).']\ '.trim(getline(v:foldend))
 set signcolumn=yes
 set tabstop=4
 set shiftwidth=4
