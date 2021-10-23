@@ -3,10 +3,10 @@ _G.usr = {
     -- Load plugin configuration files
     init_plugins = function()
         require('plugin.gruvbox')
-        require('plugin.fzf')
         require('plugin.lspconfig')
         require('plugin.dirvish')
         require('plugin.nvim-treesitter')
+        require('plugin.telescope')
     end,
     -- Sync plugins using packer.nvim
     sync_plugins = function()
@@ -16,13 +16,15 @@ _G.usr = {
             packer.use_rocks('luafilesystem')
 
             packer.use('wbthomason/packer.nvim')
-            packer.use({'junegunn/fzf', run = './install --bin'})
-            packer.use('junegunn/fzf.vim')
             packer.use('tpope/vim-fugitive')
             packer.use('justinmk/vim-dirvish')
             packer.use('gruvbox-community/gruvbox')
             packer.use('neovim/nvim-lspconfig')
             packer.use('nvim-treesitter/nvim-treesitter')
+            packer.use({
+                'nvim-telescope/telescope.nvim',
+                requires = { {'nvim-lua/plenary.nvim'} }
+            })
         end)
 
         packer.sync()
