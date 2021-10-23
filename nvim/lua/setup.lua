@@ -15,7 +15,6 @@ _G.usr = {
         packer.startup(function()
             packer.use_rocks('luafilesystem')
 
-            packer.use('nvim-treesitter/playground')
             packer.use('wbthomason/packer.nvim')
             packer.use({'junegunn/fzf', run = './install --bin'})
             packer.use('junegunn/fzf.vim')
