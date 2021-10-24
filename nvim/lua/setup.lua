@@ -21,10 +21,9 @@ _G.usr = {
             packer.use('gruvbox-community/gruvbox')
             packer.use('neovim/nvim-lspconfig')
             packer.use('nvim-treesitter/nvim-treesitter')
-            packer.use({
-                'nvim-telescope/telescope.nvim',
-                requires = { {'nvim-lua/plenary.nvim'} }
-            })
+            packer.use('nvim-lua/plenary.nvim')
+            packer.use('nvim-telescope/telescope.nvim')
+            packer.use('nvim-telescope/telescope-fzy-native.nvim')
         end)
 
         packer.sync()

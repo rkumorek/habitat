@@ -1,5 +1,7 @@
 local telescope = require('telescope')
 local builtin = require('telescope.builtin')
+local actions = require('telescope.actions')
+local action_state = require('telescope.actions.state')
 local utils = require('utils')
 
 telescope.setup({
@@ -14,8 +16,33 @@ telescope.setup({
         history = false,
         color_devicons = false,
         preview = { msg_bg_fillchar = ' ' },
+        mappings = {
+            i = {
+                ['<Tab>'] = false,
+                ['<S-Tab>'] = false,
+                ['<C-j>'] = actions.select_default,
+                ['<C-m>'] = actions.toggle_selection,
+                ['<C-u>'] = function (prompt_bufnr)
+                    action_state.get_current_picker(prompt_bufnr):reset_prompt()
+                end,
+            },
+            n = {
+                ['<Tab>'] = false,
+                ['<S-Tab>'] = false,
+                ['<C-j>'] = actions.select_default,
+                ['<C-m>'] = actions.toggle_selection,
+            },
+        },
+    },
+    extensions = {
+        fzy_native = {
+            override_generic_sorter = false,
+            override_file_sorter = true,
+        }
     }
 })
+
+telescope.load_extension('fzy_native')
 
 _G.usr.telescope = {
     buffers = function ()
@@ -35,4 +62,4 @@ _G.usr.telescope = {
 utils.nnoremap('<Leader>ff', ':lua usr.telescope.find_files()<CR>')
 utils.nnoremap('<Leader>fb', ':lua usr.telescope.buffers()<CR>')
 utils.nnoremap('<Leader>fr', ':lua usr.telescope.grep()<CR>')
-utils.nnoremap('<Leader>fn', ':lua usr.telescope.help()<CR>')
+utils.nnoremap('<Leader>fh', ':lua usr.telescope.help()<CR>')
