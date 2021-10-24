@@ -92,21 +92,21 @@ scrolling:
 # Font configuration
 font:
   normal:
-    family: JetBrains Mono
+    family: JetBrains Mono NL
     style: Regular
 
   bold:
-    family: JetBrains Mono
+    family: JetBrains Mono NL
     style: Bold
 
   # Italic font face
   italic:
-    family: JetBrains Mono
+    family: JetBrains Mono NL
     style: Italic
 
   # Bold italic font face
   bold_italic:
-    family: JetBrains Mono
+    family: JetBrains Mono NL
     style: Bold Italic
 
   size: 20.0
@@ -138,7 +138,7 @@ colors:
   # Default colors
   primary:
     background: '#282828'
-    foreground: '#ebdbb2'
+    foreground: '#EBDBB2'
 
     # Bright and dim foreground colors
     #
@@ -156,7 +156,7 @@ colors:
   # affected cell, or hexadecimal colors like #ff00ff.
   cursor:
     text: CellBackground
-    cursor: '#fe8019'
+    cursor: '#FE8019'
 
   # Vi mode cursor colors
   #
@@ -166,7 +166,7 @@ colors:
   # affected cell, or hexadecimal colors like #ff00ff.
   vi_mode_cursor:
     text: CellBackground
-    cursor: '#fe8019'
+    cursor: '#FE8019'
 
   # Selection colors
   #
@@ -176,7 +176,7 @@ colors:
   # affected cell, or hexadecimal colors like #ff00ff.
   selection:
     text: CellBackground
-    background: '#a89984'
+    background: '#A89984'
 
   # Search colors
   #
