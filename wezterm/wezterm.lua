@@ -1,7 +1,6 @@
 local wezterm = require 'wezterm';
 
 local is_macos = string.find(wezterm.target_triple, 'apple-darwin', 0, true) and true or false
-local LEADER = is_macos and 'CMD' or 'CTRL'
 
 local leader = function(mods)
     if mods == nil or #mods == 0 then
@@ -76,9 +75,9 @@ return {
             },
         },
     },
-    leader = { key = 'a', mods = LEADER, timeout_milliseconds = 1000 },
+    leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 },
     keys = send_cmd_as_ctrl({
-        { key = 'a', mods = leader({ LEADER }), action = { SendKey = { key = 'a', mods = 'CTRL' } } },
+        { key = 'a', mods = leader({ 'CTRL' }), action = { SendKey = { key = 'a', mods = 'CTRL' } } },
         { key = 'c', mods = leader(), action = action('SpawnTab', 'CurrentPaneDomain') },
         { key = 'x', mods = leader(), action = action('CloseCurrentTab', { confirm = true }) },
         { key = '"', mods = leader({ 'SHIFT' }), action = action('SplitHorizontal', { domain = 'CurrentPaneDomain' }) },
@@ -87,10 +86,10 @@ return {
         { key = 'j', mods = leader(), action = action('ActivatePaneDirection', 'Down') },
         { key = 'k', mods = leader(), action = action('ActivatePaneDirection', 'Up') },
         { key = 'l', mods = leader(), action = action('ActivatePaneDirection', 'Right') },
-        { key = "h", mods = leader({ LEADER }), action = action('AdjustPaneSize', { 'Left', 7 }) },
-        { key = "j", mods = leader({ LEADER }), action = action('AdjustPaneSize', { 'Down', 5 }) },
-        { key = "k", mods = leader({ LEADER }), action = action('AdjustPaneSize', { 'Up', 5 }) },
-        { key = "l", mods = leader({ LEADER }), action = action('AdjustPaneSize', { 'Right', 9 }) },
+        { key = "h", mods = leader({ 'CTRL' }), action = action('AdjustPaneSize', { 'Left', 7 }) },
+        { key = "j", mods = leader({ 'CTRL' }), action = action('AdjustPaneSize', { 'Down', 5 }) },
+        { key = "k", mods = leader({ 'CTRL' }), action = action('AdjustPaneSize', { 'Up', 5 }) },
+        { key = "l", mods = leader({ 'CTRL' }), action = action('AdjustPaneSize', { 'Right', 9 }) },
         { key = 'f', mods = leader(), action = action('ScrollByPage', 1) },
         { key = 'b', mods = leader(), action = action('ScrollByPage', -1) },
         { key = 'n', mods = leader(), action = action('ActivateTabRelative', 1) },
