@@ -46,10 +46,17 @@ telescope.load_extension('fzy_native')
 
 _G.usr.telescope = {
     buffers = function ()
-        return builtin.buffers()
+        return builtin.buffers({
+            previewer = false,
+            layout_config = { height = 0.5 },
+        })
     end,
     find_files = function ()
-        return builtin.find_files({ previewer = false, find_command = { "fd", "--hidden", "--color=never" } })
+        return builtin.find_files({
+            previewer = false,
+            layout_config = { height = 0.5 },
+            find_command = { "fd", "--hidden", "--color=never" },
+        })
     end,
     grep = function ()
         return builtin.live_grep()
