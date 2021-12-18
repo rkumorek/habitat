@@ -12,8 +12,8 @@ utils.nnoremap('<Leader>ld', ':lua vim.lsp.buf.definition()<CR>')
 utils.nnoremap('<Leader>lk', ':lua vim.lsp.buf.hover()<CR>')
 utils.nnoremap('<Leader>lf', ':lua vim.lsp.buf.references()<CR>')
 utils.nnoremap('<Leader>lr', ':lua vim.lsp.buf.rename()<CR>')
-utils.nnoremap('<Leader>l[', ':lua vim.lsp.diagnostic.goto_prev()<CR>')
-utils.nnoremap('<Leader>l]', ':lua vim.lsp.diagnostic.goto_next()<CR>')
+utils.nnoremap('<Leader>l[', ':lua vim.diagnostic.goto_prev()<CR>')
+utils.nnoremap('<Leader>l]', ':lua vim.diagnostic.goto_next()<CR>')
 utils.nnoremap('<Leader>lq', ':lua usr.lsp.load_diagnostics_to_quickfix_list()<CR>')
 
 _G.usr.lsp = {
@@ -21,7 +21,7 @@ _G.usr.lsp = {
         local locations = {}
         local empty = true
 
-        for bufnr, diagnostics in pairs(vim.lsp.diagnostic.get_all()) do
+        for bufnr, diagnostics in pairs(vim.diagnostic.get()) do
             for _, diagnostic in ipairs(diagnostics) do
                 if diagnostic.severity == 1 then
                     if empty == true then empty = false end
@@ -36,7 +36,7 @@ _G.usr.lsp = {
             end
         end
 
-        vim.lsp.util.set_qflist(locations)
+        vim.diagnostic.setqflist(locations)
         vim.cmd('cwindow')
     end
 }
