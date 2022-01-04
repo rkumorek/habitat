@@ -51,7 +51,7 @@ cnoremap <M-j> <Down>
 cnoremap <M-k> <Up>
 
 nnoremap <Leader>w :w<CR>
-nnoremap <Leader>x :let @/ = ''<CR>
+nnoremap <Leader>x :nohlsearch<CR>
 nnoremap <Leader>6 <C-^>
 
 nnoremap <Leader>y "*Y
