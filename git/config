@@ -7,7 +7,7 @@
     diffFilter = delta --color-only
 [delta]
     navigate = true
-    features = side-by-side line-numbers decorations
+    side-by-side = true
     commit-style = normal
     minus-style = syntax
     minus-emph-style = reverse brightred
