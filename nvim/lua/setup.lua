@@ -2,7 +2,6 @@
 _G.usr = {
     -- Load plugin configuration files
     init_plugins = function()
-        require('plugin.gruvbox')
         require('plugin.lspconfig')
         require('plugin.dirvish')
         require('plugin.nvim-treesitter')
@@ -18,7 +17,7 @@ _G.usr = {
             packer.use('wbthomason/packer.nvim')
             packer.use('tpope/vim-fugitive')
             packer.use('justinmk/vim-dirvish')
-            packer.use('gruvbox-community/gruvbox')
+            packer.use('t184256/vim-boring')
             packer.use('neovim/nvim-lspconfig')
             packer.use('nvim-treesitter/nvim-treesitter')
             packer.use('nvim-lua/plenary.nvim')

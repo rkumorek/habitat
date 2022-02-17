@@ -1,5 +1,7 @@
 filetype plugin indent on
 
+colorscheme tired
+
 "-----------------------" SETTINGS
 set hidden
 set showmode
