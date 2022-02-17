@@ -93,21 +93,21 @@ scrolling:
 font:
   normal:
     family: JetBrains Mono NL
-    style: Regular
+    style: Light
 
   bold:
     family: JetBrains Mono NL
-    style: Bold
+    style: Medium
 
   # Italic font face
   italic:
     family: JetBrains Mono NL
-    style: Italic
+    style: "Light Italic"
 
   # Bold italic font face
   bold_italic:
     family: JetBrains Mono NL
-    style: Bold Italic
+    style: "Medium Italic"
 
   size: 20.0
 
