@@ -229,7 +229,7 @@ call s:Highlight('TelescopeMatching', s:none, s:none, 'bold')
 " }}}
 " Fugitive: {{{
 
-call s:Highlight('fugitiveHeader', s:none, s:none, 'bold,italic')
+call s:Highlight('fugitiveHeader', s:none, s:none, 'bold')
 call s:Highlight('fugitiveUntrackedHeading', s:none, s:none, 'bold')
 call s:Highlight('fugitiveUnstagedHeading', s:none, s:none, 'bold')
 
