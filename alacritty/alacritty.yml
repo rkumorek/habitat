@@ -156,7 +156,7 @@ colors:
   # affected cell, or hexadecimal colors like #ff00ff.
   cursor:
     text: CellBackground
-    cursor: '#FE8019'
+    cursor: '#d3866d'
 
   # Vi mode cursor colors
   #
@@ -166,7 +166,7 @@ colors:
   # affected cell, or hexadecimal colors like #ff00ff.
   vi_mode_cursor:
     text: CellBackground
-    cursor: '#FE8019'
+    cursor: '#d3866d'
 
   # Selection colors
   #
@@ -176,7 +176,7 @@ colors:
   # affected cell, or hexadecimal colors like #ff00ff.
   selection:
     text: CellBackground
-    background: '#A89984'
+    background: '#a89984'
 
   # Search colors
   #
