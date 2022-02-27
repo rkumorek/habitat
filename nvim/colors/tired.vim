@@ -157,7 +157,7 @@ call s:Clear('CursorLineNr')
 call s:Highlight('NonText', s:gray, s:none, 'NONE')
 call s:Highlight('SpecialKey', s:none, s:none, 'bold')
 call s:Highlight('Visual', s:none, s:bg2, 'NONE')
-hi! link VisualNOS Visual
+call s:Link('VisualNOS', 'Visual')
 call s:Highlight('Search', s:bg0, s:fg3, 'NONE')
 call s:Highlight('IncSearch', s:bg0, s:fg4, 'NONE')
 call s:Highlight('QuickFixLine', s:none, s:bg1, 'NONE')
@@ -225,6 +225,7 @@ call s:Highlight('DirvishArg', s:yellow, s:none, 'NONE')
 " Telescope.nvim: {{{
 
 call s:Highlight('TelescopeMatching', s:none, s:none, 'bold')
+call s:Link('TelescopeMultiSelection', 'Visual')
 
 " }}}
 " Fugitive: {{{
