@@ -1,6 +1,5 @@
 " vim: set sw=2 ts=2 sts=2 et tw=80 ft=vim fdm=marker:
 
-
 " Initialisation: {{{
 
 hi clear
@@ -114,7 +113,8 @@ function! s:Clear(group)
   execute 'highlight ' . a:group . ' NONE'
 endfunction
 
-function! s:Highlight(group, fg, bg, style)
+function! s:Highlight(group, fg, bg, style, ...)
+  " Parameters: group, guifg, guibg, gui, guisp
   call s:Clear(a:group)
 
   let l:guifg = a:fg[0]
@@ -130,6 +130,10 @@ function! s:Highlight(group, fg, bg, style)
   let l:hi_expr .= ' guifg=' . l:guifg
   let l:hi_expr .= ' guibg=' . l:guibg
 
+  if a:0 > 0
+    let l:hi_expr .= ' guisp=' . a:1[0]
+  endif
+
   execute l:hi_expr
 endfunction
 
@@ -139,21 +143,21 @@ function! s:Link(from, to)
 endfunction
 
 " }}}
+" UI: {{{
 
 call s:Highlight('Normal', s:fg0, s:bg0, 'NONE')
 call s:Highlight('Underlined', s:none, s:none, 'underline')
 
-" UI: {{{
+call s:Highlight('ColorColumn', s:none, s:bg1, 'NONE')
+call s:Highlight('CursorColumn', s:none, s:bg1, 'NONE')
+call s:Highlight('CursorLine', s:none, s:bg1, 'NONE')
+call s:Clear('CursorLineNr')
 
-call s:Clear('CursorLine') 
-call s:Clear('CursorColumn') 
 call s:Clear('TabLineFill')
-
 call s:Highlight('TabLineSel', s:none, s:bg1, 'NONE')
 call s:Highlight('TabLine', s:fg3, s:none, 'NONE')
 call s:Highlight('MatchParen', s:bg0, s:fg4, 'NONE')
 call s:Highlight('Conceal', s:blue, s:purple, 'NONE')
-call s:Clear('CursorLineNr')
 call s:Highlight('NonText', s:gray, s:none, 'NONE')
 call s:Highlight('SpecialKey', s:none, s:none, 'bold')
 call s:Highlight('Visual', s:none, s:bg2, 'NONE')
@@ -165,7 +169,7 @@ call s:Highlight('StatusLine', s:bg0, s:fg4, 'NONE')
 call s:Highlight('StatusLineNC', s:fg4, s:bg2, 'NONE')
 call s:Highlight('VertSplit', s:bg3, s:bg0, 'NONE')
 call s:Highlight('WildMenu', s:none, s:purple, 'NONE')
-call s:Clear('Directory')
+call s:Clear('Directory') " ex. directory in NETRW
 call s:Highlight('Title', s:fg0, s:none, 'NONE')
 call s:Highlight('ErrorMsg', s:orange, s:none, 'bold')
 call s:Clear('MoreMsg')
@@ -174,6 +178,16 @@ call s:Clear('Question')
 call s:Highlight('WarningMsg', s:orange, s:none, 'NONE')
 call s:Clear('Identifier')
 call s:Clear('PreProc')
+
+" }}}
+" Spelling: {{{
+
+" TODO: Add highlighting
+call s:Clear('SpecialKey')
+call s:Clear('SpellBad')
+call s:Clear('SpellCap')
+call s:Clear('SpellLocal')
+call s:Clear('SpellRare')
 
 " }}}
 " Gutter: {{{
@@ -205,13 +219,33 @@ call s:Highlight('PmenuThumb', s:none, s:bg4, 'NONE')
 " }}}
 " Diffs: {{{
 
-call s:Highlight('DiffDelete', s:red, s:none, 'NONE')
 call s:Highlight('DiffAdd',    s:green, s:none, 'NONE')
 call s:Highlight('DiffChange', s:aqua, s:none, 'NONE')
+call s:Highlight('DiffDelete', s:red, s:none, 'NONE')
 call s:Highlight('DiffText',   s:yellow, s:none, 'NONE')
 
 " }}}
 " LSP: {{{
+
+call s:Highlight('DiagnosticError', s:orange, s:none, 'bold')
+call s:Highlight('DiagnosticUnderlineError', s:orange, s:none, 'bold,underline')
+
+call s:Highlight('DiagnosticWarn', s:orange, s:none, 'NONE')
+call s:Highlight('DiagnosticUnderlineWarn', s:orange, s:none, 'underline')
+
+call s:Clear('DiagnosticInfo')
+call s:Highlight('DiagnosticUnderlineInfo', s:none, s:none, 'underline')
+
+call s:Clear('DiagnosticHint')
+call s:Highlight('DiagnosticUnderlineHint', s:none, s:none, 'underline')
+
+" TODO: add the following 
+" LspReferenceText
+" LspReferenceRead
+" LspReferenceWrite
+" LspCodeLens
+" LspCodeLensSeparator
+" LspSignatureActiveParameter
 
 " }}}
 
