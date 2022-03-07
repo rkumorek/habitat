@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-set dirname (cd (dirname (status -f)); and pwd) 
+set -l dirname (cd (dirname (status -f)); and pwd) 
 
 function link_config_dir --argument-names name
     if test ~/.config/$name
