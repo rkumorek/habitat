@@ -20,6 +20,6 @@ set -x NPM_CONFIG_CACHE $XDG_CACHE_HOME/npm
 
 set -x PATH $CARGO_HOME/bin:$HOME/apps/nvim/bin:$NPM_CONFIG_PREFIX/bin $PATH
 
-if test -f $XDG_CONFIG_HOME/fish/local.config.fish
-    source $XDG_CONFIG_HOME/fish/local.config.fish
+if test -f $HOME/profile.fish
+    source $HOME/profile.fish
 end
