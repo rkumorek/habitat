@@ -42,30 +42,23 @@ telescope.setup({
 
 telescope.load_extension('fzy_native')
 
-_G.usr.telescope = {
-    buffers = function ()
-        return builtin.buffers({
-            previewer = false,
-            layout_config = { height = 0.5 },
-        })
-    end,
-    find_files = function ()
-        return builtin.find_files({
-            previewer = false,
-            layout_config = { height = 0.5 },
-            find_command = { "fd", "--hidden", "--color=never" },
-        })
-    end,
-    grep = function ()
-        return builtin.live_grep()
-    end,
-    help = function ()
-        return builtin.help_tags()
-    end,
-}
+local buffers = function ()
+    return builtin.buffers({
+        previewer = false,
+        layout_config = { height = 0.5 },
+    })
+end
 
-utils.nnoremap('<Leader>ff', ':lua usr.telescope.find_files()<CR>')
-utils.nnoremap('<Leader>fb', ':lua usr.telescope.buffers()<CR>')
-utils.nnoremap('<Leader>fr', ':lua usr.telescope.grep()<CR>')
-utils.nnoremap('<Leader>fh', ':lua usr.telescope.help()<CR>')
-utils.nnoremap('<Leader>ft', ':Telescope resume<CR>')
+local find_files = function ()
+    return builtin.find_files({
+        previewer = false,
+        layout_config = { height = 0.5 },
+        find_command = { "fd", "--hidden", "--color=never" },
+    })
+end
+
+vim.keymap.set('n', '<Leader>ff', find_files)
+vim.keymap.set('n', '<Leader>fb', buffers)
+vim.keymap.set('n', '<Leader>fr', builtin.live_grep)
+vim.keymap.set('n', '<Leader>fh', builtin.help_tags)
+vim.keymap.set('n', '<Leader>ft', builtin.resume)

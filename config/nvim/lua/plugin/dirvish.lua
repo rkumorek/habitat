@@ -1,5 +1,4 @@
 local utils = require('utils')
-local lfs = require('lfs')
 
 -- Prompt whether the provided paths should be removed.
 -- @param paths - table of strings
@@ -34,7 +33,7 @@ local function create_parent_dirs(path)
 
     while probe_lvl > 0 do
         local test_path = '/' .. table.concat(probe_chunks, '/') .. '/'
-        local res, err = lfs.attributes(test_path)
+        local res, err = require('lfs').attributes(test_path)
 
         -- The path at this level exists.
         if res then break end
@@ -54,7 +53,7 @@ local function create_parent_dirs(path)
         local len_diff = length - level
         local dir_path = table.concat(utils.skip_last(path_chunks, length,
                                                       len_diff), '/')
-        local res, err = lfs.mkdir('/' .. dir_path .. '/')
+        local res, err = require('lfs').mkdir('/' .. dir_path .. '/')
 
         if res == nil then
             print(string.format('Could not create directory at %s\n%s',
@@ -70,11 +69,11 @@ end
 -- @param path - string
 -- return nil
 local function remove_dir(path)
-    for file in lfs.dir(path) do
+    for file in require('lfs').dir(path) do
         local filepath = path .. '/' .. file
 
         if not (file == '.' or file == '..') then
-            local attrs = lfs.attributes(filepath)
+            local attrs = require('lfs').attributes(filepath)
 
             if attrs.mode == 'file' then
                 os.remove(filepath)
@@ -197,7 +196,7 @@ local function get_bufname_path()
     local has_trailing_slash = string.sub(bufpath, -1) == '/'
 
     if not has_trailing_slash then
-        local res, err = lfs.attributes(bufpath);
+        local res, err = require('lfs').attributes(bufpath);
 
         -- Not a directory.
         if res.mode ~= 'directory' then
@@ -236,54 +235,54 @@ local function argv_file_remove(argc)
     end
 end
 
-_G.usr.dirvish = {
-    create = function()
-        local bufpath = get_bufname_path()
+_G.usr.dirvish_create = function()
+    local bufpath = get_bufname_path()
 
-        if bufpath == nil then return end
+    if bufpath == nil then return end
 
-        local path = vim.fn.input({
-            prompt = 'Create: ',
-            default = bufpath,
-            completion = 'file'
-        })
+    local path = vim.fn.input({
+        prompt = 'Create: ',
+        default = bufpath,
+        completion = 'file'
+    })
 
-        if string.len(path) == 0 then return end
+    if string.len(path) == 0 then return end
 
-        create_parent_dirs(path)
+    create_parent_dirs(path)
 
-        if string.sub(path, -1) == '/' then
-            lfs.mkdir(path)
-        else
-            io.close(io.open(path, 'w'))
-        end
-
-        vim.cmd('Dirvish %')
-    end,
-    rename = function()
-        if get_bufname_path() == nil then return end
-
-        local argc = vim.fn.argc()
-
-        if argc == 0 then
-            current_line_file_move()
-        else
-            argv_file_move(argc)
-        end
-
-        vim.cmd('Dirvish %')
-    end,
-    remove = function()
-        if get_bufname_path() == nil then return end
-
-        local argc = vim.fn.argc()
-
-        if argc == 0 then
-            current_line_file_remove()
-        else
-            argv_file_remove(argc)
-        end
-
-        vim.cmd('Dirvish %')
+    if string.sub(path, -1) == '/' then
+        require('lfs').mkdir(path)
+    else
+        io.close(io.open(path, 'w'))
     end
-}
+
+    vim.cmd('Dirvish %')
+end
+
+_G.usr.dirvish_rename = function()
+    if get_bufname_path() == nil then return end
+
+    local argc = vim.fn.argc()
+
+    if argc == 0 then
+        current_line_file_move()
+    else
+        argv_file_move(argc)
+    end
+
+    vim.cmd('Dirvish %')
+end
+
+_G.usr.dirvish_remove = function()
+    if get_bufname_path() == nil then return end
+
+    local argc = vim.fn.argc()
+
+    if argc == 0 then
+        current_line_file_remove()
+    else
+        argv_file_remove(argc)
+    end
+
+    vim.cmd('Dirvish %')
+end

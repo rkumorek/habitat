@@ -59,21 +59,8 @@ local function take_first(list, len, take_count)
     return result, index
 end
 
-local function noremap(mode, lhs, rhs)
-    vim.api.nvim_set_keymap(mode, lhs, rhs, {noremap = true})
-end
-
-local function nnoremap(lhs, rhs) noremap('n', lhs, rhs) end
-
-local function vnoremap(lhs, rhs) noremap('v', lhs, rhs) end
-
-local function cnoremap(lhs, rhs) noremap('c', lhs, rhs) end
-
 return {
     split = split,
     skip_last = skip_last,
     take_first = take_first,
-    nnoremap = nnoremap,
-    cnoremap = cnoremap,
-    vnoremap = vnoremap
 }
