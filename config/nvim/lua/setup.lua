@@ -17,7 +17,6 @@ _G.usr = {
             packer.use('wbthomason/packer.nvim')
             packer.use('tpope/vim-fugitive')
             packer.use('justinmk/vim-dirvish')
-            packer.use('t184256/vim-boring')
             packer.use('neovim/nvim-lspconfig')
             packer.use('nvim-treesitter/nvim-treesitter')
             packer.use('nvim-lua/plenary.nvim')
