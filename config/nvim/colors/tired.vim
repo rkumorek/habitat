@@ -156,7 +156,7 @@ call s:Clear('CursorLineNr')
 call s:Clear('TabLineFill')
 call s:Highlight('TabLineSel', s:none, s:bg1, 'NONE')
 call s:Highlight('TabLine', s:fg3, s:none, 'NONE')
-call s:Highlight('MatchParen', s:bg0, s:fg4, 'NONE')
+call s:Highlight('MatchParen', s:blue, s:bg1, 'underline,bold')
 call s:Highlight('Conceal', s:blue, s:purple, 'NONE')
 call s:Highlight('NonText', s:gray, s:none, 'NONE')
 call s:Highlight('SpecialKey', s:none, s:none, 'bold')
@@ -183,7 +183,6 @@ call s:Clear('PreProc')
 " Spelling: {{{
 
 " TODO: Add highlighting
-call s:Clear('SpecialKey')
 call s:Clear('SpellBad')
 call s:Clear('SpellCap')
 call s:Clear('SpellLocal')
@@ -211,7 +210,7 @@ call s:Clear('Type')
 " }}}
 " Completion Menu: {{{
 
-call s:Highlight('Pmenu	', s:none, s:bg1, 'NONE')
+call s:Highlight('Pmenu', s:none, s:bg1, 'NONE')
 call s:Highlight('PmenuSel', s:none, s:bg3, 'NONE')
 call s:Highlight('PmenuSbar', s:none, s:bg2, 'NONE')
 call s:Highlight('PmenuThumb', s:none, s:bg4, 'NONE')
