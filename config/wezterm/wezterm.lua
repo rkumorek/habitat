@@ -1,4 +1,4 @@
-local wezterm = require 'wezterm';
+local wezterm = require('wezterm');
 
 local is_macos = string.find(wezterm.target_triple, 'apple-darwin', 0, true) and true or false
 
@@ -43,8 +43,8 @@ return {
     font = wezterm.font('JetBrains Mono NL'),
     font_size = 20.0,
     colors = {
-        cursor_bg = '#FE8019',
-        cursor_border = '#FE8019',
+        cursor_bg = '#D3866D',
+        cursor_border = '#D3866D',
         selextion_fg = '#EBDBB2',
         selection_bg = '#A89984',
         tab_bar = {
