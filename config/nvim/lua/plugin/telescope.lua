@@ -2,6 +2,7 @@ local telescope = require('telescope')
 local builtin = require('telescope.builtin')
 local actions = require('telescope.actions')
 local action_state = require('telescope.actions.state')
+local action_set = require('telescope.actions.set')
 local utils = require('utils')
 
 telescope.setup({
@@ -23,6 +24,12 @@ telescope.setup({
                 ['<C-j>'] = actions.toggle_selection,
                 ['<C-u>'] = function (prompt_bufnr)
                     action_state.get_current_picker(prompt_bufnr):reset_prompt()
+                end,
+                ['<C-j>'] = function (prompt_bufnr)
+                    action_set.shift_selection(prompt_bufnr, 5)
+                end,
+                ['<C-k>'] = function (prompt_bufnr)
+                    action_set.shift_selection(prompt_bufnr, -5)
                 end,
             },
             n = {
