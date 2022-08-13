@@ -21,7 +21,6 @@ telescope.setup({
             i = {
                 ['<Tab>'] = false,
                 ['<S-Tab>'] = false,
-                ['<C-j>'] = actions.toggle_selection,
                 ['<C-u>'] = function (prompt_bufnr)
                     action_state.get_current_picker(prompt_bufnr):reset_prompt()
                 end,
@@ -31,11 +30,18 @@ telescope.setup({
                 ['<C-k>'] = function (prompt_bufnr)
                     action_set.shift_selection(prompt_bufnr, -5)
                 end,
+                ['<C-s>'] = actions.toggle_selection,
             },
             n = {
                 ['<Tab>'] = false,
                 ['<S-Tab>'] = false,
-                ['<C-j>'] = actions.toggle_selection,
+                ['<C-j>'] = function (prompt_bufnr)
+                    action_set.shift_selection(prompt_bufnr, 5)
+                end,
+                ['<C-k>'] = function (prompt_bufnr)
+                    action_set.shift_selection(prompt_bufnr, -5)
+                end,
+                ['<C-s>'] = actions.toggle_selection,
             },
         },
     },
