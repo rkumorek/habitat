@@ -29,7 +29,7 @@ set signcolumn=yes
 set tabstop=4
 set shiftwidth=4
 set expandtab
-set statusline=[#%n]%y\ %c%V:%l-%L\ %q%m%r%h%w\ %<%f
+set statusline=[#%n]%y%q%m%r%h%w\ %c%V:%l-%L\ %<%f
 set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading
 set grepformat=%f:%l:%c:%m,%f:%l:%m
 
