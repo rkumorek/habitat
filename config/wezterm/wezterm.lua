@@ -9,6 +9,7 @@ local config = {
         weight = 'Regular'
     }),
     font_size = 21.0,
+    term = 'wezterm',
 }
 
 shortcuts(config)
