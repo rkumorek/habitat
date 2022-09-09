@@ -234,7 +234,7 @@ call s:Highlight('DiagnosticUnderlineWarn', s:none, s:none, 'undercurl', s:yello
 call s:Highlight('DiagnosticInfo', s:blue, s:none, 'NONE')
 call s:Highlight('DiagnosticUnderlineInfo', s:none, s:none, 'undercurl', s:blue)
 
-call s:Highlight('DiagnosticHint', s:gray, s:none, 'NONE')
+call s:Highlight('DiagnosticHint', s:fg3, s:none, 'NONE')
 call s:Highlight('DiagnosticUnderlineHint', s:none, s:none, 'undercurl')
 
 " TODO: add the following 
