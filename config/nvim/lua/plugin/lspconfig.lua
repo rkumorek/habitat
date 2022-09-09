@@ -1,8 +1,6 @@
 local lspconfig = require('lspconfig')
 local utils = require('utils')
 
-local severity = vim.diagnostic.severity
-
 vim.lsp.handlers["textDocument/publishDiagnostics"] =
     vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics,
                  {underline = true, virtual_text = false, signs = false})
@@ -13,7 +11,7 @@ lspconfig.rust_analyzer.setup({autostart = false})
 -- Retrieves all diagnostics from all buffers and puts them into quickfix list.
 local load_diagnostics_to_quickfix_list = function()
     vim.diagnostic.setqflist({
-        severity = severity.ERROR
+        severity = vim.diagnostic.severity.ERROR
     })
     vim.cmd('cwindow')
 end

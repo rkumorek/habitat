@@ -171,22 +171,21 @@ call s:Highlight('VertSplit', s:bg3, s:bg0, 'NONE')
 call s:Highlight('WildMenu', s:none, s:purple, 'NONE')
 call s:Clear('Directory') " ex. directory in NETRW
 call s:Highlight('Title', s:fg0, s:none, 'NONE')
-call s:Highlight('ErrorMsg', s:orange, s:none, 'bold')
-call s:Clear('MoreMsg')
+call s:Highlight('ErrorMsg', s:red, s:none, 'bold')
+call s:Highlight('MoreMsg', s:none, s:none, 'bold')
 call s:Clear('ModeMsg')
 call s:Clear('Question')
-call s:Highlight('WarningMsg', s:orange, s:none, 'NONE')
+call s:Highlight('WarningMsg', s:yellow, s:none, 'bold')
 call s:Clear('Identifier')
 call s:Clear('PreProc')
 
 " }}}
 " Spelling: {{{
 
-" TODO: Add highlighting
-call s:Clear('SpellBad')
-call s:Clear('SpellCap')
-call s:Clear('SpellLocal')
-call s:Clear('SpellRare')
+call s:Highlight('SpellBad', s:none, s:none, 'underdotted', s:red)
+call s:Highlight('SpellCap', s:none, s:none, 'underdotted', s:gray)
+call s:Highlight('SpellLocal', s:none, s:none, 'underdotted', s:gray)
+call s:Highlight('SpellRare', s:none, s:none, 'underdotted', s:blue)
 
 " }}}
 " Gutter: {{{
@@ -202,7 +201,7 @@ call s:Clear('FoldColumn')
 call s:Clear('Special')
 call s:Highlight('Comment', s:fg3, s:none, 'italic')
 call s:Clear('Todo')
-call s:Highlight('Error', s:orange, s:none, 'bold')
+call s:Highlight('Error', s:none, s:none, 'underdashed', s:orange) " hl-TSError links here
 call s:Clear('Statement')
 call s:Clear('Constant')
 call s:Clear('Type')
@@ -226,17 +225,17 @@ call s:Highlight('DiffText',   s:yellow, s:none, 'NONE')
 " }}}
 " LSP: {{{
 
-call s:Highlight('DiagnosticError', s:orange, s:none, 'bold')
-call s:Highlight('DiagnosticUnderlineError', s:orange, s:none, 'bold,underline')
+call s:Highlight('DiagnosticError', s:red, s:none, 'NONE')
+call s:Highlight('DiagnosticUnderlineError', s:none, s:none, 'undercurl', s:red)
 
-call s:Highlight('DiagnosticWarn', s:orange, s:none, 'NONE')
-call s:Highlight('DiagnosticUnderlineWarn', s:orange, s:none, 'underline')
+call s:Highlight('DiagnosticWarn', s:yellow, s:none, 'NONE')
+call s:Highlight('DiagnosticUnderlineWarn', s:none, s:none, 'undercurl', s:yellow)
 
-call s:Clear('DiagnosticInfo')
-call s:Highlight('DiagnosticUnderlineInfo', s:none, s:none, 'underline')
+call s:Highlight('DiagnosticInfo', s:blue, s:none, 'NONE')
+call s:Highlight('DiagnosticUnderlineInfo', s:none, s:none, 'undercurl', s:blue)
 
-call s:Clear('DiagnosticHint')
-call s:Highlight('DiagnosticUnderlineHint', s:none, s:none, 'underline')
+call s:Highlight('DiagnosticHint', s:gray, s:none, 'NONE')
+call s:Highlight('DiagnosticUnderlineHint', s:none, s:none, 'undercurl')
 
 " TODO: add the following 
 " LspReferenceText
