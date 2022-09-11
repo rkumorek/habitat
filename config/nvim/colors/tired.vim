@@ -15,47 +15,49 @@ endif
 
 " }}}
 " Palette: {{{
-let s:none = ['NONE', 'NONE']
-let s:dark0 = ['#282828', 235]          " 40-40-40
-let s:dark1 = ['#3c3836', 237]          " 60-56-54
-let s:dark2 = ['#504945', 239]          " 80-73-69
-let s:dark3 = ['#665c54', 241]          " 102-92-84
-let s:dark4 = ['#7c6f64', 243]          " 124-111-100
-let s:dark4_256 = ['#7c6f64', 243]      " 124-111-100
+let s:none =            ['NONE', 'NONE']
+let s:dark0 =           ['#282828', 235] " 40-40-40
+let s:dark1 =           ['#3c3836', 237] " 60-56-54
+let s:dark2 =           ['#504945', 239] " 80-73-69
+let s:dark3 =           ['#665c54', 241] " 102-92-84
+let s:dark4 =           ['#7c6f64', 243] " 124-111-100
+let s:dark4_256 =       ['#7c6f64', 243] " 124-111-100
+let s:dark_blue =       ['#191976', 239]  " 25-25-118
 
-let s:gray_245 =     ['#928374', 245]     " 146-131-116
-let s:gray_244 =     ['#928374', 244]     " 146-131-116
+let s:gray_245 =        ['#928374', 245] " 146-131-116
+let s:gray_244 =        ['#928374', 244] " 146-131-116
 
-let s:light0 =       ['#fbf1c7', 229]     " 253-244-193
-let s:light1 =       ['#ebdbb2', 223]     " 235-219-178
-let s:light2 =       ['#d5c4a1', 250]     " 213-196-161
-let s:light3 =       ['#bdae93', 248]     " 189-174-147
-let s:light4 =       ['#a89984', 246]     " 168-153-132
-let s:light4_256 =   ['#a89984', 246]     " 168-153-132
+let s:light0 =          ['#fbf1c7', 229] " 253-244-193
+let s:light1 =          ['#ebdbb2', 223] " 235-219-178
+let s:light2 =          ['#d5c4a1', 250] " 213-196-161
+let s:light3 =          ['#bdae93', 248] " 189-174-147
+let s:light4 =          ['#a89984', 246] " 168-153-132
+let s:light4_256 =      ['#a89984', 246] " 168-153-132
+let s:light_blue =      ['#e2dbd9', 250] " 226-219-217
 
-let s:bright_red =      ['#fb4934', 167]     " 251-73-52
-let s:bright_green =    ['#b8bb26', 142]     " 184-187-38
-let s:bright_yellow =   ['#fabd2f', 214]     " 250-189-47
-let s:bright_blue =     ['#83a598', 109]     " 131-165-152
-let s:bright_purple =   ['#d3869b', 175]     " 211-134-155
-let s:bright_aqua =     ['#8ec07c', 108]     " 142-192-124
-let s:bright_orange =   ['#fe8019', 208]     " 254-128-25
+let s:bright_red =      ['#fb4934', 167] " 251-73-52
+let s:bright_green =    ['#b8bb26', 142] " 184-187-38
+let s:bright_yellow =   ['#fabd2f', 214] " 250-189-47
+let s:bright_blue =     ['#83a598', 109] " 131-165-152
+let s:bright_purple =   ['#d3869b', 175] " 211-134-155
+let s:bright_aqua =     ['#8ec07c', 108] " 142-192-124
+let s:bright_orange =   ['#fe8019', 208] " 254-128-25
 
-let s:neutral_red =     ['#cc241d', 124]     " 204-36-29
-let s:neutral_green =   ['#98971a', 106]     " 152-151-26
-let s:neutral_yellow =  ['#d79921', 172]     " 215-153-33
-let s:neutral_blue =    ['#458588', 66]      " 69-133-136
-let s:neutral_purple =  ['#b16286', 132]     " 177-98-134
-let s:neutral_aqua =    ['#689d6a', 72]      " 104-157-106
-let s:neutral_orange =  ['#d65d0e', 166]     " 214-93-14
+let s:neutral_red =     ['#cc241d', 124] " 204-36-29
+let s:neutral_green =   ['#98971a', 106] " 152-151-26
+let s:neutral_yellow =  ['#d79921', 172] " 215-153-33
+let s:neutral_blue =    ['#458588', 66]  " 69-133-136
+let s:neutral_purple =  ['#b16286', 132] " 177-98-134
+let s:neutral_aqua =    ['#689d6a', 72]  " 104-157-106
+let s:neutral_orange =  ['#d65d0e', 166] " 214-93-14
 
-let s:faded_red =       ['#9d0006', 88]      " 157-0-6
-let s:faded_green =     ['#79740e', 100]     " 121-116-14
-let s:faded_yellow =    ['#b57614', 136]     " 181-118-20
-let s:faded_blue =      ['#076678', 24]      " 7-102-120
-let s:faded_purple =    ['#8f3f71', 96]      " 143-63-113
-let s:faded_aqua =      ['#427b58', 65]      " 66-123-88
-let s:faded_orange =    ['#af3a03', 130]     " 175-58-3
+let s:faded_red =       ['#9d0006', 88]  " 157-0-6
+let s:faded_green =     ['#79740e', 100] " 121-116-14
+let s:faded_yellow =    ['#b57614', 136] " 181-118-20
+let s:faded_blue =      ['#076678', 24]  " 7-102-120
+let s:faded_purple =    ['#8f3f71', 96]  " 143-63-113
+let s:faded_aqua =      ['#427b58', 65]  " 66-123-88
+let s:faded_orange =    ['#af3a03', 130] " 175-58-3
 
 if (&background == 'dark')
   let s:bg0  = s:dark0
@@ -71,6 +73,7 @@ if (&background == 'dark')
   let s:fg2 = s:light2
   let s:fg3 = s:light3
   let s:fg4 = s:light4
+  let s:fg_accent = s:light_blue
 
   let s:fg4_256 = s:light4_256
 
@@ -95,6 +98,7 @@ else
   let s:fg2 = s:dark2
   let s:fg3 = s:dark3
   let s:fg4 = s:dark4
+  let s:fg_accent = s:dark_blue
 
   let s:fg4_256 = s:dark4_256
 
@@ -157,6 +161,7 @@ call s:Clear('TabLineFill')
 call s:Highlight('TabLineSel', s:none, s:bg1, 'NONE')
 call s:Highlight('TabLine', s:fg3, s:none, 'NONE')
 call s:Highlight('MatchParen', s:blue, s:bg1, 'underline,bold')
+" Eye catching display so that I can locate where it is used.
 call s:Highlight('Conceal', s:blue, s:purple, 'NONE')
 call s:Highlight('NonText', s:gray, s:none, 'NONE')
 call s:Highlight('SpecialKey', s:none, s:none, 'bold')
@@ -168,16 +173,15 @@ call s:Highlight('QuickFixLine', s:none, s:bg1, 'NONE')
 call s:Highlight('StatusLine', s:bg0, s:fg4, 'NONE')
 call s:Highlight('StatusLineNC', s:fg4, s:bg2, 'NONE')
 call s:Highlight('VertSplit', s:bg3, s:bg0, 'NONE')
-call s:Highlight('WildMenu', s:none, s:purple, 'NONE')
+" Usually popup-menu is displayed. See 'wildoptions'.
+call s:Clear('WildMenu')
 call s:Clear('Directory') " ex. directory in NETRW
-call s:Highlight('Title', s:fg0, s:none, 'NONE')
+call s:Highlight('Title', s:none, s:none, 'bold')
 call s:Highlight('ErrorMsg', s:red, s:none, 'bold')
 call s:Highlight('MoreMsg', s:none, s:none, 'bold')
 call s:Clear('ModeMsg')
 call s:Clear('Question')
 call s:Highlight('WarningMsg', s:yellow, s:none, 'bold')
-call s:Clear('Identifier')
-call s:Clear('PreProc')
 
 " }}}
 " Spelling: {{{
@@ -198,13 +202,43 @@ call s:Clear('FoldColumn')
 " }}}
 " Syntax Highlighting: {{{
 
-call s:Clear('Special')
+" Neovim HL init:
+" https://github.com/neovim/neovim/blob/2f385d17a027d132bf2308dd5b1b0c8ce862e761/src/nvim/highlight_group.c#L104
+"
+" nvim-treesitter highlight groups:
+" https://github.com/nvim-treesitter/nvim-treesitter/blob/557123a6168936983d7b980df195057ca6b370ed/lua/nvim-treesitter/highlight.lua#L190-L270
+
+call s:Highlight('Literal', s:fg_accent, s:none, 'NONE')
+call s:Link('Boolean', 'Literal')
+call s:Link('Character', 'Literal')
 call s:Highlight('Comment', s:fg3, s:none, 'italic')
-call s:Clear('Todo')
-call s:Highlight('Error', s:none, s:none, 'underdashed', s:orange) " hl-TSError links here
-call s:Clear('Statement')
+call s:Clear('Conditional')
 call s:Clear('Constant')
+call s:Clear('Debug')
+call s:Clear('Define')
+call s:Clear('Delimiter')
+call s:Highlight('Error', s:none, s:none, 'underdashed', s:orange) " hl-TSError links here
+call s:Clear('Exception')
+call s:Link('Float', 'Literal')
+call s:Clear('Function')
+call s:Clear('Identifier')
+call s:Clear('Include')
+call s:Clear('Keyword')
+call s:Clear('Label')
+call s:Clear('Macro')
+call s:Link('Number', 'Literal')
+call s:Clear('Operator')
+call s:Clear('PreProc')
+call s:Clear('Repeat')
+call s:Clear('Special')
+call s:Highlight('SpecialChar', s:purple, s:none, 'NONE')
+call s:Link('SpecialComment', 'Comment') " It is not currently used in nvim-treesitter queries.
+call s:Clear('Statement')
+call s:Clear('StorageClass')
+call s:Link('String', 'Literal')
+call s:Clear('Todo')
 call s:Clear('Type')
+call s:Clear('Typedef')
 
 " }}}
 " Completion Menu: {{{
