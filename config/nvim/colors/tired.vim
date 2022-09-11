@@ -22,7 +22,6 @@ let s:dark2 =           ['#504945', 239] " 80-73-69
 let s:dark3 =           ['#665c54', 241] " 102-92-84
 let s:dark4 =           ['#7c6f64', 243] " 124-111-100
 let s:dark4_256 =       ['#7c6f64', 243] " 124-111-100
-let s:dark_blue =       ['#191976', 239]  " 25-25-118
 
 let s:gray_245 =        ['#928374', 245] " 146-131-116
 let s:gray_244 =        ['#928374', 244] " 146-131-116
@@ -33,7 +32,6 @@ let s:light2 =          ['#d5c4a1', 250] " 213-196-161
 let s:light3 =          ['#bdae93', 248] " 189-174-147
 let s:light4 =          ['#a89984', 246] " 168-153-132
 let s:light4_256 =      ['#a89984', 246] " 168-153-132
-let s:light_blue =      ['#e2dbd9', 250] " 226-219-217
 
 let s:bright_red =      ['#fb4934', 167] " 251-73-52
 let s:bright_green =    ['#b8bb26', 142] " 184-187-38
@@ -73,7 +71,6 @@ if (&background == 'dark')
   let s:fg2 = s:light2
   let s:fg3 = s:light3
   let s:fg4 = s:light4
-  let s:fg_accent = s:light_blue
 
   let s:fg4_256 = s:light4_256
 
@@ -98,7 +95,6 @@ else
   let s:fg2 = s:dark2
   let s:fg3 = s:dark3
   let s:fg4 = s:dark4
-  let s:fg_accent = s:dark_blue
 
   let s:fg4_256 = s:dark4_256
 
@@ -160,7 +156,7 @@ call s:Clear('CursorLineNr')
 call s:Clear('TabLineFill')
 call s:Highlight('TabLineSel', s:none, s:bg1, 'NONE')
 call s:Highlight('TabLine', s:fg3, s:none, 'NONE')
-call s:Highlight('MatchParen', s:blue, s:bg1, 'underline,bold')
+call s:Highlight('MatchParen', s:bg0, s:fg4, 'bold')
 " Eye catching display so that I can locate where it is used.
 call s:Highlight('Conceal', s:blue, s:purple, 'NONE')
 call s:Highlight('NonText', s:gray, s:none, 'NONE')
@@ -208,9 +204,8 @@ call s:Clear('FoldColumn')
 " nvim-treesitter highlight groups:
 " https://github.com/nvim-treesitter/nvim-treesitter/blob/557123a6168936983d7b980df195057ca6b370ed/lua/nvim-treesitter/highlight.lua#L190-L270
 
-call s:Highlight('Literal', s:fg_accent, s:none, 'NONE')
-call s:Link('Boolean', 'Literal')
-call s:Link('Character', 'Literal')
+call s:Clear('Boolean')
+call s:Clear('Character')
 call s:Highlight('Comment', s:fg3, s:none, 'italic')
 call s:Clear('Conditional')
 call s:Clear('Constant')
@@ -219,14 +214,14 @@ call s:Clear('Define')
 call s:Clear('Delimiter')
 call s:Highlight('Error', s:none, s:none, 'underdashed', s:orange) " hl-TSError links here
 call s:Clear('Exception')
-call s:Link('Float', 'Literal')
+call s:Clear('Float')
 call s:Clear('Function')
 call s:Clear('Identifier')
 call s:Clear('Include')
 call s:Clear('Keyword')
 call s:Clear('Label')
 call s:Clear('Macro')
-call s:Link('Number', 'Literal')
+call s:Clear('Number')
 call s:Clear('Operator')
 call s:Clear('PreProc')
 call s:Clear('Repeat')
@@ -235,7 +230,7 @@ call s:Highlight('SpecialChar', s:purple, s:none, 'NONE')
 call s:Link('SpecialComment', 'Comment') " It is not currently used in nvim-treesitter queries.
 call s:Clear('Statement')
 call s:Clear('StorageClass')
-call s:Link('String', 'Literal')
+call s:Clear('String')
 call s:Clear('Todo')
 call s:Clear('Type')
 call s:Clear('Typedef')
