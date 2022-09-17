@@ -183,7 +183,7 @@ local function current_line_file_remove()
 
     if string.len(path) == 0 then return end
 
-    if not prompt_paths_remove({path}, 1) then return end
+    if not prompt_paths_remove({ path }, 1) then return end
 
     path_remove(path)
 end

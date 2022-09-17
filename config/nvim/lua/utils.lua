@@ -5,7 +5,7 @@
 -- @return second number of table elements
 local function split(str, separator)
     if not (type(str) == 'string' and type(separator) == 'string') then
-        return {str}, 1
+        return { str }, 1
     end
 
     local result = {}
@@ -59,8 +59,4 @@ local function take_first(list, len, take_count)
     return result, index
 end
 
-return {
-    split = split,
-    skip_last = skip_last,
-    take_first = take_first,
-}
+return { split = split, skip_last = skip_last, take_first = take_first }

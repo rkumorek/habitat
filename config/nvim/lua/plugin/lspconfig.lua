@@ -1,18 +1,16 @@
 local lspconfig = require('lspconfig')
 local utils = require('utils')
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] =
+vim.lsp.handlers['textDocument/publishDiagnostics'] =
     vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics,
-                 {underline = true, virtual_text = false, signs = false})
+                 { underline = true, virtual_text = false, signs = false })
 
-lspconfig.tsserver.setup({autostart = false})
-lspconfig.rust_analyzer.setup({autostart = false})
+lspconfig.tsserver.setup({ autostart = false })
+lspconfig.rust_analyzer.setup({ autostart = false })
 
 -- Retrieves all diagnostics from all buffers and puts them into quickfix list.
 local load_diagnostics_to_quickfix_list = function()
-    vim.diagnostic.setqflist({
-        severity = vim.diagnostic.severity.ERROR
-    })
+    vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR })
     vim.cmd('cwindow')
 end
 

@@ -7,13 +7,9 @@ local utils = require('utils')
 
 telescope.setup({
     defaults = {
-        path_display = { "truncate" },
+        path_display = { 'truncate' },
         layout_strategy = 'vertical',
-        layout_config = {
-            height = 0.95,
-            width = 0.95,
-            preview_cutoff = 20,
-        },
+        layout_config = { height = 0.95, width = 0.95, preview_cutoff = 20 },
         history = false,
         color_devicons = false,
         preview = { msg_bg_fillchar = ' ' },
@@ -21,52 +17,50 @@ telescope.setup({
             i = {
                 ['<Tab>'] = false,
                 ['<S-Tab>'] = false,
-                ['<C-u>'] = function (prompt_bufnr)
+                ['<C-u>'] = function(prompt_bufnr)
                     action_state.get_current_picker(prompt_bufnr):reset_prompt()
                 end,
-                ['<C-j>'] = function (prompt_bufnr)
+                ['<C-j>'] = function(prompt_bufnr)
                     action_set.shift_selection(prompt_bufnr, 5)
                 end,
-                ['<C-k>'] = function (prompt_bufnr)
+                ['<C-k>'] = function(prompt_bufnr)
                     action_set.shift_selection(prompt_bufnr, -5)
                 end,
-                ['<C-s>'] = actions.toggle_selection,
+                ['<C-s>'] = actions.toggle_selection
             },
             n = {
                 ['<Tab>'] = false,
                 ['<S-Tab>'] = false,
-                ['<C-j>'] = function (prompt_bufnr)
+                ['<C-j>'] = function(prompt_bufnr)
                     action_set.shift_selection(prompt_bufnr, 5)
                 end,
-                ['<C-k>'] = function (prompt_bufnr)
+                ['<C-k>'] = function(prompt_bufnr)
                     action_set.shift_selection(prompt_bufnr, -5)
                 end,
-                ['<C-s>'] = actions.toggle_selection,
-            },
-        },
+                ['<C-s>'] = actions.toggle_selection
+            }
+        }
     },
     extensions = {
         fzy_native = {
             override_generic_sorter = false,
-            override_file_sorter = true,
+            override_file_sorter = true
         }
     }
 })
 
 telescope.load_extension('fzy_native')
 
-local buffers = function ()
-    return builtin.buffers({
-        previewer = false,
-        layout_config = { height = 0.5 },
-    })
+local buffers = function()
+    return builtin.buffers(
+               { previewer = false, layout_config = { height = 0.5 } })
 end
 
-local find_files = function ()
+local find_files = function()
     return builtin.find_files({
         previewer = false,
         layout_config = { height = 0.5 },
-        find_command = { "fd", "--hidden", "--color=never" },
+        find_command = { 'fd', '--hidden', '--color=never' }
     })
 end
 
