@@ -7,30 +7,15 @@ function fish_theme -a action
                 return 0
             end
 
-            # Set color theme for top level shell based on current time.
-            if test $SHLVL -eq 1
-                set -l hour (date +"%H" | string replace -r "^0" "")
-                set -l mode light
+            set -l mode dark
 
-                if test $hour -ge 20 -o $hour -le 7
-                    set mode dark
-                end
-
-                __fish_color_theme_set_variables $mode
-                __fish_color_theme_set_fish_colors $mode
-                theme_gruvbox $mode medium
-                return 0
+            if test "$BAT_THEME" = 'gruvbox-light'
+                set mode light
             end
 
-            # Set color theme to match the theme of parent shell.
-            switch $BAT_THEME
-                case 'gruvbox-light'
-                    __fish_color_theme_set_variables light
-                    __fish_color_theme_set_fish_colors light
-                case '*'
-                    __fish_color_theme_set_variables dark
-                    __fish_color_theme_set_fish_colors dark
-            end
+            theme_gruvbox $mode medium
+            __fish_color_theme_set_fish_colors $mode
+            __fish_color_theme_set_variables $mode
         case 'toggle'
             if test $__fish_color_theme_is_dark -eq 1
                 theme_gruvbox light medium
@@ -45,7 +30,6 @@ function fish_theme -a action
 end
 
 function __fish_color_theme_set_variables -a mode
-    # Set variables for programs that support themes.
     set -gx BAT_THEME gruvbox-$mode
 
     # Set global variable to indicate colors were set.
