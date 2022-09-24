@@ -155,8 +155,8 @@ colors:
   # Allowed values are CellForeground and CellBackground, which reference the
   # affected cell, or hexadecimal colors like #ff00ff.
   cursor:
-    text: CellBackground
-    cursor: '#d3866d'
+    text: '#000000'
+    cursor: '#D98B71'
 
   # Vi mode cursor colors
   #
@@ -165,8 +165,8 @@ colors:
   # Allowed values are CellForeground and CellBackground, which reference the
   # affected cell, or hexadecimal colors like #ff00ff.
   vi_mode_cursor:
-    text: CellBackground
-    cursor: '#d3866d'
+    text: '#000000'
+    cursor: '#D98B71'
 
   # Selection colors
   #
