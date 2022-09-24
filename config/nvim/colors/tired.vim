@@ -57,10 +57,10 @@ let s:diff_add_bright =     ['#CDE3BE', 37]
 let s:diff_change_bright =  ['#D3E3DF', 21]
 let s:diff_remove_bright =  ['#E7C9C6', 36]
 
-let s:brown_dark =    ['#473300', 58]
-let s:gold_dark =     ['#805B00', 35]
+let s:brown_dark =    ['#755000', 33]
 let s:brown_bright =  ['#E1C798', 43]
-let s:gold_bright =   ['#FFE8A3', 29]
+let s:accent_dark =   ['#034F4E', 36]
+let s:accent_bright = ['#FFE8A3', 29]
 
 if (&background == 'dark')
   let s:bg0  = s:dark0
@@ -88,7 +88,7 @@ if (&background == 'dark')
   let s:orange = s:bright_orange
 
   let s:brown = s:brown_bright
-  let s:gold = s:gold_bright
+  let s:accent = s:accent_bright
 
   let s:diff_add = s:diff_add_dark
   let s:diff_remove = s:diff_remove_dark
@@ -119,7 +119,7 @@ else
   let s:orange = s:faded_orange
 
   let s:brown = s:brown_dark
-  let s:gold = s:gold_dark
+  let s:accent = s:accent_dark
 
   let s:diff_add = s:diff_add_bright
   let s:diff_remove = s:diff_remove_bright
@@ -249,7 +249,7 @@ call s:Highlight('SpecialChar', s:purple, s:none, 'NONE')
 call s:Link('SpecialComment', 'Comment') " It is not currently used in nvim-treesitter queries.
 call s:Clear('Statement')
 call s:Clear('StorageClass')
-call s:Highlight('String', s:gold, s:none, 'NONE')
+call s:Highlight('String', s:accent, s:none, 'NONE')
 call s:Clear('Todo')
 call s:Clear('Type')
 call s:Clear('Typedef')
