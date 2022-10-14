@@ -87,7 +87,7 @@ function __fish_color_theme_set_fish_colors -a mode
     set -g fish_color_selection             $bg1 --bold --background=$fg1
     set -g fish_color_operator              $purple
     set -g fish_color_escape                $purple
-    set -g fish_color_autosuggestion        $fg3
+    set -g fish_color_autosuggestion        $gray
     set -g fish_color_cwd                   $fg1
     set -g fish_color_cwd_root              $fg1
     set -g fish_color_user                  $fg1
