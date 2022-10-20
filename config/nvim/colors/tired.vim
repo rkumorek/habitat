@@ -297,7 +297,8 @@ call s:Highlight('DirvishArg', s:yellow, s:none, 'NONE')
 " Telescope.nvim: {{{
 
 call s:Highlight('TelescopeMatching', s:none, s:none, 'bold')
-call s:Link('TelescopeMultiSelection', 'Visual')
+call s:Highlight('TelescopeMultiSelection', s:aqua, s:none, 'bold')
+call s:Highlight('TelescopeMultiIcon', s:none, s:none, 'bold')
 
 " }}}
 " Fugitive: {{{
