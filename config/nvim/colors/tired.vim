@@ -179,7 +179,7 @@ call s:Highlight('MatchParen', s:bg0, s:fg4, 'bold')
 " Eye catching display so that I can locate where it is used.
 call s:Highlight('Conceal', s:blue, s:purple, 'NONE')
 call s:Highlight('NonText', s:gray, s:none, 'NONE')
-call s:Highlight('SpecialKey', s:none, s:none, 'bold')
+call s:Highlight('SpecialKey', s:blue, s:bg1, 'bold')
 call s:Highlight('Visual', s:none, s:bg2, 'NONE')
 call s:Link('VisualNOS', 'Visual')
 call s:Highlight('Search', s:bg0, s:fg4, 'NONE')
