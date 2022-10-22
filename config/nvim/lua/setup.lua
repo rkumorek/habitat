@@ -12,8 +12,10 @@ _G.usr = {
         local packer = require('packer')
 
         packer.startup(function()
+            -- Luarocks
             packer.use_rocks('luafilesystem')
 
+            -- Plugins
             packer.use('wbthomason/packer.nvim')
             packer.use('tpope/vim-fugitive')
             packer.use('justinmk/vim-dirvish')
@@ -22,6 +24,13 @@ _G.usr = {
             packer.use('nvim-lua/plenary.nvim')
             packer.use('nvim-telescope/telescope.nvim')
             packer.use('nvim-telescope/telescope-fzy-native.nvim')
+
+            -- Color schemes
+            packer.use('gruvbox-community/gruvbox')
+            packer.use('jnurmine/Zenburn')
+            packer.use('sonph/onehalf')
+            packer.use('sainnhe/everforest')
+            packer.use('savq/melange')
         end)
 
         packer.sync()
