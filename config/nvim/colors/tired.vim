@@ -59,7 +59,7 @@ let s:diff_remove_bright =  ['#E7C9C6', 36]
 
 let s:brown_dark =    ['#755000', 33]
 let s:brown_bright =  ['#E1C798', 43]
-let s:accent_dark =   ['#694C49', 94]
+let s:accent_dark =   ['#754F4C', 94]
 let s:accent_bright = ['#FFE8A3', 29]
 
 if (&background == 'dark')
