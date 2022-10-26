@@ -17,7 +17,7 @@ telescope.setup({
             i = {
                 ['<Tab>'] = false,
                 ['<S-Tab>'] = false,
-                ['<C-r>'] = function(prompt_bufnr)
+                ['<C-\\>'] = function(prompt_bufnr)
                     action_state.get_current_picker(prompt_bufnr):reset_prompt()
                 end,
                 ['<C-j>'] = function(prompt_bufnr)
