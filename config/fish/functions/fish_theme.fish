@@ -43,7 +43,7 @@ end
 function __fish_color_theme_set_fish_colors -a mode
     set -l gray         928374
     # Initialise color variables for light theme
-    set -l bg1          ebdbb2
+    set -l bg2          d5c4a1
     set -l fg0          282828
     set -l fg1          3c3836
     set -l fg2          504945
@@ -58,7 +58,7 @@ function __fish_color_theme_set_fish_colors -a mode
     set -l orange       af3a03
 
     if test $mode = 'dark'
-        set bg1         282828
+        set bg2         504945
         set fg0         fbf1c7
         set fg1         ebdbb2
         set fg2         d5c4a1
@@ -84,7 +84,7 @@ function __fish_color_theme_set_fish_colors -a mode
     set -g fish_color_valid_path            --underline
     set -g fish_color_option                $aqua
     set -g fish_color_comment               $gray --italics
-    set -g fish_color_selection             $bg1 --bold --background=$fg1
+    set -g fish_color_selection             normal --background $bg2
     set -g fish_color_operator              $purple
     set -g fish_color_escape                $purple
     set -g fish_color_autosuggestion        $gray
