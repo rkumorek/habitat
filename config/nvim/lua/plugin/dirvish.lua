@@ -148,9 +148,7 @@ end
 local function get_bufname_path()
     local bufpath = vim.fn.expand('%')
 
-    if string.sub(bufpath, -1) ~= '/' then
-        return nil
-    end
+    if string.sub(bufpath, -1) ~= '/' then return nil end
 
     return bufpath
 end

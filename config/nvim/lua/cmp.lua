@@ -3,7 +3,8 @@ local utils = require('./utils')
 -- negative path pattern
 local pattern = '[^\'"`%s*+]'
 
-local sh_prog = vim.fn.fnamemodify(vim.fn.expand('$MYVIMRC'), ':h') .. '/lua/cmp.sh'
+local sh_prog = vim.fn.fnamemodify(vim.fn.expand('$MYVIMRC'), ':h') ..
+                    '/lua/cmp.sh'
 
 -- extract cWORD behind the cursor
 local function get_path_from_line(line, column)
@@ -11,7 +12,7 @@ local function get_path_from_line(line, column)
     local sub_end = column - 1
     local sub_start = sub_end
     local char = string.sub(line, sub_start, sub_start)
-    
+
     while sub_start > 1 do
         if string.find(char, pattern) then
             sub_start = sub_start - 1
@@ -21,9 +22,7 @@ local function get_path_from_line(line, column)
         end
     end
 
-    if not string.find(char, pattern) then
-        sub_start = sub_start + 1
-    end
+    if not string.find(char, pattern) then sub_start = sub_start + 1 end
 
     local path = string.sub(line, sub_start, sub_end)
     local valid = (string.find(path, '^~?/') or string.find(path, '^..?/')) == 1
@@ -47,7 +46,8 @@ end
 local function get_search_params(path)
     local base_path = get_base_path(path)
     local last_char = string.sub(path, -1)
-    local has_search_str = (last_char ~= '/' and last_char ~= '~' and last_char ~= '.')
+    local has_search_str =
+        (last_char ~= '/' and last_char ~= '~' and last_char ~= '.')
 
     local segments = utils.split(base_path, '/')
     local search_str = ''
@@ -57,40 +57,33 @@ local function get_search_params(path)
         table.remove(segments)
     end
 
-    if #segments == 0 then
-        return '/', search_str
-    end
+    if #segments == 0 then return '/', search_str end
 
     return '/' .. table.concat(segments, '/') .. '/', search_str
 end
 
 -- execute search command and return lines from stdout
 local function search_cmd(search_dir, search_str)
-    local cmd = sh_prog .. ' "' .. search_str .. '" "' .. search_dir .. '" ' .. (#search_dir + 1)
+    local cmd = sh_prog .. ' "' .. search_str .. '" "' .. search_dir .. '" ' ..
+                    (#search_dir + 1)
 
     local file = assert(io.popen(cmd, 'r'))
     local result = assert(file.read(file, 'a'))
     file.close(file)
 
-    if result == '' then
-        return {}
-    end
+    if result == '' then return {} end
 
     return utils.split(result, '\n')
 end
 
 local function path_completion(line, column)
     -- return early if nothing to complete
-    if column == 1 or string.len(line) == 0 then
-        return ''
-    end
+    if column == 1 or string.len(line) == 0 then return '' end
 
     local path = get_path_from_line(line, column)
 
     -- if path is invalid return early
-    if path == nil then
-        return ''
-    end
+    if path == nil then return '' end
 
     local search_dir, search_str = get_search_params(path)
     local completion_items = search_cmd(search_dir, search_str)

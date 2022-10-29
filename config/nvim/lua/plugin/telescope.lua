@@ -26,7 +26,7 @@ telescope.setup({
                     action_set.shift_selection(prompt_bufnr, -5)
                 end,
                 ['<C-s>'] = actions.toggle_selection,
-                ['<C-g>'] = actions.toggle_all,
+                ['<C-g>'] = actions.toggle_all
             },
             n = {
                 ['<Tab>'] = false,
