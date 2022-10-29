@@ -2,7 +2,6 @@
 -- @param str - string
 -- @param separator - string
 -- @return first table of strings
--- @return second number of table elements
 local function split(str, separator)
     if not (type(str) == 'string' and type(separator) == 'string') then
         return { str }, 1
@@ -16,7 +15,7 @@ local function split(str, separator)
         result[index] = slice
     end
 
-    return result, index
+    return result
 end
 
 -- Returns a table without trailing elements.
@@ -24,10 +23,10 @@ end
 -- @param len - length of a table
 -- @param skip_count - number of elements to skip
 -- @return table
--- @return table length
-local function skip_last(list, len, skip_count)
-    local result = {}
+local function skip_last_n(list, skip_count)
+    local len = #list
     local index = 0
+    local result = {}
 
     if skip_count == nil then skip_count = 1 end
 
@@ -36,7 +35,7 @@ local function skip_last(list, len, skip_count)
         result[index] = list[index]
     end
 
-    return result, index
+    return result
 end
 
 -- Returns a head of a table.
@@ -45,7 +44,7 @@ end
 -- @param take_count - number of elements to select
 -- @return table
 -- @return table length
-local function take_first(list, len, take_count)
+local function take_first_n(list, len, take_count)
     local result = {}
     local index = 0
 
@@ -59,4 +58,4 @@ local function take_first(list, len, take_count)
     return result, index
 end
 
-return { split = split, skip_last = skip_last, take_first = take_first }
+return { split = split, skip_last_n = skip_last_n, take_first_n = take_first_n }

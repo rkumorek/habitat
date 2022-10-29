@@ -1,5 +1,15 @@
 local utils = require('../utils')
 
+local function exec_cmd(cmd)
+    local status_code = os.execute(cmd)
+
+    if status_code ~= 0 then
+        print(string.format('Non-zero status code [%d]: %s', status_code, cmd))
+    end
+
+    return status_code
+end
+
 -- Prompt whether the provided paths should be removed.
 -- @param paths - table of strings
 -- @param len - length of a table
@@ -8,7 +18,7 @@ local function prompt_paths_remove(paths, len)
     local prompt_paths = paths
 
     if len > 10 then
-        prompt_paths = utils.take_first(paths, 10)
+        prompt_paths = utils.take_first_n(paths, 10)
         prompt_paths[11] = string.format('and %d more', len - 10)
     end
 
@@ -22,77 +32,20 @@ end
 
 -- Creates parent directories for given path if they do not exist.
 -- @param path - string
--- @return nil
+-- @return number
 local function create_parent_dirs(path)
-    local path_chunks, length = utils.split(path, '/\\')
+    local chunks = utils.skip_last_n(utils.split(path, '/'))
+    local path_head = '/' .. table.concat(chunks, '/') .. '/'
 
-    if length < 2 then return nil end
-
-    -- Determine the closest existing parent directory.
-    local probe_chunks, probe_lvl = utils.skip_last(path_chunks, length)
-
-    while probe_lvl > 0 do
-        local test_path = '/' .. table.concat(probe_chunks, '/') .. '/'
-        local res, err = require('lfs').attributes(test_path)
-
-        -- The path at this level exists.
-        if res then break end
-
-        local ch, lv = utils.skip_last(probe_chunks, probe_lvl)
-        probe_chunks = ch
-        probe_lvl = lv
-    end
-
-    -- The whole path does not exist, doesn't seem like the path
-    -- is correct.
-    if probe_lvl == 0 then return nil end
-
-    -- Get the first parent directory level that should be created.
-    local level = probe_lvl + 1
-    while level < length do
-        local len_diff = length - level
-        local dir_path = table.concat(utils.skip_last(path_chunks, length,
-                                                      len_diff), '/')
-        local res, err = require('lfs').mkdir('/' .. dir_path .. '/')
-
-        if res == nil then
-            print(string.format('Could not create directory at %s\n%s',
-                                dir_path, err))
-            break
-        end
-
-        level = level + 1
-    end
-end
-
--- Remove provided path recursively if needed.
--- @param path - string
--- return nil
-local function remove_dir(path)
-    for file in require('lfs').dir(path) do
-        local filepath = path .. '/' .. file
-
-        if not (file == '.' or file == '..') then
-            local attrs = require('lfs').attributes(filepath)
-
-            if attrs.mode == 'file' then
-                os.remove(filepath)
-            elseif attrs.mode == 'directory' then
-                remove_dir(filepath)
-            end
-        end
-    end
-
-    return os.remove(path)
+    return exec_cmd('mkdir -p ' .. path_head)
 end
 
 -- Move path to a new location.
 -- @param path - string
 -- @param new_path - string
--- @return nil
+-- @return number
 local function path_move(path, new_path)
-    create_parent_dirs(new_path)
-
+    local status = create_parent_dirs(new_path)
     local res, err = os.rename(path, new_path)
 
     if err then
@@ -117,7 +70,6 @@ local function current_line_file_move()
 
     if (new_path == path) or (string.len(new_path) == 0) then return end
 
-    create_parent_dirs(new_path)
     path_move(path, new_path)
 end
 
@@ -139,9 +91,9 @@ local function argv_file_move(argc)
 
         if new_path == 'q' then break end
 
-        local is_path_invalid = new_path == path or string.len(new_path) == 0
+        local is_path_valid = new_path ~= path or string.len(new_path) ~= 0
 
-        if not is_path_invalid then
+        if is_path_valid then
             local res = path_move(path, new_path)
 
             if res then vim.cmd('argdelete ' .. path) end
@@ -153,28 +105,10 @@ end
 
 -- Remove provided path.
 -- @param path - string
--- @return first result
--- @return second error
+-- @return status code
 local function path_remove(path)
-    local is_dir = string.sub(path, -1) == '/'
-    local res, err
-
-    if is_dir then
-        local r, e = remove_dir(path)
-        res = r
-        err = e
-    else
-        local r, e = os.remove(path)
-        res = r
-        err = e
-    end
-
-    if not res then
-        print(string.format('Could not delete file or directory at %s\n%s',
-                            path, err))
-    end
-
-    return res, err
+    local cmd = 'rm -rf ' .. path
+    return exec_cmd(cmd)
 end
 
 -- Handle remove file for currently selected line.
@@ -188,33 +122,6 @@ local function current_line_file_remove()
     path_remove(path)
 end
 
--- Return path to currently viewed directory in Dirvish.
--- Ensures the path contains traling slash.
--- @return nil or string
-local function get_bufname_path()
-    local bufpath = vim.fn.expand('%')
-    local has_trailing_slash = string.sub(bufpath, -1) == '/'
-
-    if not has_trailing_slash then
-        local res, err = require('lfs').attributes(bufpath);
-
-        -- Not a directory.
-        if res.mode ~= 'directory' then
-            print('Current Dirvish buffer is not a directory.')
-            return nil
-        end
-        -- Error when reading attributes.
-        if err then
-            print('Couldn\'t determine type of the file %s\n%s', bufpath, err);
-            return nil
-        end
-
-        return bufpath .. '/'
-    end
-
-    return bufpath
-end
-
 -- Handle remove file for paths in arglist.
 local function argv_file_remove(argc)
     local argv = vim.fn.argv()
@@ -226,13 +133,26 @@ local function argv_file_remove(argc)
         local path = argv[index]
 
         if string.len(path) > 0 then
-            local res = path_remove(path)
-
-            if res then vim.cmd('argdelete ' .. path) end
+            if path_remove(path) == 0 then
+                vim.cmd('argdelete ' .. path)
+            end
         end
 
         index = index + 1
     end
+end
+
+-- Return path to currently viewed directory in Dirvish.
+-- Ensures the path contains traling slash.
+-- @return nil or string
+local function get_bufname_path()
+    local bufpath = vim.fn.expand('%')
+
+    if string.sub(bufpath, -1) ~= '/' then
+        return nil
+    end
+
+    return bufpath
 end
 
 _G.usr.dirvish_create = function()
@@ -248,11 +168,10 @@ _G.usr.dirvish_create = function()
 
     if string.len(path) == 0 then return end
 
-    create_parent_dirs(path)
-
     if string.sub(path, -1) == '/' then
-        require('lfs').mkdir(path)
+        exec_cmd('mkdir -p ' .. path)
     else
+        create_parent_dirs(path)
         io.close(io.open(path, 'w'))
     end
 

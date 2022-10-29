@@ -1,7 +1,7 @@
 -- Global variable for user defined values
 _G.usr = {
     -- Load path completion
-    path_completion = require('./cmp')
+    path_completion = require('./cmp'),
     -- Load plugin configuration files
     init_plugins = function()
         require('plugin.lspconfig')
@@ -14,9 +14,6 @@ _G.usr = {
         local packer = require('packer')
 
         packer.startup(function()
-            -- Luarocks
-            packer.use_rocks('luafilesystem')
-
             -- Plugins
             packer.use('wbthomason/packer.nvim')
             packer.use('tpope/vim-fugitive')
