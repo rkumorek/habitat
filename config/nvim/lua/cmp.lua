@@ -3,6 +3,8 @@ local utils = require('./utils')
 -- negative path pattern
 local pattern = '[^\'"`%s*+]'
 
+local sh_prog = vim.fn.fnamemodify(vim.fn.expand('$MYVIMRC'), ':h') .. '/lua/cmp.sh'
+
 -- extract cWORD behind the cursor
 local function get_path_from_line(line, column)
     -- column - cursor position
@@ -59,12 +61,12 @@ local function get_search_params(path)
         return '/', search_str
     end
 
-    return '/' .. table.concat(segments, '/') .. '/', search_str, last_char == '/'
+    return '/' .. table.concat(segments, '/') .. '/', search_str
 end
 
 -- execute search command and return lines from stdout
 local function search_cmd(search_dir, search_str)
-    local cmd = 'fd -d 1 -- "^' .. search_str .. '" "' .. search_dir .. '" 2> /dev/null'
+    local cmd = sh_prog .. ' "' .. search_str .. '" "' .. search_dir .. '" ' .. (#search_dir + 1)
 
     local file = assert(io.popen(cmd, 'r'))
     local result = assert(file.read(file, 'a'))
@@ -91,14 +93,7 @@ local function path_completion(line, column)
     end
 
     local search_dir, search_str = get_search_params(path)
-    local lines = search_cmd(search_dir, search_str)
-    local sub_start = #search_dir + 1
-
-    local completion_items = {}
-
-    for i = 1, #lines, 1 do
-        completion_items[i] = string.sub(lines[i], sub_start)
-    end
+    local completion_items = search_cmd(search_dir, search_str)
 
     vim.fn.complete(column - #search_str, completion_items)
 
