@@ -1,5 +1,7 @@
 -- Global variable for user defined values
 _G.usr = {
+    -- Load path completion
+    path_completion = require('./cmp')
     -- Load plugin configuration files
     init_plugins = function()
         require('plugin.lspconfig')
@@ -50,7 +52,7 @@ local function load_plugins()
         vim.cmd(
             'silent !git clone https://github.com/wbthomason/packer.nvim ' ..
                 packer_path)
-        vim.cmd('packadd packer.nvim');
+        vim.cmd('packadd packer.nvim')
         vim.cmd('autocmd User PackerComplete ++once lua usr.init_plugins()')
         _G.usr.sync_plugins()
     else

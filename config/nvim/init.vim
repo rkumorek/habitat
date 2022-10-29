@@ -94,6 +94,8 @@ nnoremap ]t :tnext<CR>
 nnoremap [T :tfirst<CR>
 nnoremap ]T :tlast<CR>
 
+inoremap <C-x><C-x> <C-R>=v:lua.usr.path_completion(getline('.'), col('.'))<CR>
+
 "-----------------------" PLUGINS
 lua require('setup')
 

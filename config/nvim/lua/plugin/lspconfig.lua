@@ -1,5 +1,5 @@
 local lspconfig = require('lspconfig')
-local utils = require('utils')
+local utils = require('../utils')
 
 vim.lsp.handlers['textDocument/publishDiagnostics'] =
     vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics,

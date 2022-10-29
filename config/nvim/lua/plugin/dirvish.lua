@@ -1,4 +1,4 @@
-local utils = require('utils')
+local utils = require('../utils')
 
 -- Prompt whether the provided paths should be removed.
 -- @param paths - table of strings
