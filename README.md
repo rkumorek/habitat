@@ -12,5 +12,5 @@ Clone this repository and run:
 > Requires [`lua-format`](https://github.com/Koihik/LuaFormatter)
 
 ```sh
-lua-format -c ./lua-format.config ./config/nvim/**/*.lua
+lua-format -i -c ./lua-format.config ./config/**/*.lua
 ```

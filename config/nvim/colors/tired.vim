@@ -34,20 +34,20 @@ let s:light4 =          ['#A89984', 246] " 168-153-132
 let s:light4_256 =      ['#A89984', 246] " 168-153-132
 
 let s:bright_red =      ['#FB4934', 167] " 251-73-52
-let s:bright_green =    ['#B8BB26', 142] " 184-187-38
 let s:bright_yellow =   ['#FABD2F', 214] " 250-189-47
 let s:bright_blue =     ['#83A598', 109] " 131-165-152
 let s:bright_purple =   ['#D3869B', 175] " 211-134-155
-let s:bright_aqua =     ['#8EC07C', 108] " 142-192-124
 let s:bright_orange =   ['#FE8019', 208] " 254-128-25
+let s:bright_comment =  ['#C2AA86', 241]
+let s:bright_brown =    ['#EBCF9D', 43]
 
 let s:faded_red =       ['#9D0006', 88]  " 157-0-6
-let s:faded_green =     ['#79740E', 100] " 121-116-14
 let s:faded_yellow =    ['#B57614', 136] " 181-118-20
 let s:faded_blue =      ['#076678', 24]  " 7-102-120
 let s:faded_purple =    ['#8F3F71', 96]  " 143-63-113
-let s:faded_aqua =      ['#427B58', 65]  " 66-123-88
 let s:faded_orange =    ['#AF3A03', 130] " 175-58-3
+let s:faded_comment =   ['#7a6240', 248]
+let s:faded_brown =     ['#755000', 33]
 
 let s:diff_add_dark =       ['#3E4F37', 28]
 let s:diff_change_dark =    ['#274F4A', 44]
@@ -56,11 +56,6 @@ let s:diff_remove_dark =    ['#4F2F2F', 33]
 let s:diff_add_bright =     ['#CDE3BE', 37]
 let s:diff_change_bright =  ['#D3E3DF', 21]
 let s:diff_remove_bright =  ['#E7C9C6', 36]
-
-let s:brown_dark =    ['#755000', 33]
-let s:brown_bright =  ['#E1C798', 43]
-let s:accent_dark =   ['#754F4C', 94]
-let s:accent_bright = ['#FFE8A3', 29]
 
 if (&background == 'dark')
   let s:bg0  = s:dark0
@@ -80,15 +75,12 @@ if (&background == 'dark')
   let s:fg4_256 = s:light4_256
 
   let s:red    = s:bright_red
-  let s:green  = s:bright_green
   let s:yellow = s:bright_yellow
   let s:blue   = s:bright_blue
   let s:purple = s:bright_purple
-  let s:aqua   = s:bright_aqua
   let s:orange = s:bright_orange
-
-  let s:brown = s:brown_bright
-  let s:accent = s:accent_bright
+  let s:brown = s:bright_brown
+  let s:comment = s:bright_comment
 
   let s:diff_add = s:diff_add_dark
   let s:diff_remove = s:diff_remove_dark
@@ -111,15 +103,12 @@ else
   let s:fg4_256 = s:dark4_256
 
   let s:red    = s:faded_red
-  let s:green  = s:faded_green
   let s:yellow = s:faded_yellow
   let s:blue   = s:faded_blue
   let s:purple = s:faded_purple
-  let s:aqua   = s:faded_aqua
   let s:orange = s:faded_orange
-
-  let s:brown = s:brown_dark
-  let s:accent = s:accent_dark
+  let s:brown = s:faded_brown
+  let s:comment = s:faded_comment
 
   let s:diff_add = s:diff_add_bright
   let s:diff_remove = s:diff_remove_bright
@@ -209,7 +198,7 @@ call s:Highlight('SpellRare', s:none, s:none, 'underdotted', s:blue)
 " }}}
 " Gutter: {{{
 
-call s:Clear('LineNr')
+call s:Highlight('LineNr', s:fg3, s:none, 'NONE')
 call s:Clear('SignColumn')
 call s:Highlight('Folded', s:none, s:bg1, 'NONE')
 call s:Clear('FoldColumn')
@@ -225,13 +214,13 @@ call s:Clear('FoldColumn')
 
 call s:Clear('Boolean')
 call s:Clear('Character')
-call s:Highlight('Comment', s:brown, s:none, 'italic')
+call s:Highlight('Comment', s:comment, s:none, 'italic')
 call s:Clear('Conditional')
 call s:Clear('Constant')
 call s:Clear('Debug')
 call s:Clear('Define')
 call s:Clear('Delimiter')
-call s:Highlight('Error', s:none, s:none, 'underdashed', s:orange) " hl-TSError links here
+call s:Highlight('Error', s:none, s:none, 'underdashed', s:red) " hl-TSError links here
 call s:Clear('Exception')
 call s:Clear('Float')
 call s:Clear('Function')
@@ -249,7 +238,7 @@ call s:Highlight('SpecialChar', s:purple, s:none, 'NONE')
 call s:Link('SpecialComment', 'Comment') " It is not currently used in nvim-treesitter queries.
 call s:Clear('Statement')
 call s:Clear('StorageClass')
-call s:Highlight('String', s:accent, s:none, 'NONE')
+call s:Highlight('String', s:brown, s:none, 'NONE')
 call s:Clear('Todo')
 call s:Clear('Type')
 call s:Clear('Typedef')
@@ -290,14 +279,14 @@ call s:Highlight('DiagnosticUnderlineHint', s:none, s:none, 'undercurl', s:fg3)
 " PLUGINS
 " Dirvish: {{{
 
-call s:Highlight('DirvishPathTail', s:aqua, s:none, 'NONE')
+call s:Highlight('DirvishPathTail', s:blue, s:none, 'NONE')
 call s:Highlight('DirvishArg', s:yellow, s:none, 'NONE')
 
 " }}}
 " Telescope.nvim: {{{
 
 call s:Highlight('TelescopeMatching', s:none, s:none, 'bold')
-call s:Highlight('TelescopeMultiSelection', s:aqua, s:none, 'bold')
+call s:Highlight('TelescopeMultiSelection', s:none, s:none, 'bold,underline', s:fg0)
 call s:Highlight('TelescopeMultiIcon', s:none, s:none, 'bold')
 
 " }}}
@@ -320,8 +309,8 @@ call s:Highlight('DiffText', s:none, s:diff_change, 'NONE')
 call s:Highlight('diffAdded', s:none, s:diff_add, 'NONE')
 call s:Highlight('diffRemoved', s:none, s:diff_remove, 'NONE')
 call s:Highlight('diffChanged', s:none, s:diff_change, 'NONE')
-call s:Highlight('diffLine', s:brown, s:bg1, 'bold')
-call s:Highlight('diffSubname', s:none, s:bg1, 'NONE')
+call s:Highlight('diffLine', s:brown, s:bg2, 'bold')
+call s:Highlight('diffSubname', s:none, s:bg2, 'NONE')
 
 " }}}
 " Markdown: {{{

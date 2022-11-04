@@ -27,7 +27,6 @@ _G.usr = {
             -- Color schemes
             packer.use('gruvbox-community/gruvbox')
             packer.use('jnurmine/Zenburn')
-            packer.use('sonph/onehalf')
             packer.use('sainnhe/everforest')
             packer.use('savq/melange')
         end)
