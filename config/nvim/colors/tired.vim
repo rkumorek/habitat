@@ -1,5 +1,10 @@
 " vim: set sw=2 ts=2 sts=2 et tw=80 ft=vim fdm=marker:
 
+" Gruvbox https://github.com/morhetz/gruvbox theme but with less colours.
+"
+" Does not follow best practices mentioned in vim repository:
+" https://github.com/vim/vim/blob/master/runtime/colors/README.txt
+
 " Initialisation: {{{
 
 hi clear
@@ -164,7 +169,7 @@ call s:Clear('CursorLineNr')
 call s:Clear('TabLineFill')
 call s:Highlight('TabLineSel', s:none, s:bg2, 'NONE')
 call s:Highlight('TabLine', s:none, s:none, 'NONE')
-call s:Highlight('MatchParen', s:bg0, s:fg4, 'bold')
+call s:Highlight('MatchParen', s:bg0, s:fg4, 'NONE')
 " Eye catching display so that I can locate where it is used.
 call s:Highlight('Conceal', s:blue, s:purple, 'NONE')
 call s:Highlight('NonText', s:gray, s:none, 'NONE')
@@ -285,9 +290,8 @@ call s:Highlight('DirvishArg', s:yellow, s:none, 'NONE')
 " }}}
 " Telescope.nvim: {{{
 
-call s:Highlight('TelescopeMatching', s:none, s:none, 'bold')
-call s:Highlight('TelescopeMultiSelection', s:none, s:none, 'bold,underline', s:fg0)
-call s:Highlight('TelescopeMultiIcon', s:none, s:none, 'bold')
+call s:Highlight('TelescopeMatching', s:none, s:none, 'bold,underline', s:fg0)
+call s:Highlight('TelescopeMultiSelection', s:comment, s:none, 'bold')
 
 " }}}
 " Fugitive: {{{
