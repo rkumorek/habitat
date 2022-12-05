@@ -65,10 +65,19 @@ schemes:
     - { index: 246, color: '#a89984' }
     - { index: 248, color: '#bdae93' }
     - { index: 250, color: '#d5c4a1' }
+  cursor: &cursor
+    text: '#000000'
+    cursor: '#d98b71'
+  vi_mode_cursor: &vi_cursor
+    text: '#000000'
+    cursor: '#d98b71'
+  selection: &selection
+    text: CellBackground
+    background: '#a89984'
   gruvbox_dark: &dark
     primary:
       background: '#282828'
-      foreground: '#EBDBB2'
+      foreground: '#ebdbb2'
     normal:
       black:   '#282828'
       red:     '#cc241d'
@@ -88,15 +97,9 @@ schemes:
       cyan:    '#8ec07c'
       white:   '#ebdbb2'
     indexed_colors: *palette
-    cursor:
-      text: '#000000'
-      cursor: '#D98B71'
-    vi_mode_cursor:
-      text: '#000000'
-      cursor: '#D98B71'
-    selection:
-      text: CellBackground
-      background: '#a89984'
+    cursor: *cursor
+    vi_mode_cursor: *vi_cursor
+    selection: *selection
   gruvbox_light: &light
     primary:
       background: '#fbf1c7'
@@ -120,15 +123,9 @@ schemes:
       cyan:    '#427b58'
       white:   '#ebdbb2'
     indexed_colors: *palette
-    cursor:
-      text: '#000000'
-      cursor: '#D98B71'
-    vi_mode_cursor:
-      text: '#000000'
-      cursor: '#D98B71'
-    selection:
-      text: CellBackground
-      background: '#a89984'
+    cursor: *cursor
+    vi_mode_cursor: *vi_cursor
+    selection: *selection
 
 colors: *light
 
