@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-set -l dirname (cd (dirname (status -f)); and pwd) 
+set -l dir (dirname (status -f))
 
 function link_config_dir --argument-names name
     if test ~/.config/$name
@@ -11,12 +11,12 @@ function link_config_dir --argument-names name
         end
     end
 
-    ln -vs $dirname/config/$name ~/.config
+    ln -vs $dir/config/$name ~/.config
 end
 
 for filename in (basename ./config/*)
     link_config_dir $filename
 end
 
-ln -s $dirname/home/.tmux.conf ~/.tmux.conf
+ln -s $dir/home/.tmux.conf ~/.tmux.conf
 
