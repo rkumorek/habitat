@@ -13,16 +13,16 @@ function fish_theme -a action
                 set mode light
             end
 
-            theme_gruvbox $mode medium
+            test $TERM = alacritty; and __set_alacritty_theme $mode
             __fish_color_theme_set_fish_colors $mode
             __fish_color_theme_set_variables $mode
         case 'toggle'
             if test $__fish_color_theme_is_dark -eq 1
-                theme_gruvbox light medium
+                test $TERM = alacritty; __set_alacritty_theme light
                 __fish_color_theme_set_fish_colors light
                 __fish_color_theme_set_variables light
             else
-                theme_gruvbox dark medium
+                test $TERM = alacritty; __set_alacritty_theme dark
                 __fish_color_theme_set_fish_colors dark
                 __fish_color_theme_set_variables dark
             end
@@ -100,4 +100,20 @@ function __fish_color_theme_set_fish_colors -a mode
     set -g fish_pager_color_prefix          $aqua
     set -g fish_pager_color_completion      $fg1 --underline
     set -g fish_pager_color_description     $fg1
+end
+
+function __set_alacritty_theme -a theme
+    set -l dir (dirname (status -f))
+
+    switch $theme
+        case light dark
+            set -l pattern '^colors: \\*(light|dark)'
+            set -l command "s/$pattern/colors: *$theme/"
+            sed -E -i '' $command "$dir/../../alacritty/alacritty.yml"
+
+        case '*'
+            echo "Provide mode (light or dark) argument."
+            return 1
+    end
+
 end
