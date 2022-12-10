@@ -1,119 +1,63 @@
 function fish_theme -a action
     switch $action
         case 'init'
-            # Return early if init was already called.
-            if set -q __fish_color_theme_is_dark
-                echo "Theme already initialised, use "fish_theme toggle" to change it."
-                return 0
-            end
-
             set -l mode dark
 
             if test "$BAT_THEME" = 'gruvbox-light'
                 set mode light
             end
 
-            test $TERM = alacritty; and __set_alacritty_theme $mode
-            __fish_color_theme_set_fish_colors $mode
-            __fish_color_theme_set_variables $mode
-        case 'toggle'
-            if test $__fish_color_theme_is_dark -eq 1
-                test $TERM = alacritty; __set_alacritty_theme light
-                __fish_color_theme_set_fish_colors light
-                __fish_color_theme_set_variables light
-            else
-                test $TERM = alacritty; __set_alacritty_theme dark
-                __fish_color_theme_set_fish_colors dark
-                __fish_color_theme_set_variables dark
-            end
+            __fish_color_theme_set $mode
+        case 'light'
+            __fish_color_theme_set light
+        case 'dark'
+            __fish_color_theme_set dark
     end
 end
 
-function __fish_color_theme_set_variables -a mode
+function __fish_color_theme_set -a mode
     set -gx BAT_THEME gruvbox-$mode
 
-    # Set global variable to indicate colors were set.
-    if test $mode = 'dark'
-        set -g __fish_color_theme_is_dark 1
-    else
-        set -g __fish_color_theme_is_dark 0
-    end
-end
+    if test $TERM = alacritty
+        set -l dir (dirname (status -f))
 
-function __fish_color_theme_set_fish_colors -a mode
-    set -l gray         928374
-    # Initialise color variables for light theme
-    set -l bg2          d5c4a1
-    set -l fg0          282828
-    set -l fg1          3c3836
-    set -l fg2          504945
-    set -l fg3          665c54
-    set -l fg4          7c6f64
-    set -l red          9d0006
-    set -l green        79740e
-    set -l yellow       b57614
-    set -l blue         076678
-    set -l purple       8f3f71
-    set -l aqua         427b58
-    set -l orange       af3a03
+        switch $mode
+            case light dark
+                set -l pattern '^colors: \\*(light|dark)'
+                set -l command "s/$pattern/colors: *$mode/"
+                sed -E -i '' $command "$dir/../../alacritty/alacritty.yml"
 
-    if test $mode = 'dark'
-        set bg2         504945
-        set fg0         fbf1c7
-        set fg1         ebdbb2
-        set fg2         d5c4a1
-        set fg3         bdae93
-        set fg4         a89984
-        set red         fb4934
-        set green       b8bb26
-        set yellow      fabd2f
-        set blue        83a598
-        set purple      d3869b
-        set aqua        8ec07c
-        set orange      fe8019
+            case '*'
+                echo "Provide mode (light or dark) argument."
+                return 1
+        end
     end
 
-    set -g fish_color_normal                $fg1
-    set -g fish_color_command               $green
-    set -g fish_color_keyword               $blue
-    set -g fish_color_quote                 $orange
-    set -g fish_color_redirection           $purple
-    set -g fish_color_end                   $blue
-    set -g fish_color_error                 $red
-    set -g fish_color_param                 $fg2
+    set -g fish_color_normal                brwhite
+    set -g fish_color_command               brgreen --bold
+    set -g fish_color_keyword               brblue --bold
+    set -g fish_color_quote                 yellow
+    set -g fish_color_redirection           blue
+    set -g fish_color_end                   blue
+    set -g fish_color_error                 red
+    set -g fish_color_param                 normal
     set -g fish_color_valid_path            --underline
-    set -g fish_color_option                $aqua
-    set -g fish_color_comment               $gray --italics
-    set -g fish_color_selection             normal --background $bg2
-    set -g fish_color_operator              $purple
-    set -g fish_color_escape                $purple
-    set -g fish_color_autosuggestion        $gray
-    set -g fish_color_cwd                   $fg1
-    set -g fish_color_cwd_root              $fg1
-    set -g fish_color_user                  $fg1
-    set -g fish_color_host                  $fg1
-    set -g fish_color_host_remote           $fg1
-    set -g fish_color_status                $fg1
+    set -g fish_color_option                normal
+    set -g fish_color_comment               white --italics
+    set -g fish_color_selection             normal --background brblack
+    set -g fish_color_operator              blue
+    set -g fish_color_escape                magenta
+    set -g fish_color_autosuggestion        white
+    set -g fish_color_cwd                   normal
+    set -g fish_color_cwd_root              normal
+    set -g fish_color_user                  normal
+    set -g fish_color_host                  normal
+    set -g fish_color_host_remote           normal
+    set -g fish_color_status                normal
     set -g fish_color_cancel                -r
 
-    set -g fish_pager_color_progress        -r
-    set -g fish_pager_color_prefix          $aqua
-    set -g fish_pager_color_completion      $fg1 --underline
-    set -g fish_pager_color_description     $fg1
-end
-
-function __set_alacritty_theme -a theme
-    set -l dir (dirname (status -f))
-
-    switch $theme
-        case light dark
-            set -l pattern '^colors: \\*(light|dark)'
-            set -l command "s/$pattern/colors: *$theme/"
-            sed -E -i '' $command "$dir/../../alacritty/alacritty.yml"
-
-        case '*'
-            echo "Provide mode (light or dark) argument."
-            return 1
-    end
-
+    set -g fish_pager_color_progress        normal
+    set -g fish_pager_color_prefix          normal --bold
+    set -g fish_pager_color_completion      normal --underline
+    set -g fish_pager_color_description     normal
 end
