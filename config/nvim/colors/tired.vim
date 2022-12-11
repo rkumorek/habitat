@@ -51,7 +51,7 @@ let s:faded_yellow =    ['#B57614', 136] " 181-118-20
 let s:faded_blue =      ['#076678', 24]  " 7-102-120
 let s:faded_purple =    ['#8F3F71', 96]  " 143-63-113
 let s:faded_orange =    ['#AF3A03', 130] " 175-58-3
-let s:faded_comment =   ['#7a6240', 248]
+let s:faded_comment =   ['#806d54', 248]
 let s:faded_brown =     ['#755000', 33]
 
 let s:diff_add_dark =       ['#3E4F37', 28]
