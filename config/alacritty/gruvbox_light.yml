@@ -11,7 +11,7 @@ primary:
   background: '#fbf1c7'
   foreground: '#3c3836'
 normal:
-  black:   '#282828'
+  black:   '#fbf1c7'
   red:     '#cc241d'
   green:   '#98971a'
   yellow:  '#d79921'
