@@ -4,7 +4,9 @@ if set -q WT_SESSION
     set -x COLORTERM truecolor
 end
 
-set -x LS_COLORS 'di=38;5;4:no=0'
+if set -q __FISH_THEME
+    set -x BAT_THEME gruvbox-$__FISH_THEME
+end
 
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x XDG_DATA_HOME $HOME/.local/share
