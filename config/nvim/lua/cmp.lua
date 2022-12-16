@@ -64,8 +64,9 @@ end
 
 -- execute search command and return lines from stdout
 local function search_cmd(search_dir, search_str)
-    local cmd = sh_prog .. ' "' .. search_str .. '" "' .. search_dir .. '" ' ..
-                    (#search_dir + 1)
+    local find_cmd = 'fd --color never -d 1 -- "^' .. search_str .. '" "' .. search_dir .. '" 2> /dev/null'
+    local cut_cmd = 'cut "-c' .. (#search_dir + 1) .. '"-'
+    local cmd = find_cmd .. ' | ' .. cut_cmd
 
     local file = assert(io.popen(cmd, 'r'))
     local result = assert(file.read(file, 'a'))
