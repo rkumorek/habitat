@@ -1,5 +1,6 @@
 #### Requirements
 - fish shell
+- `XDG_CONFIG_HOME` env variable set
 
 #### Instruction
 Clone this repository and run:
