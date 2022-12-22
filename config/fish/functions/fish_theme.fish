@@ -32,7 +32,9 @@ end
 function __set_fish_colors
     function __set_cv -a var -a col
         if not set -q -U $var
-            set -U $var $col
+            if test $$var != $col
+                set -U $var $col
+            end
         end
     end
 
