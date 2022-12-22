@@ -66,7 +66,7 @@ vnoremap <Leader>P "*P
 nnoremap <Leader>vi :edit $MYVIMRC<CR>
 nnoremap <Leader>vs :source %<CR>
 nnoremap <Leader>vu :lua usr.sync_plugins()<CR>
-nnoremap <Leader>vt :TSEnable highlight<CR>
+nnoremap <Leader>vt :TSToggle highlight<CR>
 
 nnoremap [ob :set background=light<CR>
 nnoremap ]ob :set background=dark<CR>
