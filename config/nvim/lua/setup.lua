@@ -57,3 +57,23 @@ local function load_plugins()
 end
 
 load_plugins()
+
+-- :lua usr.preview_highlights()
+-- _G.usr.preview_highlights = function()
+--     local bufnr = vim.fn.bufnr()
+--     local highlights = {
+--         "DiagnosticError",
+--         "DiagnosticUnderlineError",
+--         "DiagnosticWarn",
+--         "DiagnosticUnderlineWarn",
+--         "DiagnosticInfo",
+--         "DiagnosticUnderlineInfo",
+--         "DiagnosticHint",
+--         "DiagnosticUnderlineHint",
+--     }
+-- 
+--     vim.api.nvim_buf_clear_namespace(bufnr, 0, 0, -1)
+--     for i, k in ipairs(highlights) do
+--         vim.api.nvim_buf_add_highlight(bufnr, 0, k, i - 1, 0, -1)
+--     end
+-- end
