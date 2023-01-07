@@ -1,14 +1,5 @@
 function fish_theme -a action
     switch $action
-        case init
-            if not set -q __FISH_THEME
-                set -U __FISH_THEME dark
-                __set_fish_colors
-            else
-                if test $SHLVL = 1
-                    __fish_alacritty_theme
-                end
-            end
         case light dark
             set -U __FISH_THEME $action
     end
@@ -29,7 +20,7 @@ function __fish_alacritty_theme
     end
 end
 
-function __set_fish_colors
+function fish_theme_init_fish_colors
     function __set_cv -a var -a col
         if not set -q -U $var
             if test $$var != $col
