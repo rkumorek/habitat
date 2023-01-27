@@ -1,11 +1,13 @@
-fish_theme init
-
 if set -q WT_SESSION
     set -x COLORTERM truecolor
 end
 
 if set -q __FISH_THEME
     set -x BAT_THEME gruvbox-$__FISH_THEME
+
+    if test $SHLVL -eq 1
+        fish_theme $__FISH_THEME
+    end
 end
 
 set -x XDG_CONFIG_HOME $HOME/.config
