@@ -1,4 +1,3 @@
-filetype plugin indent on
 syntax manual
 colorscheme tired
 
