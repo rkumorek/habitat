@@ -1,4 +1,4 @@
-syntax manual
+syntax on
 colorscheme tired
 
 "-----------------------" SETTINGS
