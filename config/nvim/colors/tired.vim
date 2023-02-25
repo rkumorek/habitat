@@ -1,5 +1,5 @@
 " vim: set sw=2 ts=2 sts=2 et tw=80 ft=vim fdm=marker:
-
+"
 " Gruvbox https://github.com/morhetz/gruvbox theme but with less colours.
 "
 " Does not follow best practices mentioned in vim repository:
@@ -93,6 +93,11 @@ let s:comment     = 250
 let s:diff_add    = 58
 let s:diff_change = 60
 let s:diff_remove = 52
+let s:guisp_yellow =  '#d79921'
+let s:guisp_red =     '#cc241d'
+let s:guisp_gray =    '#928374'
+let s:guisp_blue =    '#458588'
+let s:guisp_fg =      'fg'
 
 " }}}
 " Helper functions: {{{
@@ -164,10 +169,10 @@ call s:Highlight('WarningMsg', s:yellow, s:none, 'bold')
 " }}}
 " Spelling: {{{
 
-call s:Highlight('SpellBad', s:none, s:none, 'underdotted', 'Red')
-call s:Highlight('SpellCap', s:none, s:none, 'underdotted', 'Gray')
-call s:Highlight('SpellLocal', s:none, s:none, 'underdotted', 'Gray')
-call s:Highlight('SpellRare', s:none, s:none, 'underdotted', 'Blue')
+call s:Highlight('SpellBad', s:none, s:none, 'underdotted', s:guisp_red)
+call s:Highlight('SpellCap', s:none, s:none, 'underdotted', s:guisp_gray)
+call s:Highlight('SpellLocal', s:none, s:none, 'underdotted', s:guisp_gray)
+call s:Highlight('SpellRare', s:none, s:none, 'underdotted', s:guisp_blue)
 
 " }}}
 " Gutter: {{{
@@ -194,7 +199,7 @@ call s:Clear('Constant')
 call s:Clear('Debug')
 call s:Clear('Define')
 call s:Clear('Delimiter')
-call s:Highlight('Error', s:none, s:none, 'underdashed', 'Red') " hl-TSError links here
+call s:Highlight('Error', s:none, s:none, 'underdashed', s:guisp_red) " hl-TSError links here
 call s:Clear('Exception')
 call s:Clear('Float')
 call s:Clear('Function')
@@ -229,16 +234,16 @@ call s:Highlight('PmenuThumb', s:none, s:bg4, 'NONE')
 " LSP: {{{
 
 call s:Highlight('DiagnosticError', s:red, s:none, 'NONE')
-call s:Highlight('DiagnosticUnderlineError', s:none, s:none, 'undercurl', 'Red')
+call s:Highlight('DiagnosticUnderlineError', s:none, s:none, 'undercurl', s:guisp_red)
 
 call s:Highlight('DiagnosticWarn', s:yellow, s:none, 'NONE')
-call s:Highlight('DiagnosticUnderlineWarn', s:none, s:none, 'undercurl', 'Orange')
+call s:Highlight('DiagnosticUnderlineWarn', s:none, s:none, 'undercurl', s:guisp_yellow)
 
 call s:Highlight('DiagnosticInfo', s:blue, s:none, 'NONE')
-call s:Highlight('DiagnosticUnderlineInfo', s:none, s:none, 'undercurl', 'DarkCyan')
+call s:Highlight('DiagnosticUnderlineInfo', s:none, s:none, 'undercurl', s:guisp_blue)
 
 call s:Highlight('DiagnosticHint', s:fg3, s:none, 'NONE')
-call s:Highlight('DiagnosticUnderlineHint', s:none, s:none, 'undercurl', 'Gray')
+call s:Highlight('DiagnosticUnderlineHint', s:none, s:none, 'undercurl', s:guisp_gray)
 
 " TODO: add the following 
 " LspReferenceText
@@ -259,7 +264,7 @@ call s:Highlight('DirvishArg', s:yellow, s:none, 'NONE')
 " }}}
 " Telescope.nvim: {{{
 
-call s:Highlight('TelescopeMatching', s:none, s:none, 'bold,underline', 'Black')
+call s:Highlight('TelescopeMatching', s:none, s:none, 'bold,underline', s:guisp_fg)
 call s:Highlight('TelescopeMultiSelection', s:comment, s:none, 'bold')
 
 " }}}
