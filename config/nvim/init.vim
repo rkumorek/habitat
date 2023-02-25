@@ -7,7 +7,6 @@ set showmode
 set splitbelow
 set splitright
 set scrolloff=10
-set termguicolors
 set lazyredraw
 set listchars=eol:$,tab:>-<,space:·
 set ignorecase
@@ -31,12 +30,6 @@ set expandtab
 set statusline=[#%n]%y%q%m%r%h%w\ %c%V:%l-%L\ %<%f
 set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading
 set grepformat=%f:%l:%c:%m,%f:%l:%m
-
-if $BAT_THEME == 'gruvbox-light'
-    set background=light
-else
-    set background=dark
-endif
 
 "-----------------------" MAPPINGS
 let mapleader = ' '
@@ -67,8 +60,8 @@ nnoremap <Leader>vs :source %<CR>
 nnoremap <Leader>vu :lua usr.sync_plugins()<CR>
 nnoremap <Leader>vt :TSToggle highlight<CR>
 
-nnoremap [ob :set background=light<CR>
-nnoremap ]ob :set background=dark<CR>
+nnoremap [ob :silent !fish -c "fish_terminal_theme light"<CR>
+nnoremap ]ob :silent !fish -c "fish_terminal_theme dark"<CR>
 nnoremap [ol :set list<CR>
 nnoremap ]ol :set nolist<CR>
 

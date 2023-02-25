@@ -9,7 +9,7 @@ selection:
   background: '#a89984'
 primary:
   background: '#fbf1c7'
-  foreground: '#3c3836'
+  foreground: '#282828'
 normal:
   black:   '#fbf1c7'
   red:     '#cc241d'
@@ -18,13 +18,32 @@ normal:
   blue:    '#458588'
   magenta: '#b16286'
   cyan:    '#689d6a'
-  white:   '#a89984'
+  white:   '#7c6f64'
 bright:
   black:   '#928374'
-  red:     '#fb4934'
-  green:   '#b8bb26'
-  yellow:  '#fabd2f'
-  blue:    '#83a598'
-  magenta: '#d3869b'
-  cyan:    '#8ec07c'
+  red:     '#9d0006'
+  green:   '#79740e'
+  yellow:  '#b57614'
+  blue:    '#076678'
+  magenta: '#8f3f71'
+  cyan:    '#427b58'
   white:   '#3c3836'
+indexed_colors:
+  - { index:  52, color: '#e7c9c6' } # Diff Remove
+  - { index:  58, color: '#cde3be' } # Diff Add
+  - { index:  60, color: '#d3e3df' } # Diff Change
+  - { index: 166, color: '#d65d0c' } # Orange
+  - { index: 232, color: '#f9f5d7' } # Bg
+  - { index: 233, color: '#fbf1c7' }
+  - { index: 234, color: '#f2e5bc' }
+  - { index: 235, color: '#ebdbb2' }
+  - { index: 236, color: '#d5c4a1' }
+  - { index: 237, color: '#bdae93' }
+  - { index: 238, color: '#a89984' }
+  - { index: 244, color: '#282828' } # Fg
+  - { index: 245, color: '#3c3836' }
+  - { index: 246, color: '#504945' }
+  - { index: 247, color: '#665c54' }
+  - { index: 248, color: '#7c6f64' }
+  - { index: 249, color: '#6b4900' }
+  - { index: 250, color: '#5d503c' }

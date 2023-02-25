@@ -4,6 +4,52 @@
 "
 " Does not follow best practices mentioned in vim repository:
 " https://github.com/vim/vim/blob/master/runtime/colors/README.txt
+"
+" Expected Gruvbox terminal colors.
+"
+" │ Index │ Dark Theme Value  │ Light Theme Value │ Note
+" │ 0     │ #282828           │ #fbf1c7           │ Background (Bg0)
+" │ 1     │ #cc241d           │ #cc241d           │ Red
+" │ 2     │ #98971a           │ #98971a           │ Green
+" │ 3     │ #d79921           │ #d79921           │ Yellow
+" │ 4     │ #458588           │ #458588           │ Blue
+" │ 5     │ #b16286           │ #b16286           │ Purple
+" │ 6     │ #689d6a           │ #689d6a           │ Aqua
+" │ 7     │ #a89984           │ #7c6f64           │ Alt Foreground
+" │ 8     │ #928374           │ #928374           │ Alt Background
+" │ 9     │ #fb4934           │ #9d0006           │ Alt Red
+" │ 10    │ #b8bb26           │ #79740e           │ Alt Green
+" │ 11    │ #fabd2f           │ #b57614           │ Alt Yellow
+" │ 12    │ #83a598           │ #076678           │ Alt Blue
+" │ 13    │ #d3869b           │ #8f3f71           │ Alt Purple
+" │ 14    │ #8ec07c           │ #427b58           │ Alt Aqua
+" │ 15    │ #fbf1c7           │ #282828           │ Foreground (Fg0)
+" │ __    │ _______           │ _______           │ __________
+" │ 52    │ #4f2f2f           │ #e7c9c6           │ Diff Remove
+" │ 58    │ #3e4f37           │ #cde3be           │ Diff Add
+" │ 60    │ #274f4a           │ #d3e3df           │ Diff Change
+" │ __    │ _______           │ _______           │ __________
+" │ 166   │ #d65d0e           │ #d65d0e           │ Orange
+" │ __    │ _______           │ _______           │ __________
+" │ 232   │ #1d2021           │ #f9f5d7           │ Bg0_Hard
+" │ 233   │ #282828           │ #fbf1c7           │ Bg0
+" │ 234   │ #32302f           │ #f2e5bc           │ Bg0_Soft
+" │ 235   │ #3c3836           │ #ebdbb2           │ Bg1
+" │ 236   │ #504945           │ #d5c4a1           │ Bg2
+" │ 237   │ #665c54           │ #bdae93           │ Bg3
+" │ 238   │ #7c6f64           │ #a89984           │ Bg4
+" │ __    │ _______           │ _______           │ __________
+" │ 244   │ #fbf1c7           │ #282828           │ Fg0
+" │ 245   │ #ebdbb2           │ #3c3836           │ Fg1
+" │ 246   │ #d5c4a1           │ #504945           │ Fg2
+" │ 247   │ #bdae93           │ #665c54           │ Fg3
+" │ 248   │ #a89984           │ #7c6f64           │ Fg4
+" │ 249   │ #ebcf9d           │ #6b4900           │ String
+" │ 250   │ #c2aa86           │ #5d503c           │ Comment
+" │ __    │ #______           │ #______           │ __________
+"
+" Default colors stay the same on both themes.
+" Bright (alt) colors are darker on light theme and brigter on dark theme.
 
 " Initialisation: {{{
 
@@ -14,113 +60,43 @@ endif
 
 let g:colors_name='tired'
 
-if !(has('termguicolors') && &termguicolors) && !has('gui_running') && &t_Co != 256
-  finish
-endif
-
 " }}}
 " Palette: {{{
-let s:none =            ['NONE', 'NONE']
-let s:dark0 =           ['#282828', 235] " 40-40-40
-let s:dark1 =           ['#3C3836', 237] " 60-56-54
-let s:dark2 =           ['#504945', 239] " 80-73-69
-let s:dark3 =           ['#665C54', 241] " 102-92-84
-let s:dark4 =           ['#7C6F64', 243] " 124-111-100
-let s:dark4_256 =       ['#7C6F64', 243] " 124-111-100
 
-let s:gray_245 =        ['#928374', 245] " 146-131-116
-let s:gray_244 =        ['#928374', 244] " 146-131-116
+let s:none        = 'NONE'
+let s:bg0         = 0
+let s:bg1         = 235
+let s:bg2         = 236
+let s:bg3         = 237
+let s:bg4         = 238
+let s:red         = 1
+let s:green       = 2
+let s:yellow      = 3
+let s:blue        = 4
+let s:purple      = 5
+let s:aqua        = 6
+let s:light       = 7
+let s:gray        = 8
+let s:a_red       = 9
+let s:a_green     = 10
+let s:a_yellow    = 11
+let s:a_blue      = 12
+let s:a_purple    = 13
+let s:a_aqua      = 14
+let s:fg0         = 15
+let s:fg1         = 245
+let s:fg2         = 246
+let s:fg3         = 247
+let s:fg4         = 248
+let s:brown       = 249
+let s:comment     = 250
+let s:diff_add    = 58
+let s:diff_change = 60
+let s:diff_remove = 52
 
-let s:light0 =          ['#FBF1C7', 229] " 253-244-193
-let s:light1 =          ['#EBDBB2', 223] " 235-219-178
-let s:light2 =          ['#D5C4A1', 250] " 213-196-161
-let s:light3 =          ['#BDAE93', 248] " 189-174-147
-let s:light4 =          ['#A89984', 246] " 168-153-132
-let s:light4_256 =      ['#A89984', 246] " 168-153-132
-
-let s:bright_red =      ['#FB4934', 167] " 251-73-52
-let s:bright_yellow =   ['#FABD2F', 214] " 250-189-47
-let s:bright_blue =     ['#83A598', 109] " 131-165-152
-let s:bright_purple =   ['#D3869B', 175] " 211-134-155
-let s:bright_orange =   ['#FE8019', 208] " 254-128-25
-let s:bright_comment =  ['#C2AA86', 241]
-let s:bright_brown =    ['#EBCF9D', 43]
-
-let s:faded_red =       ['#9D0006', 88]  " 157-0-6
-let s:faded_yellow =    ['#B57614', 136] " 181-118-20
-let s:faded_blue =      ['#076678', 24]  " 7-102-120
-let s:faded_purple =    ['#8F3F71', 96]  " 143-63-113
-let s:faded_orange =    ['#AF3A03', 130] " 175-58-3
-let s:faded_comment =   ['#5D503C', 248]
-let s:faded_brown =     ['#6B4900', 33]
-
-let s:diff_add_dark =       ['#3E4F37', 28]
-let s:diff_change_dark =    ['#274F4A', 44]
-let s:diff_remove_dark =    ['#4F2F2F', 33]
-
-let s:diff_add_bright =     ['#CDE3BE', 37]
-let s:diff_change_bright =  ['#D3E3DF', 21]
-let s:diff_remove_bright =  ['#E7C9C6', 36]
-
-if (&background == 'dark')
-  let s:bg0  = s:dark0
-  let s:bg1  = s:dark1
-  let s:bg2  = s:dark2
-  let s:bg3  = s:dark3
-  let s:bg4  = s:dark4
-
-  let s:gray = s:gray_245
-
-  let s:fg0 = s:light0
-  let s:fg1 = s:light1
-  let s:fg2 = s:light2
-  let s:fg3 = s:light3
-  let s:fg4 = s:light4
-
-  let s:fg4_256 = s:light4_256
-
-  let s:red    = s:bright_red
-  let s:yellow = s:bright_yellow
-  let s:blue   = s:bright_blue
-  let s:purple = s:bright_purple
-  let s:orange = s:bright_orange
-  let s:brown = s:bright_brown
-  let s:comment = s:bright_comment
-
-  let s:diff_add = s:diff_add_dark
-  let s:diff_remove = s:diff_remove_dark
-  let s:diff_change = s:diff_change_dark
-else
-  let s:bg0  = s:light0
-  let s:bg1  = s:light1
-  let s:bg2  = s:light2
-  let s:bg3  = s:light3
-  let s:bg4  = s:light4
-
-  let s:gray = s:gray_244
-
-  let s:fg0 = s:dark0
-  let s:fg1 = s:dark1
-  let s:fg2 = s:dark2
-  let s:fg3 = s:dark3
-  let s:fg4 = s:dark4
-
-  let s:fg4_256 = s:dark4_256
-
-  let s:red    = s:faded_red
-  let s:yellow = s:faded_yellow
-  let s:blue   = s:faded_blue
-  let s:purple = s:faded_purple
-  let s:orange = s:faded_orange
-  let s:brown = s:faded_brown
-  let s:comment = s:faded_comment
-
-  let s:diff_add = s:diff_add_bright
-  let s:diff_remove = s:diff_remove_bright
-  let s:diff_change = s:diff_change_bright
-endif
 " }}}
 " Helper functions: {{{
+
 function! s:Clear(group)
   execute 'highlight! clear ' . a:group
   execute 'highlight ' . a:group . ' NONE'
@@ -130,21 +106,14 @@ function! s:Highlight(group, fg, bg, style, ...)
   " Parameters: group, guifg, guibg, gui, guisp
   call s:Clear(a:group)
 
-  let l:guifg = a:fg[0]
-  let l:ctermfg = a:fg[1]
-  let l:guibg = a:bg[0]
-  let l:ctermbg = a:bg[1]
-
   let l:hi_expr = 'highlight ' . a:group
   let l:hi_expr .= ' cterm=' . a:style
-  let l:hi_expr .= ' ctermfg=' . l:ctermfg
-  let l:hi_expr .= ' ctermbg=' . l:ctermbg
+  let l:hi_expr .= ' ctermfg=' . a:fg
+  let l:hi_expr .= ' ctermbg=' . a:bg
   let l:hi_expr .= ' gui=' . a:style
-  let l:hi_expr .= ' guifg=' . l:guifg
-  let l:hi_expr .= ' guibg=' . l:guibg
 
   if a:0 > 0
-    let l:hi_expr .= ' guisp=' . a:1[0]
+    let l:hi_expr .= ' guisp=' . a:1
   endif
 
   execute l:hi_expr
@@ -195,10 +164,10 @@ call s:Highlight('WarningMsg', s:yellow, s:none, 'bold')
 " }}}
 " Spelling: {{{
 
-call s:Highlight('SpellBad', s:none, s:none, 'underdotted', s:red)
-call s:Highlight('SpellCap', s:none, s:none, 'underdotted', s:gray)
-call s:Highlight('SpellLocal', s:none, s:none, 'underdotted', s:gray)
-call s:Highlight('SpellRare', s:none, s:none, 'underdotted', s:blue)
+call s:Highlight('SpellBad', s:none, s:none, 'underdotted', 'Red')
+call s:Highlight('SpellCap', s:none, s:none, 'underdotted', 'Gray')
+call s:Highlight('SpellLocal', s:none, s:none, 'underdotted', 'Gray')
+call s:Highlight('SpellRare', s:none, s:none, 'underdotted', 'Blue')
 
 " }}}
 " Gutter: {{{
@@ -225,7 +194,7 @@ call s:Clear('Constant')
 call s:Clear('Debug')
 call s:Clear('Define')
 call s:Clear('Delimiter')
-call s:Highlight('Error', s:none, s:none, 'underdashed', s:red) " hl-TSError links here
+call s:Highlight('Error', s:none, s:none, 'underdashed', 'Red') " hl-TSError links here
 call s:Clear('Exception')
 call s:Clear('Float')
 call s:Clear('Function')
@@ -260,16 +229,16 @@ call s:Highlight('PmenuThumb', s:none, s:bg4, 'NONE')
 " LSP: {{{
 
 call s:Highlight('DiagnosticError', s:red, s:none, 'NONE')
-call s:Highlight('DiagnosticUnderlineError', s:none, s:none, 'undercurl', s:red)
+call s:Highlight('DiagnosticUnderlineError', s:none, s:none, 'undercurl', 'Red')
 
 call s:Highlight('DiagnosticWarn', s:yellow, s:none, 'NONE')
-call s:Highlight('DiagnosticUnderlineWarn', s:none, s:none, 'undercurl', s:yellow)
+call s:Highlight('DiagnosticUnderlineWarn', s:none, s:none, 'undercurl', 'Orange')
 
 call s:Highlight('DiagnosticInfo', s:blue, s:none, 'NONE')
-call s:Highlight('DiagnosticUnderlineInfo', s:none, s:none, 'undercurl', s:blue)
+call s:Highlight('DiagnosticUnderlineInfo', s:none, s:none, 'undercurl', 'DarkCyan')
 
 call s:Highlight('DiagnosticHint', s:fg3, s:none, 'NONE')
-call s:Highlight('DiagnosticUnderlineHint', s:none, s:none, 'undercurl', s:fg3)
+call s:Highlight('DiagnosticUnderlineHint', s:none, s:none, 'undercurl', 'Gray')
 
 " TODO: add the following 
 " LspReferenceText
@@ -290,7 +259,7 @@ call s:Highlight('DirvishArg', s:yellow, s:none, 'NONE')
 " }}}
 " Telescope.nvim: {{{
 
-call s:Highlight('TelescopeMatching', s:none, s:none, 'bold,underline', s:fg0)
+call s:Highlight('TelescopeMatching', s:none, s:none, 'bold,underline', 'Black')
 call s:Highlight('TelescopeMultiSelection', s:comment, s:none, 'bold')
 
 " }}}

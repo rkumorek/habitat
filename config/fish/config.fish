@@ -1,15 +1,3 @@
-if set -q WT_SESSION
-    set -x COLORTERM truecolor
-end
-
-if set -q __FISH_THEME
-    set -x BAT_THEME gruvbox-$__FISH_THEME
-
-    if test $SHLVL -eq 1
-        fish_theme $__FISH_THEME
-    end
-end
-
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x XDG_DATA_HOME $HOME/.local/share
 set -x XDG_CACHE_HOME $HOME/.local/cache
@@ -24,6 +12,20 @@ set -x NPM_CONFIG_CACHE $XDG_CACHE_HOME/npm
 
 set -x PATH $CARGO_HOME/bin:$HOME/apps/nvim/bin:$NPM_CONFIG_PREFIX/bin $PATH
 
+# Colors and such.
+set -x BAT_THEME ansi
+
+if set -q WT_SESSION
+    set -x COLORTERM truecolor
+end
+
+# Load profile if exists.
 if test -f $HOME/profile.fish
     source $HOME/profile.fish
 end
+
+# Try to tell terminal emulator what colors to use.
+if test $SHLVL -eq 1
+    fish_terminal_theme dark
+end
+
