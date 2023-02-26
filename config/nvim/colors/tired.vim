@@ -132,7 +132,7 @@ endfunction
 " }}}
 " UI: {{{
 
-call s:Highlight('Normal', s:fg0, s:bg0, 'NONE')
+call s:Highlight('Normal', s:fg0, s:none, 'NONE')
 call s:Highlight('Underlined', s:none, s:none, 'underline')
 
 call s:Highlight('ColorColumn', s:none, s:bg1, 'NONE')
@@ -147,7 +147,7 @@ call s:Highlight('MatchParen', s:bg0, s:fg4, 'NONE')
 " Eye catching display so that I can locate where it is used.
 call s:Highlight('Conceal', s:blue, s:purple, 'NONE')
 call s:Highlight('NonText', s:gray, s:none, 'NONE')
-call s:Highlight('SpecialKey', s:blue, s:bg1, 'bold')
+call s:Highlight('SpecialKey', s:a_blue, s:bg1, 'bold')
 call s:Highlight('Visual', s:none, s:bg2, 'NONE')
 call s:Link('VisualNOS', 'Visual')
 call s:Highlight('Search', s:bg0, s:fg4, 'NONE')
@@ -258,7 +258,8 @@ call s:Highlight('DiagnosticUnderlineHint', s:none, s:none, 'undercurl', s:guisp
 " PLUGINS
 " Dirvish: {{{
 
-call s:Highlight('DirvishPathTail', s:blue, s:none, 'NONE')
+call s:Highlight('DirvishPathTail', s:aqua, s:none, 'bold')
+call s:Highlight('DirvishSuffix', s:green, s:none, 'NONE')
 call s:Highlight('DirvishArg', s:yellow, s:none, 'NONE')
 
 " }}}
