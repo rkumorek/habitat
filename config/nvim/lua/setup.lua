@@ -1,13 +1,14 @@
 -- Global variable for user defined values
 _G.usr = {
     -- Load path completion
-    path_completion = require('./cmp'),
+    path_completion = require('./path-completion'),
     -- Load plugin configuration files
     init_plugins = function()
         require('plugin.lspconfig')
         require('plugin.dirvish')
         require('plugin.nvim-treesitter')
         require('plugin.telescope')
+
     end,
     -- Sync plugins using packer.nvim
     sync_plugins = function()
