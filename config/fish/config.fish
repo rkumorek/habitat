@@ -23,9 +23,3 @@ end
 if test -f $HOME/profile.fish
     source $HOME/profile.fish
 end
-
-# Try to tell terminal emulator what colors to use.
-if test $SHLVL -eq 1
-    fish_terminal_theme dark
-end
-

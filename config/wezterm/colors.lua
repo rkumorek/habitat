@@ -4,7 +4,7 @@ return function(config)
     config.colors = {
         cursor_bg = '#D3866D',
         cursor_border = '#D3866D',
-        selextion_fg = '#EBDBB2',
+        selection_fg = '#EBDBB2',
         selection_bg = '#A89984',
         tab_bar = {
             background = '#3C3836',
