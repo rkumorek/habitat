@@ -1,0 +1,43 @@
+------------------------------------------------------------------------------
+Vim Gists                               *vimgists*
+
+Collection of useful vim things that are rather rarely used but still useful.
+
+|:retab|
+Converts whitespace between spaces and tabs depending on settings.
+
+|:global|
+Remove empty lines: >
+    :g/^$/d
+<
+
+|:normal|
+Append suffix to lines: >
+    :normal A,
+<
+
+|registers|
+Use |:reg| to see what data is stored in registers.
+
+Edit without messing without register write |quote_|: >
+    "_d{motion}
+    "_c{motion}
+<
+
+------------------------------------------------------------------------------
+CLI Gists                               *cligists*
+
+Remove docker containers matching pattern >sh
+    docker ps -a | grep <pattern> | sd '^(\w+)\s.*$' '$1' | xargs docker rm
+<
+
+Manual cargo expand >sh
+    cargo rustc --profile release --example X -- -o $PWD/out_file -Zunpretty=expanded
+<
+
+Summarise output of git log: >sh
+    git shortlog
+<
+
+ vim: tw=78 sw=4 ts=4 ft=help norl cc=41,78 cole=0 isk+=- isk+=\\:
+ vim: nu rnu tags+=$VIMRUNTIME/doc/tags tc=ignore

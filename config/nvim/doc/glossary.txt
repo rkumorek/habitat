@@ -1,0 +1,1236 @@
+==============================================================================
+Glossary                                *glossary*
+
+ABSTRACT FACTORY                        *abstract-factory*
+Alias: Kit
+Provie an interface for creating related or dependent objects without
+specifying their concrete classes.
+
+A factory interface I is provided used as a superclass for concrete
+implementations of factory classes. Client interacts only with the interface
+I without knowledge about concrete class.
+
+BUILDER                                 *builder*
+Separate construction of a complex object from its representation so that the
+same construction process can create different representations.
+
+Example: >typescript
+    class Letter { /* multiple instance variables */ }
+    class LetterBuilder {
+        public default(): LetterBuilder {
+            /* Create LetterBuilder with fields populated with defaults */
+        }
+
+        public format(this: LetterBuilder, f: LetterFormat): this {
+            /* Set letter format to provided f value */
+        }
+    }
+
+    const letter: Letter = LetterBuilder
+        .default()
+        .format(fmt)
+        .build();
+<
+
+FACTORY METHOD                          *factory-method*
+Alias: Virtual Constructor
+Define an interface for creating objects in a superclass, but let subclasses
+decide which concrete class to instantiate.
+
+Example: >typescript
+    abstract class Responder {
+        public abstract createResponder(): Responder;
+    }
+
+    class HttpResponder extends Responder {
+        public createResponder(): Responder {
+            return new HttpResponder();
+        }
+    }
+
+    class EmailResponder extends Responder { /* impl */ }
+<
+
+PROTOTYPE                               *prototype*
+Specify the kinds of objects to create using prototype instance, and create
+new objects by copying this prototype. Delegates the cloning process to
+the actual objects that are being cloned. Declares common interface for all
+object that support cloning (via clone method usually).
+
+SINGLETON                               *singleton*
+Ensures that class has only one instance at runtime.
+
+Example: >typescript
+    class WidgetFactory {
+        private static inst: WidgetFactory | undefined;
+
+        public static getInstance(): WidgetFactory {
+            if (!this.inst) this.inst = new WidgetFactory();
+
+            return this.inst;
+        }
+
+        private constructor() { /* impl */ }
+    }
+<
+
+MULTITON                                *multiton*
+Singleton but creates multiple instances in a controlled way.
+For example: creating separate instance for each member of specific enum.
+
+ADAPTER                                 *adapter*
+Alias: Wrapper
+Allows objects with incompatible interfaces to collaborate - creates a common
+interface for multiple interfaces.
+
+Example: >typescript
+    class Tokenizer {
+        public nextToken(): Token | null { /* impl */ }
+    }
+
+    class TokenizerIterAdapter extends Tokenizer {
+        tokenizer: Tokenizer;
+
+        public next(): Token | null {
+            return tokenizer.nextToken();
+        }
+    }
+
+    function takeN<T>(it: { next(): T | null }, n: number): T[] {}
+<
+
+BRIDGE                                  *bridge*
+Alias: Handle
+Splits abstraction and implementation so that they can vary independently.
+Abstraction provides constrol logic, implementation declares common interface
+for all concrete implementations.
+Client links abstraction with concrete implementation and primarily works with
+the abstraction.
+   
+┌──Implementation Interface──┐←┌──Abstraction────────────────┐
+│ operationA()               │ │obj: Impl Interface          │
+│ operationB()               │ │                             │
+└────────────────────────────┘ │operation() {                │
+    ↑                          │  obj.operationA()           │
+┌──Concrete Implementation───┐ │  obj.operationB()           │
+│ operationA()               │ │}                            │
+│ operationB()               │ └─────────────────────────────┘
+└────────────────────────────┘
+
+COMPISITE                               *composite*
+Compose objects into tree structures to work with those trees as a single
+objects.
+
+Example: >typescript
+    interface SvgElement {
+        setPosition(p: Position): void;
+        // ...
+    }
+
+    class Line implements SvgElement { /* impl */ }
+
+    class Group implements SvgElement {
+        children: SvgElement[];
+        // ...
+    }
+<
+
+DECORATOR                               *decorator*
+Alias: Wrapper
+Allows attachment of new behaviour to object by placing those objects in the
+wrapper object that implements said behaviour.
+
+Example: >typescript
+    interface Storage {
+        write(): void;
+        read(): Bytes;
+    }
+    interface StorageDecorator extends Storage {
+        storage: Storage;
+    }
+    class File implements Storage { /* impl */ }
+    class CompressedFile implements StorageDecorator { /* impl */ }
+
+    function saveCompressed(file: File) {
+        new CompressedFile(file).write();
+    }
+<
+
+FACADE                                  *facade*
+Provides unified interface for a set of interfaces.
+Useful when there is a need for integration with complex library with multiple
+features but only a handful of them are needed.
+
+Example: FLVTrimmer interface using media library internally.
+
+FLYWEIGHT                               *flyweight*
+Share common state between multiple objects to reduce memory usage.
+Objects that have only read only state inside them are Flyweights.
+Shared data for Instanced draw in OpenGL is a flyweight. 
+
+Example: Render Minecraft map. Instead of representing the whole state of
+block we can use flyweights (instances of Biome class) that would store
+constant data needed to represent the block appropriately on map. At the
+render time a block on the map would hold a reference to Biome instance.
+>typescript
+    class Biome {
+        color: Color;
+        // ...
+    }
+    const biomes = AllBiomes(); /* Grasslands, Swamp, ... */
+<
+
+PROXY                                   *proxy*
+Alias: Surrogate
+Provides a substitute/placeholder for another objects controlling access to
+the original object.
+Usage: lazy initialization, access control, logging, caching.
+
+Exmaple: loding all images in huge document may be unnecessary because not
+all of them will be displayed. Using proxy we may defer loading image data
+from the disk until the very moment image is about to be displayed.
+
+COMMAND                                 *command*
+Alias: Action, Transation
+Create an object for a request which allows to parameterize such requests,
+queue, log or undo them.
+
+MEDIATOR                                *mediator*
+Reduce explicit dependencies between objects by forcing them to coolaborate
+via mediator object.
+
+Example: a switch input that will display additional elements depending on its
+state. Keep, switch simple and just notify mediator that additional elements
+should be shown/hidden.
+
+MEMENTO                                 *memento*
+Allows saving and restoring state of an object without knowledge about it
+internals.
+
+Example: Snapshot instance for Settings object - save and restore if needed.
+
+┌──Settings──────────┐
+│// private members  │ ┌──Snapshot─────────┐
+│save(): Snapshot    │→│ // private members│
+│restore(s: Snapshot)│←│ // of Settings    │
+└────────────────────┘ └───────────────────┘
+
+OBSERVER                                *observer*
+Alias: Dependents, Pub-Sub
+Establishes one-to-many dependency between objects so that when subject object
+changes state all observers are notified and updated automatically.
+
+Example: UI Components can subscribe to configuration subject to react
+appropriately when it changes. >typescript
+    class ConfigPublisher {
+        config: Configuration;
+        subscribers: Subscriber<Configuration>[];
+    }
+
+    interface Subscriber<Context> {
+        update(ctx: Context): void;
+    }
+<
+
+STATE                                   *state*
+Allows object to alter its behaviour when internal state changes.
+
+STRATEGY                                *strategy*
+Alias: Policy
+Declare common interface for an algorithm so that it may have multiple
+different interchangeable implementations.
+
+Example: authentication strategy for HTTP request.
+
+TEMPLATE METHOD                         *template-method*
+Create a set of operations for an algorithm allowing sublasses to override
+some steps of the algorithm without changing its structure.
+
+VISITOR                                 *visitor*
+Separates algorithm from objects on which it operates.
+Allows to add new operations to existing structures without modyfing them.
+
+Example: a shopping cart holds many objects of different Product subclasses.
+A visitor can be created to calculate total tax of products in the cart
+without implementing tax calculations in the product classes.
+
+CHAIN OF RESPONSIBILITY                 *chain-of-responsibilty*
+Handle a request using a chain of handlers.
+
+Example: event handling of HTML Elements, HTTP request handling by
+middlewares.
+
+ITERATOR                                *iterator*
+Alias: Cursor
+Allows to traverse elements of collection without exposing its internal
+representation.
+
+ACTOR MODEL                             *actor-model*
+Programming technique that considers actor a basic block for computation.
+All computation is performed within an actor.
+Actors can communicate only through messages.
+In response to message actor can: change its state and behavior, send
+messages or create finite number of child actors.
+
+This approach:
+- does not transfer execution to another object like in case of object method
+  call
+- does not need locks in multi-threaded environment as actor handles messages
+  one by one
+- stores state of actor locally, changes and data are propagated via messages
+  which maps to CPU cores to send cache lines to each other
+
+DEPENDENCY INJECTION                    *dependency-injection*
+A technique making a class independent from creation of the objects it depends
+on.
+Simply: passing objects to constructor. >typescript
+    class Display {
+        renderer: Renderer;
+        // without DI
+        constructor() {
+            this.renderer = new RendererImpl();
+        }
+        // with DI
+        constructor(renderer: Renderer) {
+            this.renderer = renderer;
+        }
+    }
+<
+
+OBJECT POOL                             *object-pool*
+Initializes ready to use pool of objects instead of allocating and destroying
+them on demand.
+Use case: DB connection pool.
+
+RESOURCE ACQUISITION IS INITIALISATION  *raii*
+A pattern where resource initialisation is done in constructor of an object
+and finalisation in the destructor.
+Destructor is invoked automatically when the scope of variable ends.
+
+CONSTRUCTOR                             *constructor*
+An operation that is automatically invoked to initialize new instance.
+
+DESTRUCTOR                              *desctructor*
+An operation that is automatically invoked to finalize an instance
+that is about to be deleted.
+In Rust it is an implementation of Drop trait.
+
+CLASS                                   *class*
+A class defines an object's interface and implementation. It specifies the
+object's internal representation and defines the operations the object can
+perform.
+
+CLASS OPERATION                         *class-operation* *static-method*
+Alias: static member functions, static methods.
+An operation targeted to a class and not to an individual object.
+
+PARENT CLASS                            *parent-class*
+Alais: superclass, base class.
+The class from which another class inherits.
+
+ABSTRACT CLASS                          *abstract-class*
+A class whose primary purpose is to define an interface.
+An abstract class defers some or all of its implementation to subclasses.
+An abstract class cannot be instantiated. >typescript
+    abstract class Item {
+        constructor(protected name: string) {}
+    }
+<
+
+SUBCLASS                                *subclass*
+A class that inherits from an other class. Also called a derived class.
+class.
+
+FRIEND CLASS                            *friend-class*
+In C++, a class that has the same access rights to the operations and data
+of a class as that class itself.
+Can access private members. >cpp
+    class Nay {
+    friend class Time;
+    private:
+        int age;
+    };
+
+    class Time {
+    public:
+        void ageNay(Nay& n) {
+            n->age++;
+        }
+    };
+<
+
+MIXIN CLASS                             *mixin-class*
+A class designed to be combined with other classes through inheritance.
+Mixin classes are usually abstract.
+
+ABSTRACT OPERATION                      *abstract-operation*
+An operation that declares a signature but doesn't implement it. In C++, an
+abstract operation corresponds to a pure virtual member function. >typescript
+    abstract class Stash {
+        abstract findItem(this: Stash, name: string): Item | undefined;
+    }
+<
+
+COUPLING                                *coupling*
+Dependency of software components on each other.
+
+DELEGATION                              *delegation*
+An implementation mechanism in which an object forwards or delegates a request
+to another object. The delegate carries out the request on behalf of the
+original object.
+
+DESIGN PATTERN                          *design-pattern*
+A design pattern systematically names, motivates, and explains a general
+design that addresses a recurring design problem in object-oriented systems.
+It describes the problem, the solution, when to apply the solution, and its
+consequences. It also gives implementation hints and examples. The solution is
+a general arrangement of objects and classes that solve the problem.
+The solution is customized and implemented to solve the problem in
+a particular context.
+
+ENCAPSULATION                           *encapsulation*
+The result of hiding a representation and implementation in an object. The
+representation is not visible and cannot be accessed directly from outside the
+object. Operations are the only way to access and modify an object's
+representation.
+
+INHERITANCE                             *inheritance*
+A relationship that defines one entity in terms of another.
+Class inheritance defines a new class in terms of one or more parent classes.
+The new class inherits interface and implementation from its parents.
+The new class is called subclass or derived class.
+
+INSTANCE VARIABLE                       *instance-variable*
+Alias: data member, field.
+A piece of data that defines part of an object's representation.
+A variable belonging to an instance of the class.
+
+INTERFACE                               *interface*
+The set of all signatures defined by an object's operations. The interface
+describes the set of requests to which an object can respond. >typescript
+    interface Debug {
+        debug(): string;
+    }
+<
+
+OBJECT                                  *object*
+A run-time entity that packages both data and the operations that operate on
+that data.
+Each instance has a unique name called identity. C++, for example, uses memory
+address of an instance as its identity.
+
+OPERATION                               *operation* *method*
+Alias: method, member function.
+An object's data can be manipulated only by its operations. An object performs
+an operation when it receives a request.
+
+OVERRIDING                              *overriding*
+Redefining an operation (inherited from a parent-class) in a subclass.
+>typescript
+    class Scale {
+        protected scale = 1.0;
+
+        public setScale(scale: number) {
+            this.scale = scale;
+        }
+    }
+
+    class Square extends Square {
+        public setScale(scale: number) { /* NOOP */ }
+    }
+<
+
+PARAMETERIZED TYPE                      *parameterized-type* *generic-parameter*
+Alias: template, generic type parameter.
+A type that leaves some constituent types unspecified. The unspecified types
+are supplied as parameters at the point of use.
+
+POLYMORPHISM                            *polymorphism*
+The ability to substitute objects of matching interface for one another
+at run-time.
+
+REQUEST                                 *request*
+An object performs an operation when it receives a corresponding request from
+another object.
+In other words: method invocation.
+
+SIGNATURE                               *signature*
+An operation's signature defines its name, parameters, and return value.
+
+GENERATOR                               *generator*
+An object that implements Iterator interface.
+Can be expressed in a language as a function that supports yield keyword,
+that are implemented in terms of a switch keyword.
+Or: a finite-state machine whose output values are determined by its current
+state and current inputs.
+
+CLOSURE                                 *closure*
+Record storing a function together with an environment.
+A function that captures variables defined outside of the body of the
+function.
+
+RING BUFFER                             *ring-buffer*
+Buffer data structure that behaves as if it had start and end conected.
+
+Example:
+             Start
+             ↓
+┌─┐┌─┐┌─┐┌─┐┌─┐┌─┐
+│0││1││2││3││4││5│
+└─┘└─┘└─┘└─┘└─┘└─┘
+          ↑
+          End
+Popping numbers from the front would result in a sequence: 4, 5, 0, 1, 2, 3.
+
+TYPE                                    *type*
+Set of values. Example: Boolean(True, False), Integer(minint, ..., maxint).
+
+TYPE CAST                               *type-cast*
+Changing an expression form one data type to another. >rust
+    let v: i8 = -1;  // Bits : 1111 1111
+    (v as u8);       // Still: 1111 1111 but no longer -1
+<
+
+SUBTYPE                                 *subtype*
+1) A type is a subtype or another if its interface contains the interface of
+the other type.
+2) When a set of values in one type - T - is a subset of values in another
+type - U - then T is a subtype of U.
+
+When a type T is a subtype of U then a value of type T can be used in any
+context in which a value of type U is expected.
+
+                                        *widening-conversion*
+A conversion from subtype to sypertype is called widening conversion.
+Converts from smaller set of values to larger set of values. >typescript
+    var door: 1 | 2 | 3 = 3;
+    var noom: number = door;
+<
+
+SUPERTYPE                               *supertype*
+1) The parent type from which a type inherits.
+2) U is a supertype of T when set of values of type U contains set of values
+of type T.
+
+                                        *narrowing-conversion*
+A conversion from supertype to subtype is called narrowing conversion.
+Converts from larger set of values to smaller set of values. >typescript
+    var noom: number = 3;
+    var door: 1 | 2 | 3 = noom;
+<
+
+INTERSECTION TYPE                       *intersection-type*
+Intersection type of T and U represents a value that can be assigned both to
+type T and U.
+Combines multiple types into one.
+
+UNION TYPE                              *union-type*
+Union is a type that describes a value that may have any of several
+representations (types) within the same position in memory.
+A union can be pictured as a chunk of memory that is used to store variables
+of different data types.
+
+Typescript union: >typescript
+    type U = string | number;
+<
+Rust union: >rust
+    union ContentLen {
+        short: u8,
+        long: u32,
+        streamed: u64,
+    }
+<
+
+STRUCTURAL TYPE EQUALITY                *structural-equality*
+Two types are the same if their definitions become the same when expanded.
+An element is considered to be compatible with another if, for each feature
+within the second element's type, a corresponding and identical feature exists
+in the first element's type.
+
+Example of equal types: >
+    TYPE Phone = RECORD id: INTEGER; name: STRING;
+    TYPE Monitor = RECORD id: INTEGER; name: STRING;
+<
+
+NAME TYPE EQUALITY                      *name-equality*
+Every time a program uses a type-constructor the language automatically
+generates a unique name for the type. In other words: every time program
+creates a new type, the language automatically gives it a unique name.
+Types from example above are not equal in the light of name equality.
+
+Example of equal types: >
+    TYPE T = RECORD id: INTEGER; name: STRING;
+    TYPE Y = RECORD id: INTEGER; name: STRING;
+    TYPE Phone = T;
+    TYPE Monitor = T;
+    // Phone and Monitor are equal.
+    // T and Y are not equal.
+<
+
+TYPE CONSTRUCTOR                        *type-constructor*
+A mechanism for creating a new type.
+
+TYPE ERROR                              *type-error*
+Happens when an expression produces a value outisde of set of values it is
+supposed to have.
+
+TYPE CHECKING                           *type-checking*
+Checks and enforces the rules of the type-system to prevent type errors from
+happening.
+
+Can be: strong, weak, something in between.
+Can happen during: compilation, runtime, both.
+
+Strong type checking: prevents all type-errors from happening.
+Weak type checking: does not prevent type-errors from happening.
+
+TYPE SYSTEM                             *type-system*
+A set of types and type constructors along with the rules that govern whether
+or not a program is legal with respect to types.
+
+STATIC DISPATCH                         *static-dispatch*
+An inverse of dynamic-dispatch. Implementation of a method is known at compile
+time.
+
+DYNAMIC DISPATCH                        *dynamic-dispatch*
+Invocation of a method whose implementation cannot be known at compile time.
+Example: a function that accepts instance of a Map class will also accept an
+instance of subclass of Map. If both happen to have different implementations
+of the same method then the decision which implementation should be invoked is
+taken at run time.
+
+SCOPE                                   *scope*
+Region/part of a program where a name binding (variable) is valid and can be
+used to refer to the value.
+Lexical scope: defined by source code.
+Dynamic scope: defined by run time. 
+
+Dynamic scoping means that variable lookups occur in the scope where
+a function is called, not where it is defined.
+--- https://riptutorial.com/bash/example/8094/dynamic-scoping-in-action
+
+LIFETIME                                *lifetime*
+Time for which a variable is taking up a valid space in memory. Can be static,
+auto (scope end) or dynamic (malloc).
+
+POINTER                                 *pointer*
+An address of memory location. Size of a pointer depends on the range of
+addresses on the machine.
+
+ALIGNMENT                               *alignment*
+An arrangement of data in memory according to its size and the processor
+architecture. Dictates that value should be stored at addresses that is
+multiple of its alignment.
+
+For example, processor may require data to be stored at addresses that are
+multiples of 4 (bytes). If the data is stored accordingly then CPU can fetch
+whole data in single memory access.
+>c
+    struct Paddy {
+        short age;
+        int debt;
+    }
+<
+░ - data byte
+▓ - padding byte
+┌─age───┬─debt──┐
+│░ ░ ▓ ▓│░ ░ ░ ░│
+└───────┴───────┘
+
+Older processors can be capable of accessing misaligned addresses with
+performance decrease. Newest processors are capable of handling misaligned
+addresses without performance decrease.
+--- Alignment in C Sven-Hendrik Haase
+
+ACTIVATION RECORD                       *activation-record* *stack-frame*
+Alias: Stack Frame.
+Memory block allocated for each activation of a function. The memory within an
+activation record is only valid while the function is executing; once the
+function exits, the memory is reclaimed.
+Contains:
+- local storage: parameters, local variables, and any auxillary space added
+  by compiler
+- return information: where and how execution should continue when this call
+  exits
+
+STRUCT                                  *struct*
+Alias: Record.
+A compount data structure. The size of a struct is equal to at least the sum
+of sizes of its component fields. The struct is laid out by allocating the
+components sequentially in a contiguous block, working from low memory to
+high. Sometimes a compiler will add invisible padding fields in a struct to
+comply with processor alignment restrictions.
+
+ALU                                     *alu*
+Arithmetic Logic Unit. Part of the CPU that performs computations.
+
+ENDIANNESS                              *endianness*
+Order of sequence of bytes of a word (`[1 0 0 0] BE: 9 LE: 1`).
+Big Endian: stores most significant byte of a word at the smallest memory
+address.
+Little Endian: reverse of BE.
+
+TWOS COMPLEMENT                         *twos-complement*
+Operation to reversibly convert a positive binary number into a negative
+binary number with equivalent negative value using the most significant bit as
+the sign indicator.
+
+Conversion:
+1. Invert all bits.     `~0b0101 (5)  = 0b1010`
+2. Add 1.               `0b1010 + 0b1 = 0b1011`
+┌──────────────────┐
+│Sign bit          │ Formula: (sum of bits) - (sign bit)
+│ ↑                │          3 - 8 = -5
+│ 1   0   1   1    │
+│     ↓   ↓   ↓    │
+│     0 + 2 + 1 = 3│
+└──────────────────┘
+
+BUS ERROR                               *bus-error*
+Error raised by hardware meaning that a process is trying to access memory
+that the CPU cannot physically address.
+https://en.wikipedia.org/wiki/Bus_error
+
+SEGMENTATION FAULT                      *segmentation-fault*
+Error raised when process attempts to access memory that does not belong to
+the process.
+
+PAGE FAULT                              *page-fault*
+Error raised when process attempts to access memory that cannot exist in
+virtual address space, was not loaded into physical memory or was loaded but
+not marked as loaded.
+
+RANDOM-ACCESS MEMORY                    *ram*
+Computer memory that can be changed or read in any order.
+
+VIRTUAL MEMORY                          *virtual-memory*
+Memory management technique that among others provides memory isolation for
+processes.
+Subsystem of a processor (Memory Management Unit) implements virtual address
+spaces provided for each process. This makes each process think it is alone in
+the system.
+
+┌──Virtual Address────────┬────────────┬────────────┬────────┐
+│ Lv 1 Index │ Lv 2 Index │ Lv 3 Index │ Lv 4 Index │ Offset │
+└────────────┴────────────┴────────────┴────────────┴────────┘
+
+To determine the pysical address corresponding to a virtual address the
+processor first determines the address of the highest level directory. This
+adress is usually stored in a register. Then the CPU takes the index part of
+virtual address corresponding to this directory and uses that index to pick
+appropriate entry. This entry is the address of the next directory, which is
+indexed using the next part of the virtual address. This process continues
+until it reaches the level 1 directory, at which point the value of the
+directory entry is the high part of the physical address. The physical address
+is completed by adding the page offset bits from the virtual address. This
+process is called page tree walking.
+--- https://people.freebsd.org/~lstewart/articles/cpumemory.pdf 4.2.
+
+PAGE TABLE                              *page-table*
+Data structure used by virtual-memory system to store mapping between virtual
+and physical addresses.
+
+STACK                                   *stack*
+LIFO data structure.
+Also "Call Stack": data structure that stores information about active
+function calls of a program.
+
+HEAP                                    *heap*
+Tree-based data structure.
+Also: an area of memory for dynamic memory allocation.
+
+FAT POINTER                             *fat-pointer*
+Alias: Wide Pointer
+Pointer with attached information about the pointee.
+Example:
+- Vec in Rust (base address, capacity, length)
+- Slice in Rust (base address, length)
+
+PROCESS                                 *process*
+A loaded program that is executing. Contains at least one thread. 
+All state about a process is stored in Process Control Block.
+
+┌──Process──────────────┐
+│ Code  Data  Resources │
+├──Thread───┬──Thread───┤
+│ Stack     │ Stack     │
+│           │           │
+│ Registers │ Registers │
+│           │           │
+│           │           │
+└───────────┴───────────┘
+
+THREAD                                  *thread*
+Sequence of instructions that can be managed independently by scheduler.
+Threads share memory and resources of a process.
+Contains: stack, register state, thread-local storage.
+Thread switch requires: save/restore register and stack pointer.
+
+User Thread: managed without OS support, can implemented and managed by
+library. User thread models:
+- 1:1 single user thread is run on single kernel thread
+- N:1 multiple user threads are run on single kernel thread
+- N:M multiple user threads are run on a pool of kernel threads
+
+Example: Rust std library threads are implemented using 1:1 model.
+
+INTER PROCESS COMMINICATION             *ipc*
+Allows exchange of data between processes that are normally isolated.
+Can be achieved by: shared memory, messages.
+
+CONCURRENCY                             *concurrency*
+Dealing with multiple things at the same time.
+
+PARALLELISM                             *parallelism*
+Doing multiple things at the same time.
+
+SCHEDULING                              *scheduling*
+Preemptive scheduling: operating system can interrupt running process to
+resume or start another process with higher priority, afterwards the
+interrupted process may be resumed. This involves context switch (saving and
+restoring process state).
+
+Cooperative scheduling: process can yield - give up control of the CPU to
+other tasks. If currently running process will not yield, no other process
+will make any progres.
+
+KERNEL                                  *kernel*
+Core component of the operating system providing interactions between hardware
+and software. It is responsible for managing resources of a computer.
+Uses drivers as an abstractions over hardware.
+
+HYPERTHREADING                          *hyperthreading*
+Technology that allows that single physical CPU core to execute instructions
+from multiple threads simultaneously. This is achieved by utilizing logic
+units unused by first thread to execute instructions from second thread.
+
+SYSTEM CALL                             *syscall*
+An interface between kernel and user space, allowing program to request
+services or resources (memory, files, creating processes).
+>rust
+    #[cfg(target_os = "macos)]
+    fn main() {
+        use std::arch::asm;
+
+        #[link(name = "c")]
+        extern "C" {
+            fn exit(status: i32);
+        }
+
+        // Call libc.
+        unsafe { exit(77) };
+
+        // Or use asm.
+        unsafe { asm! {
+            "mov rax, 0x20000001",
+            "mod rdi, 77",
+            "syscall",
+        }};
+    
+        println!("Hey, what about me?");
+    }
+<
+
+VIRTUAL MACHINE                         *virtual-machine*
+A virtual computer system that provides functionality of physical computer.
+Virtual machines are run by hypervisor. *hypervisor*
+
+Hypervisor (alias: Virtual Machine Monitor) is a component that manages
+virtual machines by abstracting physical hardware. Allows multiple virtual
+machines (guest) to run concurrently on a single host machine.
+Type 1 hypervisor runs on computer hardware without the need for host
+operating system like in case of Type 2 hypervisor.
+
+┌───────────────┐ ┌───────────────┐
+│ ┌───────────┐ │ │ ┌───────────┐ │
+│ │Application│ │ │ │Application│ │
+│ └───────────┘ │ │ └───────────┘ │
+│ Guest OS      │ │ Guest OS      │
+├───────────────┴─┴───────────────┤
+│ Hypervisor                      │
+└─────────────────────────────────┘
+
+CONTAINER                               *container*
+Deployment unit containing an isolated application environment with all
+necessary dependencies required to run it.
+It is a sandboxed process host machine isolated from all other processes.
+Isolation leverages kernel namespaces and cgroups.
+--- https://medium.com/@saschagrunert/demystifying-containers-part-i-kernel-space-2c53d6979504
+
+Containerized applications share underlying operating system and can share
+common modules like libraries and binaries.
+It means that Windows container cannot be run on Linux.
+
+┌─────────────┐ ┌─────────────┐ ┌────────┐
+│ Application │ │ Application │ │ Docker │
+│ Container   │ │ Container   │ │ Deamon │
+├─────────────┴─┴─────────────┴─┴────────┤
+│ Host OS                                │
+└────────────────────────────────────────┘
+
+Docker Deamon is responsible for managing containers (create, stop), images,
+newtorks and volumes - manages Docker objects.
+
+HASH                                    *hash*
+A function that converts input data into fixed length output.
+Same input will produce same output.
+Properties:
+  should be difficult to find a input that produces specific output
+  should be difficult to find two inputs that produce same output
+
+SALT                                    *salt*
+Random value added to the hash to increase difficulty of comparing result
+value with precomputed set of hashes.
+
+HASH BASED MESSAGE AUTHENTICATION CODE  *hmac*
+A technique that allows two ends of communication to validate whether the
+message contents are authentic and correct using shared secret key.
+Anybody with secred key can produce valid messages.
+Example: JWT
+
+DIGITAL SIGNATURE                       *digital-signature*
+Almost like hmac but uses asymetric keys - only one entity owns the secret key
+that can be used to create authentic message. Consumers use public key to
+verify validity of the message.
+
+HTTP                                    *http*
+Client-server protocol; requests are sent by one entity - user-agent.
+Stateless: there is no link between requets being sent to server.
+Hovever, it is not sessionless; HTTP Cookies can be used to represent session.
+Uses TCP or TLS in case of HTTPS.
+0.9 - one line requests.
+1.0 - every request uses separate connection, now with headers.
+1.1 - TCP connection can be left open for subsequent requests.
+2.0 - binary, multiplexed protocol - allows multiple requests over the same
+connection, headers are compressed.
+3.0 - moved from TCP to QUIC.
+
+REST                                    *rest*
+Representational State Transfer.
+Style of software architecture based on a set of principles how resources are
+defined and addressed.
+State and functionality is divided into resources.
+Every resource is uniquely addressable using uniform set of commands.
+Client-server communication, supports caching, stateless.
+Basically: server responds with representation of state of resource.
+https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
+
+API GATEWAY                             *api-gateway*
+Service that facilitates communication between clients and back-end services,
+especially in microservice based architecture. It simplifies  the
+communication between client and back-end.
+In case of microservices there may be multiple services of interest - API
+Gateway job is to act as a reverse-proxy with additional capabilities in front
+of back-end services. It helps in the following ways:
+- Request routing.
+- Load balancing.
+- Security. API Gateway can implement authentication, authorization and rate
+  limiting - protecting back-end from unauthorized access and attacks.
+- API transformation. Can accept HTTPS connections but communicate with
+  back-end using HTTP, skipping the need for encrypting communication.
+- Monitoring and logging.
+- Retry Policy and Circuit Breaker - it can re-send request on behalf of the
+  client or protect back-end services from being flooded with demanding
+  requests.
+--- https://www.baeldung.com/cs/api-gateway-vs-reverse-proxy
+
+MICROSERVICE                            *microservice*
+Distributed system architecture. Involves breaking down application into
+micro services :D that can be managed independently of each other.
+Microservice is small, modular software component focused on concrete
+functionality within larger system, autonomous (can change implementation
+without any coordination with outside).
+Microservice architecture is marketed as a way of building scalable, resilient
+cloud systems.
+
+Modern take on Service-Oriented Architecture.
+
+OBSERVABILITY                           *observability*
+In distributed systems, it is the ability to collect data about programs
+execution, internal state and communication between components.
+Aims to provide understanding on how pieces of the system work together.
+Tools: APM, distributed tracing, log aggregation.
+
+APPLICATION PERFORMANCE MANAGEMENT      *apm*
+Practice of using tools to analyze application performance to mainain desired
+level of service. Involves collecting error rates, resource usage, load,
+response times or whatever the "key performance metric" is.
+
+MEMCACHED                               *memcached*
+Distributed memory object caching system. Organises memory into pages, slabs
+and chunks
+Memcached on start will allocate allowed amount of memory and divide it into
+pages - called free pages. Pages are futher divided into chunks.
+In slab class 1, each chunk is 80 bytes, and each page can then contain
+13,107 chunks (or items). This continues all the way up to 1 megabyte (default
+page size). 
+
+┌──Slab Class 1─┬────────────────┐
+│ Chunk │ Chunk │ ...            │
+└───────┴───────┴────────────────┘
+
+When storing an item X of size N, Memcached will find or assign free page with
+a slab class of nearest fit for size N. If N is 70 bytes in total it will be
+assigned to a slab class 1 with chunk size 80 bytes - 10 bytes is wasted for
+item X.
+Versions prior to 1.5.0 by default will not actively reclaim memory (unless
+flag '-o modern' is provided). Newer versions run a crawler that periodically
+scans cache and frees expired items.
+Uses LRU to evict items divided into sub-LRUs (HOT, WARM, COLD, TEMP).
+--- https://memcached.org/blog/modern-lru/
+
+REDIS                                   *redis*
+In-memory data structure store used as database, cache, message broker,
+streaming engine. Supports strings, lists, sets, sorted sets, hashes; atomic
+operations, transactions, pub/sub, Lua scripting.
+Redis allocates at most as much memory as maxmemory configuration setting
+allows it to.
+Redis allocates memory on per item basis via allocator and does not always
+releases freed memory back to the OS. This happens because underlying
+allocator can't easily release memory if for example memory page still
+contains living keys.
+Supports multiple eviction policies for keys: LRU, LFU, random, TTL.
+
+LAYOUT                                  *rust:layout*
+See: alignment.
+In Rust, those are ways to lay out composite data:
+- struct
+- tuples
+- arrays
+- enums (tagged unions)
+- unions (untagged unions)
+
+By default, composite data has an alignment equal to the maximum of its
+fields' alignments. In below example, Composite struct will be 32-bit aligned.
+Therefore, the whole size of the struct will be a multiple of 32.
+>rust
+    struct Composite {
+        field_a: u8,
+        // 24 bits of padding
+        field_b: u32,
+        field_c: u16,
+        // 16 bits of padding
+    }
+    // OR:
+    struct Composite {
+        field_b: u32,
+        field_c: u16,
+        field_a: u8,
+        // 8 bits of padding
+    }
+<
+
+With exceptions of arrays (densely packed and in-order), the layout of data is
+not specified by default. Rust guarantees that two instances of type A have
+their fields laid out the same way but not guarantees that such instances will
+have be padded or have fields in the same order - due to monomorphization.
+
+Besides repr(rust) there are other supported layouts.
+https://doc.rust-lang.org/reference/type-layout.html
+
+repr(c)                                 *rust:repr-c*
+Do whatever C does to correctly pass a type through FFI boundary.
+
+repr(transparent)                       *rust:repr-transparent*
+Can be used on a struct or single-variant enum with single non-zero
+sized field. The effect is that the layout of the whole data is the same as
+layout of that single field.
+
+repr([iu]*)                             *rust:repr-enum*
+Used to make a fieldless enum - an enum whose variants do not carry any data.
+
+repr(packed)                            *rust:repr-packed*
+Strips any padding and aligns type to a byte.
+
+repr(align(n))                          *rust:repr-align*
+Forces the type to have alignment of at least n. Where n is a number that is
+a power of 2.
+
+DYNAMICALLY SIZED TYPES                 *rust:dynamically-sized-types*
+Rust supports DSTs but because they lack a statically knows size, such types
+can exist only behind a pointer consisting of the pointer and the data that
+completes them.
+Two major DSTs are trait objects (completed by vtable) and slices (completed
+by length).
+>rust
+    struct CustomDST<T: ?Sized> {
+        data: T,
+    }
+
+    let slicing: CustomDST<[u8; 2]> = CustomDST {
+        data: [0; 2],
+    };
+<
+
+                                        *rust:zero-sized-type*
+Rust also allows types to occupy no space - producing or storing zero sized
+type is a no-op - a way for optimisation.
+
+EMPTY TYPE                              *rust:empty-type*
+Types that cannot be instantiated - can only be used at type level not at a
+value level. Empty types are declared as empty enums: >rust
+    enum EmptyType {}
+<
+Primary motivating example for empty type is type-level unreachability.
+An example would be `Result<u8, EmptyType>` - meaning that operation returning
+such type will always succeed because error type cannot be instantiated.
+
+TRAIT OBJECT                            *rust:trait-object*
+Trait object represents some type that implements the trait is specifies.
+Exact original type is erased in favour of runtime reflection with a vtable
+containing all the information necessary to use the type (as given trait).
+Trait object is a fat pointer (pointer to the object and pointer to vtable).
+The runtime size of the pointee can be dynamically requested from vtable.
+Uses dynamic dispatch approach for invoking methods.
+
+COERCION SITE                           *rust:coercion-site*
+A place where implicit change of type of a value occurs:
+- let statements with explicit type given
+- static and const item declarations
+- arguments for function calls
+- instantiation of struct, union or enum variant fields
+- function results
+>rust
+    fn as_display(input: &u8) -> &dyn Display {
+        input
+    }
+<
+
+TRAIT BOUND                             *rust:trait-bound*
+Specifies a set of implementation requirements for generic type. That is, in
+order to provide a type as generic type parameter it must satisfy the bound.
+>rust
+    fn allow_only_display_types<T: Display>() {}
+<
+
+HIGHER RANK TRAIT BOUND                 *rust:higher-rank-trait-bound*
+A bound on trait bound in the form of `for <'a>:` - introduced mostly because
+of closures. >rust
+    struct Callable<T, F> {
+        data: T,
+        func: F
+    }
+
+    impl<T, F> Callable<T, F>
+        where
+        F: for<'a> Fn(&'a T) -> &'a T
+    {
+        fn call(&self) -> &T {
+            (self.func)(&self.data)
+        }
+    }
+<
+
+DROP CHECK                              *rust:drop-check*
+A Drop implementation check - if a type that borrows some data implements drop
+then it's borrowed data must outlive it because drop implementation can
+potentially access said data.
+For a generic type to soundly implement drop, its generics arguments must
+strictly outlive it.
+--- https://doc.rust-lang.org/nomicon/dropck.html
+
+LIFETIME ELISION                        *rust:lifetime-elision*
+Allows to skip naming lifetime parameter for reference in function signatures.
+Lifetime positions can appear on input or output positions.
+Rules:
+- each elided lifetime in input position becomes a distinct lifetime parameter
+- if there is exactly one input lifetime position, that lifetime is assigned
+  to all elided output lifetimes
+- if there are multiple input lifetime positions, but one of them is &self or
+  &mut self, the lifetime of self is assigned to all output lifetimes
+- otherwise, it is an error to elide output lifetime
+
+ORPHAN RULE                             *rust:orphan-rule*
+In order to implement a trait for a type at least one of those must be defined
+in crate that implements a trait. Otherwise there could be multiple
+implementations of a trait for given type.
+
+NEWTYPE                                 *rust:newtype*
+Thin type wrapper over another type. >rust
+    struct NewType(Path);
+<
+
+NEVER                                   *rust:never*
+Empty type that has no values - called never type because it is a function
+return type indicating that a function will never return.
+
+STATIC LIFETIME                         *rust:static-lifetime*
+A static reference (&'static) indicates that pointee will live as long as the
+process - still can be coerced to shorter lifetime.
+A static trait bound (T: 'static) indicates that a type does not contain any
+references that are not static.
+
+IMPL TRAIT                              *rust:impl-trait*
+A shorthand for "a concrete type that implements given trait".
+In parameter position it is a syntactic sugar over generic parameter.
+Its primary use is working with closures whose types are generated at compile
+time. >rust
+    // Return type position.
+    fn return_closure(x: u8) -> impl Fn(u8) -> u8 {
+        move |y: u8| x + y
+    }
+    // Parameter position.
+    fn display(fut: impl Display) { }
+<
+
+GENERIC ASSOCIATED TYPE                 *rust:generic-associated-type*
+Allows types to be associated with traits.
+Traits with GAT are not object-safe thus cannot be used as trait objects.
+>rust
+    trait Slicer {
+        type Slice<'a> where Self: 'a;
+
+        fn next(&mut self) -> Option<Self::Slice<'_>>;
+    }
+
+    struct Slicerinho {
+        str: String,
+        idx: usize,
+    }
+    
+    impl Slicer for Slicerinho {
+        type Slice<'a> = &'a str;
+
+        fn next(&mut self) -> Option<Self::Slice<'_>> {
+            if self.idx >= self.str.len() {
+                return None;
+            }
+
+            self.idx = std::cmp::min(self.str.len(), self.idx + 2);
+            Some(&self.str[self.idx - 2..self.idx])
+        }
+    }
+<
+
+AUTO TRAITS                             *rust:auto-traits*
+Auto traits are traits that are automatically implemented for every type
+unless the type explicitly provided implementation of such trait or it
+opts-out of implementation using negative implementation. 
+>rust
+    auto trait AutoTrait {} // Definition of auto trait.
+    impl !AutoTrait for MyType {} // Negative implementation for type.
+<
+
+MARKER TRAITS                           *rust:marker-traits*
+Marker traits are traits used to mark types. They don't have any behaviour but
+are used to enforce certain guarantees. For example, sending type to another
+thread is enforced by Send trait - types that do not implement this trait
+cannot be sent.
+
+Copy                                    *rust:copy*
+Marks type that can be duplicated simply by cloning bits.
+
+Send                                    *rust:send*
+Marks type that can be safelly transferred between threads.
+
+Sized                                   *rust:sized*
+Marks type with constant size known at compile time.
+
+Sync                                    *rust:sync*
+Marks type for which it is safe to share references between threads.
+
+Unpin                                   *rust:unpin*
+Marks type that can be safelly moved after being pinned.
+
+ vim: tw=78 sw=4 ts=4 ft=help norl cc=41,78 cole=0 isk+=- isk+=\\:
+ vim: nu rnu tags+=$VIMRUNTIME/doc/tags tc=ignore
