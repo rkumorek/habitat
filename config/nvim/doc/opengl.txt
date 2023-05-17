@@ -306,5 +306,20 @@ Matrix layout also defines the order of transformations.
     vec4 result = translate * rotate * scale * vector;
 <
 
+TANGENT SPACE AND NORMAL MAPPING        *opengl:tangent-space*
+Coordinate space local to normal texture space - used to represent a surface
+geometry at given point. This coordinate space is defined by three orthogonal
+vectors: tangent, bitangent and normal.
+Tangent vector follows U coordinate of a texture. Bitangent vector follows
+V coordinate of a texture. Normal vector points in positive Z direction.
+
+V (Bitangent)
+│               N - normal up, outwards the surface
+│
+└────── U (Tangent)
+
+In order to use normals from normal map they need to be transformed by TBN
+matrix - from tangent space to object/world space.
+
  vim: tw=78 sw=4 ts=4 ft=help norl cc=41,78 cole=0 isk+=- isk+=\\:
  vim: nu rnu tags+=$VIMRUNTIME/doc/tags tc=ignore

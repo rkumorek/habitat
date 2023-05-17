@@ -24,6 +24,13 @@ Edit without messing without register write |quote_|: >
     "_c{motion}
 <
 
+|:tab|
+Execute command and if it opens new window open it in new tab.
+
+Open help files in new tab: >
+    :tab help index
+<
+
 ------------------------------------------------------------------------------
 CLI Gists                               *cligists*
 

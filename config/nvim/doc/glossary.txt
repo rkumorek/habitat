@@ -260,6 +260,16 @@ Handle a request using a chain of handlers.
 Example: event handling of HTML Elements, HTTP request handling by
 middlewares.
 
+INVERSION OF CONTROL                    *inversion-of-control*
+A pattern in which the flow of control is inverted in comparison to regular
+program code. Usually, the main function of a program is located in programmer
+code and it decides what is being done for the duration of a program. In IoC,
+it's the framework that does a big chunk of work to acomplish general task,
+programmer code is being called by a framework and given flow of control for
+shorter time to acomplish specific goal.
+This approach tries to separate business logic (programmer code) from reusable
+code (framework).
+
 ITERATOR                                *iterator*
 Alias: Cursor
 Allows to traverse elements of collection without exposing its internal
@@ -776,7 +786,13 @@ Example: Rust std library threads are implemented using 1:1 model.
 
 INTER PROCESS COMMINICATION             *ipc*
 Allows exchange of data between processes that are normally isolated.
-Can be achieved by: shared memory, messages.
+Can be achieved by: shared memory, messages, pipe.
+
+PIPE                                    *pipe*
+Unidirectional system of IPC in UNIX command line. Pipeline is a set of
+processes chained together by standard streams - text output (stdout) of first
+process is passed to second process (stdin). Second process is started as
+first is still executing - they are executed concurrently.
 
 CONCURRENCY                             *concurrency*
 Dealing with multiple things at the same time.
@@ -867,6 +883,7 @@ It means that Windows container cannot be run on Linux.
 ├─────────────┴─┴─────────────┴─┴────────┤
 │ Host OS                                │
 └────────────────────────────────────────┘
+-- https://www.youtube.com/watch?v=6gJs0F8V3tM
 
 Docker Deamon is responsible for managing containers (create, stop), images,
 newtorks and volumes - manages Docker objects.
@@ -898,12 +915,12 @@ Client-server protocol; requests are sent by one entity - user-agent.
 Stateless: there is no link between requets being sent to server.
 Hovever, it is not sessionless; HTTP Cookies can be used to represent session.
 Uses TCP or TLS in case of HTTPS.
-0.9 - one line requests.
-1.0 - every request uses separate connection, now with headers.
-1.1 - TCP connection can be left open for subsequent requests.
+0.9 - one line requests
+1.0 - every request uses separate connection, now with headers
+1.1 - TCP connection can be left open for subsequent requests
 2.0 - binary, multiplexed protocol - allows multiple requests over the same
-connection, headers are compressed.
-3.0 - moved from TCP to QUIC.
+connection, headers are compressed
+3.0 - moved from TCP to QUIC
 
 REST                                    *rest*
 Representational State Transfer.
@@ -922,16 +939,16 @@ communication between client and back-end.
 In case of microservices there may be multiple services of interest - API
 Gateway job is to act as a reverse-proxy with additional capabilities in front
 of back-end services. It helps in the following ways:
-- Request routing.
-- Load balancing.
-- Security. API Gateway can implement authentication, authorization and rate
-  limiting - protecting back-end from unauthorized access and attacks.
-- API transformation. Can accept HTTPS connections but communicate with
-  back-end using HTTP, skipping the need for encrypting communication.
-- Monitoring and logging.
+- request routing
+- load balancing
+- security API Gateway can implement authentication, authorization and rate
+  limiting - protecting back-end from unauthorized access and attacks
+- API transformation, can accept HTTPS connections but communicate with
+  back-end using HTTP, skipping the need for encrypting communication
+- monitoring and logging.
 - Retry Policy and Circuit Breaker - it can re-send request on behalf of the
   client or protect back-end services from being flooded with demanding
-  requests.
+  requests
 --- https://www.baeldung.com/cs/api-gateway-vs-reverse-proxy
 
 MICROSERVICE                            *microservice*
@@ -990,6 +1007,164 @@ releases freed memory back to the OS. This happens because underlying
 allocator can't easily release memory if for example memory page still
 contains living keys.
 Supports multiple eviction policies for keys: LRU, LFU, random, TTL.
+
+NODEJS                                  *nodejs:overview*
+JavaScript runtime environment using V8 engine. Runs on a single process.
+Main thread of NodeJS is responsible for executing JS code and running Event
+Loop.
+
+NODEJS EVENT LOOP                       *nodejs:event-loop*
+A mechanism for handling non-blocking I/O operations in NodeJS. Initialised on
+start of NodeJS process. It is implemented using libuv library.
+
+libuv I/O loop
+Central part of libuv. Establishes content of all I/O operations and is meant
+to be tied to single thread.
+--- https://docs.libuv.org/en/v1.x/design.html
+
+Phases of libuv I/O loop:
+1. Update concept of "now".
+   Caches current at the start of loop tick to reduce number of time-related
+   |syscall|s.
+2. Check if loop is alive and terminate if not.
+   Loop is considered alive if it has active handles, requests or closing
+   handles.
+3. Run due timers.
+   All active timers scheduled to run before "now" get their callbacks called.
+4. Run pending callbacks.
+   Calling I/O callbacks deferred to next loop tick.
+5. Run idle handles.
+   Idle handles are run once per loop tick. Used internally by NodeJS.
+6. Run prepare handles.
+   Prepare handles are run once per loop tick before loop polling for I/O.
+   Used internally by NodeJS.
+7. Poll timeout for I/O is calculated.
+   Before blocking for I/O the loop calculates for how long it should block.
+8. Block for I/O.
+   Blocks for the duration calculated at phase 7. All I/O handles that were
+   monitoring file descriptor for read or write operation get their callbacks
+   called.
+9. Check handles are called.
+10. Close callbacks are called.
+
+Phases of NodeJS Event Loop: 
+
+   ┌───────────────────────────┐
+┌─>│           timers          │ setTimeout(), setInterval()
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+│  │     pending callbacks     │
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+│  │       idle, prepare       │
+│  └─────────────┬─────────────┘      ┌───────────────┐
+│  ┌─────────────┴─────────────┐      │   incoming:   │
+│  │           poll            │<─────┤  connections, │
+│  └─────────────┬─────────────┘      │   data, etc.  │
+│  ┌─────────────┴─────────────┐      └───────────────┘
+│  │           check           │ setImmediate()
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+└──┤      close callbacks      │ socket.on('close', ...)
+   └───────────────────────────┘
+--- https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick
+
+NODEJS NEXT TICK                       *nodejs:next-tick*
+process.nextTick() schedules callbacks in a given phase to be called before
+the event loop continues to the next phase. Guarantees that the callback is
+called after the rest of user code is executed and before the event loop
+proceeds to next phase.
+
+NODEJS THREADS                          *nodejs:threads*
+libuv uses single thread for network I/O operations. But uses a thread pool to
+provide asynchronous file, DNS and user specified code operations.
+NodeJS runs cryptographic (or any CPU-intensive) operations in a thread pool
+via user specified code. Thread pool will pop next task from the queue to work
+on it until completion.
+
+PRIMARY KEY                             *sql:primary-key*
+Allows to uniquely identify a row in a table. Unique and not null by
+definition. Can be composite (made of multiple columns). One per table.
+
+FOREIGN KEY                             *sql:foreign-key*
+Stores primary key of another row from another table. Establishes relation to
+another table.
+
+HAVING VS WHERE                         *sql:having-where*
+Two filtering clauses, WHERE filters individual rows while HAVING filters
+groupped results.
+
+TRUNCATE VS DELETE VS DROP              *sql:truncate-delete-drop*
+DROP     - completely delete table and all things associated with it
+           (relationships, indices, constraints)
+DELETE   - deletes rows from a table based on a condition 
+TRUNCATE - unconditionally deletes all data in table
+
+CONSTRAINTS                             *sql:constraints*
+NOT NULL    - restricts NULL value from being inserted into a column
+CHECK       - verifies that all values in a field satisfy a condition
+DEFAULT     - automatically assigns a default value if no value has been
+              specified for the field
+UNIQUE      - ensures unique values to be inserted into the field
+INDEX       - indexes a field providing faster retrieval of records
+PRIMARY KEY - uniquely identifies each record in a table
+FOREIGN KEY - ensures referential integrity for a record in another table
+
+UNIQUE                                  *sql:unique*
+Ensures that every row has unique values in a column (or group of columns).
+Table can have multiple unique constraints.
+
+CASCADE                                 *sql:cascade*
+A method of ensuring data integrity by automating actions when data is
+updated or deleted.
+
+CASCADE DELETE - when a row in parent table is deleted any rows with foreign
+key pointing to affected row primary key will also be deleted. Ensures that
+there are no orphan rows in the table.
+
+CASCADE UPDATE - when a row in parent table is updated any rows with foreign
+key pointing to affector row primary key will also be updated. Ensures that
+key relationship is coherent even if primary key changes.
+
+INDEX                                   *sql:index*
+Data structure that provides quicker access to data in columns in a table.
+Used to improve lookup speed at a cost of storing and maintaining the index.
+
+Clustered index - determines order of data storage within table according to
+the keys specified in index. One per table. For example rows with the same
+CustomerID will be stored close to each other on the disk.
+
+PostgreSQL index types:
+B-Tree - can handle equality and range comparison on data that can be sorted
+into some orering.
+
+Hash - stores 32-bit has of indexed columns, can handle only equality
+comparisons.
+
+GIN (Generalized Invertex Index) - contains separate entry for each component
+value and can efficienty handle test of presence of such component value. An
+example of text inverted index is that each word would store references to
+rows that contain it.
+
+> Past this point it gets foggy <
+
+GiST (Generalized Search Tree) - builds a variety of search trees of many
+different indexing strategies to allow wider set of operators.
+
+SP-GiST (Space-Partitioned GiST) - adds support for non-balanced data
+structures, that divide search data into partitions.
+
+BRIN (Block Range Indexes) - stores summaries about values about values stored
+in block ranges. Useful for ordered data. Block Range is a group of adjacent
+pages and summary about them is stored in index (like min and max in case of
+int).
+
+VIEW                                    *sql:view*
+Virtual table that is based on the result of SELECT statement. It is a query
+stored in the database with associated name. Instead of storing data
+themselves views display data of underlying tables. Can be used as a way of
+simplifying data query, providing backwards-compatibility if table structure
+changes.
 
 LAYOUT                                  *rust:layout*
 See: alignment.
