@@ -96,13 +96,17 @@ Example: >typescript
         }
     }
 
-    function takeN<T>(it: { next(): T | null }, n: number): T[] {}
+    interface Iterator<T> {
+        next(): T | null;
+    }
+
+    function takeN<T>(it: Iterator<T>, n: number): T[] {}
 <
 
 BRIDGE                                  *bridge*
 Alias: Handle
 Splits abstraction and implementation so that they can vary independently.
-Abstraction provides constrol logic, implementation declares common interface
+Abstraction provides control logic, implementation declares common interface
 for all concrete implementations.
 Client links abstraction with concrete implementation and primarily works with
 the abstraction.
@@ -195,12 +199,40 @@ Alias: Action, Transation
 Create an object for a request which allows to parameterize such requests,
 queue, log or undo them.
 
+Example: >typescript
+    abstract class Command {
+        abstract execute(target: UIElement): void;
+        abstract revert(target: UIElement): void;
+    }
+
+    class UIElement {
+        commands: Command[];
+        index: number;
+
+        constructor() { /* impl */ }
+
+        move(moveCmd: Command) {
+            moveCmd.execute(this);
+            this.commands.slice(0, this.index++);
+            this.commands.push(moveCmd);
+        }
+
+        back() {
+            this.commands[--this.index].revert(this);
+        }
+
+        forward() {
+            this.commands[this.index++].execute(this);
+        }
+    }
+<
+
 MEDIATOR                                *mediator*
 Reduce explicit dependencies between objects by forcing them to coolaborate
 via mediator object.
 
 Example: a switch input that will display additional elements depending on its
-state. Keep, switch simple and just notify mediator that additional elements
+state. Keep switch simple and just notify mediator that additional elements
 should be shown/hidden.
 
 MEMENTO                                 *memento*
@@ -235,12 +267,39 @@ appropriately when it changes. >typescript
 STATE                                   *state*
 Allows object to alter its behaviour when internal state changes.
 
+Example: >typescript
+    enum DocumentState {
+        Published,
+        Saved,
+        Draft,
+    }
+
+    class Document {
+        state: DocumentState;
+
+        destroy() {
+            if (this.state !== DocumentState.Draft) {
+                /* remove data from storage */
+            }
+            /* remove data from memory */
+        }
+    }
+<
+
 STRATEGY                                *strategy*
 Alias: Policy
 Declare common interface for an algorithm so that it may have multiple
 different interchangeable implementations.
 
-Example: authentication strategy for HTTP request.
+Example: >typescript
+    abstract class HTTPAuthStrategy {
+        abstract authenticate(): void;
+    }
+
+    class HTTPBasicAuth extends HTTPAuthStrategy { /* impl */ }
+
+    class HTTPCookieAuth extends HTTPAuthStrategy { /* impl */ }
+<
 
 TEMPLATE METHOD                         *template-method*
 Create a set of operations for an algorithm allowing sublasses to override
@@ -250,7 +309,7 @@ VISITOR                                 *visitor*
 Separates algorithm from objects on which it operates.
 Allows to add new operations to existing structures without modyfing them.
 
-Example: a shopping cart holds many objects of different Product subclasses.
+Example: a shopping cart holds many objects of different Product classes.
 A visitor can be created to calculate total tax of products in the cart
 without implementing tax calculations in the product classes.
 
@@ -274,6 +333,7 @@ ITERATOR                                *iterator*
 Alias: Cursor
 Allows to traverse elements of collection without exposing its internal
 representation.
+Also: object representing a stream (sequence) of data (python).
 
 ACTOR MODEL                             *actor-model*
 Programming technique that considers actor a basic block for computation.
@@ -283,17 +343,19 @@ In response to message actor can: change its state and behavior, send
 messages or create finite number of child actors.
 
 This approach:
-- does not transfer execution to another object like in case of object method
+• does not transfer execution to another object like in case of object method
   call
-- does not need locks in multi-threaded environment as actor handles messages
+• does not need locks in multi-threaded environment as actor handles messages
   one by one
-- stores state of actor locally, changes and data are propagated via messages
+• stores state of actor locally, changes and data are propagated via messages
   which maps to CPU cores to send cache lines to each other
 
 DEPENDENCY INJECTION                    *dependency-injection*
 A technique making a class independent from creation of the objects it depends
 on.
-Simply: passing objects to constructor. >typescript
+Simply: passing objects to constructor.
+
+Example: >typescript
     class Display {
         renderer: Renderer;
         // without DI
@@ -310,7 +372,8 @@ Simply: passing objects to constructor. >typescript
 OBJECT POOL                             *object-pool*
 Initializes ready to use pool of objects instead of allocating and destroying
 them on demand.
-Use case: DB connection pool.
+
+Example: DB connection pool.
 
 RESOURCE ACQUISITION IS INITIALISATION  *raii*
 A pattern where resource initialisation is done in constructor of an object
@@ -321,8 +384,8 @@ CONSTRUCTOR                             *constructor*
 An operation that is automatically invoked to initialize new instance.
 
 DESTRUCTOR                              *desctructor*
-An operation that is automatically invoked to finalize an instance
-that is about to be deleted.
+An operation that is automatically invoked to finalize an instance that is
+about to be deleted.
 In Rust it is an implementation of Drop trait.
 
 CLASS                                   *class*
@@ -331,10 +394,10 @@ object's internal representation and defines the operations the object can
 perform.
 
 CLASS OPERATION                         *class-operation* *static-method*
-Alias: static member functions, static methods.
+Alias: static member function, static method.
 An operation targeted to a class and not to an individual object.
 
-PARENT CLASS                            *parent-class*
+PARENT CLASS                            *parent-class* *superclass*
 Alais: superclass, base class.
 The class from which another class inherits.
 
@@ -349,12 +412,12 @@ An abstract class cannot be instantiated. >typescript
 
 SUBCLASS                                *subclass*
 A class that inherits from an other class. Also called a derived class.
-class.
 
 FRIEND CLASS                            *friend-class*
 In C++, a class that has the same access rights to the operations and data
-of a class as that class itself.
-Can access private members. >cpp
+of a class as that class itself. Can access private members.
+
+Example: >cpp
     class Nay {
     friend class Time;
     private:
@@ -424,7 +487,7 @@ describes the set of requests to which an object can respond. >typescript
 <
 
 OBJECT                                  *object*
-A run-time entity that packages both data and the operations that operate on
+A runtime entity that packages both data and the operations that operate on
 that data.
 Each instance has a unique name called identity. C++, for example, uses memory
 address of an instance as its identity.
@@ -436,33 +499,32 @@ an operation when it receives a request.
 
 OVERRIDING                              *overriding*
 Redefining an operation (inherited from a parent-class) in a subclass.
->typescript
-    class Scale {
-        protected scale = 1.0;
 
-        public setScale(scale: number) {
-            this.scale = scale;
-        }
+Example: >typescript
+    class File {
+        protected path: string = '';
+
+        public save() { /* impl */ }
     }
 
-    class Square extends Square {
-        public setScale(scale: number) { /* NOOP */ }
+    class SecureFile extends File {
+        public save() { /* impl */ }
     }
 <
 
 PARAMETERIZED TYPE                      *parameterized-type* *generic-parameter*
 Alias: template, generic type parameter.
-A type that leaves some constituent types unspecified. The unspecified types
-are supplied as parameters at the point of use.
+A type that leaves some parameter types unspecified. The unspecified types are
+supplied as parameters at the point of use.
 
 POLYMORPHISM                            *polymorphism*
 The ability to substitute objects of matching interface for one another
-at run-time.
+at runtime.
 
 REQUEST                                 *request*
+Alias: method invocation.
 An object performs an operation when it receives a corresponding request from
 another object.
-In other words: method invocation.
 
 SIGNATURE                               *signature*
 An operation's signature defines its name, parameters, and return value.
@@ -473,6 +535,31 @@ Can be expressed in a language as a function that supports yield keyword,
 that are implemented in terms of a switch keyword.
 Or: a finite-state machine whose output values are determined by its current
 state and current inputs.
+
+Example: >rust
+    let mul = 2;
+
+    // A generator literal.
+    let mut gl = || {
+        for i in 0..5 {
+            yield i * mul;
+        }
+        return;
+    };
+
+    // Compiled to state machine.
+    let mut gl = {
+        enum __Generator {
+            Iter(usize, usize),
+            Done,
+        }
+        
+        // Generator::resume implementation for __Generator.
+        // For each "resume" call match against current state.
+
+        __Generator::Iter(mul, 0)
+    };
+<
 
 CLOSURE                                 *closure*
 Record storing a function together with an environment.
@@ -492,8 +579,49 @@ Example:
           End
 Popping numbers from the front would result in a sequence: 4, 5, 0, 1, 2, 3.
 
+STACK                                   *stack*
+LIFO data structure.
+
+HEAP                                    *heap*
+Tree-based data structure. Complete binary tree, where any node is always
+greater (max heap) or smaller (min heap) than its child nodes and root node is
+the biggest (max heap) or smallest (min heap) among all nodes.
+
+Also: an area of memory for dynamic memory allocation.
+
+BINARY TREE                             *binary-tree*
+Tree where any node is composed of: value, left child node address, right
+child node address.
+
+Full Binary Tree: every parent node has either two or zero children.
+Perfect Binary Tree: every parent node has exactly two children and all leaf
+nodes are at the same level.
+Complete Binary Tree: all levels must be completely filled except the lowest
+one which is filled from left.
+Binary Search Tree: all left nodes are smaller than root, all right nodes are
+greater than root, all subtrees follow conform to previous rules.
+
+QUEUE                                   *queue*
+FIFO data structure.
+
+Priority queue: flavour of queue in which all elements have priority assigned
+and they are served based on priority value. Can be implemented using binary
+search tree, linked list, heap.
+
+B-TREE                                  *b-tree*
+Extension of multiway tree of order m.
+A type of search tree in which each node can contain more than one key and can
+have more than two children (property of multiway tree).
+Also satisfies:
+• all leaves are on the same level
+• nonleaf and nonroot nodes have at least m/2 and at most m nonempty children
+• number of keys in each nonleaf and nonroot node is one less than the number
+of its nonempty children
+
 TYPE                                    *type*
-Set of values. Example: Boolean(True, False), Integer(minint, ..., maxint).
+Set of values.
+
+Example: Boolean(True, False), Integer(minint, ..., maxint).
 
 TYPE CAST                               *type-cast*
 Changing an expression form one data type to another. >rust
@@ -502,10 +630,11 @@ Changing an expression form one data type to another. >rust
 <
 
 SUBTYPE                                 *subtype*
-1) A type is a subtype or another if its interface contains the interface of
-the other type.
-2) When a set of values in one type - T - is a subset of values in another
-type - U - then T is a subtype of U.
+• type is a subtype or another if its interface contains the interface of
+the other type
+• when a set of values in one type - T - is a subset of values in another
+type - U - then T is a subtype of U
+• type T is a subtype of U if T is at least as useful as U
 
 When a type T is a subtype of U then a value of type T can be used in any
 context in which a value of type U is expected.
@@ -518,14 +647,15 @@ Converts from smaller set of values to larger set of values. >typescript
 <
 
 SUPERTYPE                               *supertype*
-1) The parent type from which a type inherits.
-2) U is a supertype of T when set of values of type U contains set of values
-of type T.
+• the parent type from which a type inherits
+• U is a supertype of T when set of values of type U contains set of values
+of type T
 
                                         *narrowing-conversion*
 A conversion from supertype to subtype is called narrowing conversion.
 Converts from larger set of values to smaller set of values. >typescript
     var noom: number = 3;
+    // What if noom wasn't 3?
     var door: 1 | 2 | 3 = noom;
 <
 
@@ -557,24 +687,24 @@ An element is considered to be compatible with another if, for each feature
 within the second element's type, a corresponding and identical feature exists
 in the first element's type.
 
-Example of equal types: >
+Example: >
     TYPE Phone = RECORD id: INTEGER; name: STRING;
     TYPE Monitor = RECORD id: INTEGER; name: STRING;
+    // Phone and Monitor are equal - they share the same structure.
 <
 
 NAME TYPE EQUALITY                      *name-equality*
 Every time a program uses a type-constructor the language automatically
-generates a unique name for the type. In other words: every time program
-creates a new type, the language automatically gives it a unique name.
-Types from example above are not equal in the light of name equality.
+generates a unique name for the type. Types are considered equal only if
+theyir unique names are equal.
 
-Example of equal types: >
-    TYPE T = RECORD id: INTEGER; name: STRING;
-    TYPE Y = RECORD id: INTEGER; name: STRING;
-    TYPE Phone = T;
-    TYPE Monitor = T;
-    // Phone and Monitor are equal.
-    // T and Y are not equal.
+Example: >
+    TYPE Phone = RECORD id: INTEGER; name: STRING;
+    TYPE Monitor RECORD id: INTEGER; name: STRING;
+    TYPE T = Phone;
+    TYPE Y = Phone;
+    // Phone and Monitor are not equal.
+    // T and Y are equal.
 <
 
 TYPE CONSTRUCTOR                        *type-constructor*
@@ -586,13 +716,12 @@ supposed to have.
 
 TYPE CHECKING                           *type-checking*
 Checks and enforces the rules of the type-system to prevent type errors from
-happening.
+happening, can happen during compilation (static), runtime (dynamic) or both.
 
-Can be: strong, weak, something in between.
-Can happen during: compilation, runtime, both.
-
-Strong type checking: prevents all type-errors from happening.
-Weak type checking: does not prevent type-errors from happening.
+Colloquially divided into strong and weak type checking.
+Strong: prevents all type-errors from happening.
+Weak  : does not prevent type-errors from happening.
+——— https://en.wikipedia.org/wiki/Strong_and_weak_typing
 
 TYPE SYSTEM                             *type-system*
 A set of types and type constructors along with the rules that govern whether
@@ -604,6 +733,7 @@ time.
 
 DYNAMIC DISPATCH                        *dynamic-dispatch*
 Invocation of a method whose implementation cannot be known at compile time.
+
 Example: a function that accepts instance of a Map class will also accept an
 instance of subclass of Map. If both happen to have different implementations
 of the same method then the decision which implementation should be invoked is
@@ -617,7 +747,7 @@ Dynamic scope: defined by run time.
 
 Dynamic scoping means that variable lookups occur in the scope where
 a function is called, not where it is defined.
---- https://riptutorial.com/bash/example/8094/dynamic-scoping-in-action
+——— https://riptutorial.com/bash/example/8094/dynamic-scoping-in-action
 
 LIFETIME                                *lifetime*
 Time for which a variable is taking up a valid space in memory. Can be static,
@@ -629,8 +759,8 @@ addresses on the machine.
 
 ALIGNMENT                               *alignment*
 An arrangement of data in memory according to its size and the processor
-architecture. Dictates that value should be stored at addresses that is
-multiple of its alignment.
+architecture. Dictates that value should be stored at address that is multiple
+of its alignment.
 
 For example, processor may require data to be stored at addresses that are
 multiples of 4 (bytes). If the data is stored accordingly then CPU can fetch
@@ -641,44 +771,46 @@ whole data in single memory access.
         int debt;
     }
 <
-░ - data byte
-▓ - padding byte
 ┌─age───┬─debt──┐
 │░ ░ ▓ ▓│░ ░ ░ ░│
 └───────┴───────┘
+░ - data byte
+▓ - padding byte
 
 Older processors can be capable of accessing misaligned addresses with
 performance decrease. Newest processors are capable of handling misaligned
 addresses without performance decrease.
---- Alignment in C Sven-Hendrik Haase
+——— Alignment in C Sven-Hendrik Haase
 
 ACTIVATION RECORD                       *activation-record* *stack-frame*
 Alias: Stack Frame.
 Memory block allocated for each activation of a function. The memory within an
 activation record is only valid while the function is executing; once the
 function exits, the memory is reclaimed.
+
 Contains:
-- local storage: parameters, local variables, and any auxillary space added
+• local storage - parameters, local variables, and any auxillary space added
   by compiler
-- return information: where and how execution should continue when this call
+• return information - where and how execution should continue when this call
   exits
 
-STRUCT                                  *struct*
+STRUCT                                  *record* *struct*
 Alias: Record.
-A compount data structure. The size of a struct is equal to at least the sum
+A compound data structure. The size of a struct is equal to at least the sum
 of sizes of its component fields. The struct is laid out by allocating the
 components sequentially in a contiguous block, working from low memory to
 high. Sometimes a compiler will add invisible padding fields in a struct to
 comply with processor alignment restrictions.
 
 ALU                                     *alu*
-Arithmetic Logic Unit. Part of the CPU that performs computations.
+Arithmetic Logic Unit. Part of the CPU that performs arithmetic operations.
 
 ENDIANNESS                              *endianness*
 Order of sequence of bytes of a word (`[1 0 0 0] BE: 9 LE: 1`).
 Big Endian: stores most significant byte of a word at the smallest memory
-address.
-Little Endian: reverse of BE.
+address (most significant bit at value address).
+Little Endian: stores most significant byte of a word at the largest memory
+address (least significant bit at value address).
 
 TWOS COMPLEMENT                         *twos-complement*
 Operation to reversibly convert a positive binary number into a negative
@@ -695,11 +827,12 @@ Conversion:
 │     ↓   ↓   ↓    │
 │     0 + 2 + 1 = 3│
 └──────────────────┘
+* sign bit - 2 raised to the power of sign bit position
 
 BUS ERROR                               *bus-error*
 Error raised by hardware meaning that a process is trying to access memory
 that the CPU cannot physically address.
-https://en.wikipedia.org/wiki/Bus_error
+——— https://en.wikipedia.org/wiki/Bus_error
 
 SEGMENTATION FAULT                      *segmentation-fault*
 Error raised when process attempts to access memory that does not belong to
@@ -734,27 +867,38 @@ until it reaches the level 1 directory, at which point the value of the
 directory entry is the high part of the physical address. The physical address
 is completed by adding the page offset bits from the virtual address. This
 process is called page tree walking.
---- https://people.freebsd.org/~lstewart/articles/cpumemory.pdf 4.2.
+——— https://people.freebsd.org/~lstewart/articles/cpumemory.pdf 4.2.
 
 PAGE TABLE                              *page-table*
 Data structure used by virtual-memory system to store mapping between virtual
 and physical addresses.
 
-STACK                                   *stack*
-LIFO data structure.
-Also "Call Stack": data structure that stores information about active
-function calls of a program.
+CALL STACK                              *call-stack*
+Alias: execution stack, program stack.
+Data structure (|stack|) that stores information about active function calls
+of a process.
 
-HEAP                                    *heap*
-Tree-based data structure.
-Also: an area of memory for dynamic memory allocation.
+CALLER-SAVED REGISTER                   *register:caller-saved*
+Better name: Call-clobbered (trashed)
+Values stored in caller-saved registers may be freely modified by any function
+call - so a caller cannot assume they will retain their values across calls.
+"Caller-saved" because if caller wants to preserve values in such registers it
+must save and then restore their values.
+
+CALLEE-SAVED REGISTER                   *register:callee-saved*
+Better name: Call-preserved
+Values stored in callee-saved registers must be preseved across function
+calls.
+"Callee-saved" because callee must restore the original value of any register
+it modifies before return.
 
 FAT POINTER                             *fat-pointer*
-Alias: Wide Pointer
+Alias: wide pointer.
 Pointer with attached information about the pointee.
+
 Example:
-- Vec in Rust (base address, capacity, length)
-- Slice in Rust (base address, length)
+Vec in Rust (base address, capacity, length).
+Slice in Rust (base address, length).
 
 PROCESS                                 *process*
 A loaded program that is executing. Contains at least one thread. 
@@ -778,9 +922,9 @@ Thread switch requires: save/restore register and stack pointer.
 
 User Thread: managed without OS support, can implemented and managed by
 library. User thread models:
-- 1:1 single user thread is run on single kernel thread
-- N:1 multiple user threads are run on single kernel thread
-- N:M multiple user threads are run on a pool of kernel threads
+• 1:1 single user thread is run on single kernel thread
+• N:1 multiple user threads are run on single kernel thread
+• N:M multiple user threads are run on a pool of kernel threads
 
 Example: Rust std library threads are implemented using 1:1 model.
 
@@ -824,7 +968,7 @@ SYSTEM CALL                             *syscall*
 An interface between kernel and user space, allowing program to request
 services or resources (memory, files, creating processes).
 >rust
-    #[cfg(target_os = "macos)]
+    #[cfg(target_os = "macos")]
     fn main() {
         use std::arch::asm;
 
@@ -869,9 +1013,9 @@ operating system like in case of Type 2 hypervisor.
 CONTAINER                               *container*
 Deployment unit containing an isolated application environment with all
 necessary dependencies required to run it.
-It is a sandboxed process host machine isolated from all other processes.
+It is a sandboxed process on host machine isolated from all other processes.
 Isolation leverages kernel namespaces and cgroups.
---- https://medium.com/@saschagrunert/demystifying-containers-part-i-kernel-space-2c53d6979504
+——— https://medium.com/@saschagrunert/demystifying-containers-part-i-kernel-space-2c53d6979504
 
 Containerized applications share underlying operating system and can share
 common modules like libraries and binaries.
@@ -883,17 +1027,33 @@ It means that Windows container cannot be run on Linux.
 ├─────────────┴─┴─────────────┴─┴────────┤
 │ Host OS                                │
 └────────────────────────────────────────┘
--- https://www.youtube.com/watch?v=6gJs0F8V3tM
+——— https://www.youtube.com/watch?v=6gJs0F8V3tM
 
 Docker Deamon is responsible for managing containers (create, stop), images,
 newtorks and volumes - manages Docker objects.
+
+DOCKER LAYER                            *docker:layer*
+Base component building an image. Every instruction in Dockerfile creates new
+layer. Every layer is read-only, except the last one (container layer).
+In other words: layer is a difference in file system after dockerfile
+instruction.
+
+When image is used to create container, a new writable layer, also called the
+container layer, is added on top of the underlying layers. All changes made
+to the running container, such as writing new files, modifying existing files,
+and deleting files, are written to this writable container layer.
+
+DOCKER STAGE                            *docker:stage*
+A use of FROM instruction in Dockerfile starts new stage of the build allowing
+to separate build into multiple stages but use only relevant files in the
+final image.
 
 HASH                                    *hash*
 A function that converts input data into fixed length output.
 Same input will produce same output.
 Properties:
-  should be difficult to find a input that produces specific output
-  should be difficult to find two inputs that produce same output
+• should be difficult to find a input that produces specific output
+• should be difficult to find two inputs that produce same output
 
 SALT                                    *salt*
 Random value added to the hash to increase difficulty of comparing result
@@ -903,7 +1063,8 @@ HASH BASED MESSAGE AUTHENTICATION CODE  *hmac*
 A technique that allows two ends of communication to validate whether the
 message contents are authentic and correct using shared secret key.
 Anybody with secred key can produce valid messages.
-Example: JWT
+
+Example: JWT.
 
 DIGITAL SIGNATURE                       *digital-signature*
 Almost like hmac but uses asymetric keys - only one entity owns the secret key
@@ -914,7 +1075,7 @@ HTTP                                    *http*
 Client-server protocol; requests are sent by one entity - user-agent.
 Stateless: there is no link between requets being sent to server.
 Hovever, it is not sessionless; HTTP Cookies can be used to represent session.
-Uses TCP or TLS in case of HTTPS.
+Uses TCP or TLS over TCP in case of HTTPS.
 0.9 - one line requests
 1.0 - every request uses separate connection, now with headers
 1.1 - TCP connection can be left open for subsequent requests
@@ -930,7 +1091,7 @@ State and functionality is divided into resources.
 Every resource is uniquely addressable using uniform set of commands.
 Client-server communication, supports caching, stateless.
 Basically: server responds with representation of state of resource.
-https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
+——— https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
 
 API GATEWAY                             *api-gateway*
 Service that facilitates communication between clients and back-end services,
@@ -939,17 +1100,17 @@ communication between client and back-end.
 In case of microservices there may be multiple services of interest - API
 Gateway job is to act as a reverse-proxy with additional capabilities in front
 of back-end services. It helps in the following ways:
-- request routing
-- load balancing
-- security API Gateway can implement authentication, authorization and rate
+• request routing
+• load balancing
+• security API Gateway can implement authentication, authorization and rate
   limiting - protecting back-end from unauthorized access and attacks
-- API transformation, can accept HTTPS connections but communicate with
+• API transformation, can accept HTTPS connections but communicate with
   back-end using HTTP, skipping the need for encrypting communication
-- monitoring and logging.
-- Retry Policy and Circuit Breaker - it can re-send request on behalf of the
+• monitoring and logging.
+• Retry Policy and Circuit Breaker - it can re-send request on behalf of the
   client or protect back-end services from being flooded with demanding
   requests
---- https://www.baeldung.com/cs/api-gateway-vs-reverse-proxy
+——— https://www.baeldung.com/cs/api-gateway-vs-reverse-proxy
 
 MICROSERVICE                            *microservice*
 Distributed system architecture. Involves breaking down application into
@@ -994,7 +1155,7 @@ Versions prior to 1.5.0 by default will not actively reclaim memory (unless
 flag '-o modern' is provided). Newer versions run a crawler that periodically
 scans cache and frees expired items.
 Uses LRU to evict items divided into sub-LRUs (HOT, WARM, COLD, TEMP).
---- https://memcached.org/blog/modern-lru/
+——— https://memcached.org/blog/modern-lru/
 
 REDIS                                   *redis*
 In-memory data structure store used as database, cache, message broker,
@@ -1020,7 +1181,7 @@ start of NodeJS process. It is implemented using libuv library.
 libuv I/O loop
 Central part of libuv. Establishes content of all I/O operations and is meant
 to be tied to single thread.
---- https://docs.libuv.org/en/v1.x/design.html
+——— https://docs.libuv.org/en/v1.x/design.html
 
 Phases of libuv I/O loop:
 1. Update concept of "now".
@@ -1067,7 +1228,7 @@ Phases of NodeJS Event Loop:
 │  ┌─────────────┴─────────────┐
 └──┤      close callbacks      │ socket.on('close', ...)
    └───────────────────────────┘
---- https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick
+——— https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick
 
 NODEJS NEXT TICK                       *nodejs:next-tick*
 process.nextTick() schedules callbacks in a given phase to be called before
@@ -1081,6 +1242,20 @@ provide asynchronous file, DNS and user specified code operations.
 NodeJS runs cryptographic (or any CPU-intensive) operations in a thread pool
 via user specified code. Thread pool will pop next task from the queue to work
 on it until completion.
+
+ACID                                    *acid*
+A set of properties of database transactions intended to guarantee data
+validity.
+Atomicity - each transaction is considered a single "unit" which either
+succeeds or fails as a whole. If any subsequent statement fails - whole
+transaction fails.
+Consistency - ensures that transaction can change one consistent state into
+another - any data written must be valid according to defined rules.
+Isolation - ensures that concurrent execution of transactions leaves the
+database in the same state as if the transactions would be executed
+sequentially.
+Durability - ensures that once transaction has been commited it will remain
+commited - effects are recorded in persistent memory.
 
 PRIMARY KEY                             *sql:primary-key*
 Allows to uniquely identify a row in a table. Unique and not null by
@@ -1130,9 +1305,9 @@ INDEX                                   *sql:index*
 Data structure that provides quicker access to data in columns in a table.
 Used to improve lookup speed at a cost of storing and maintaining the index.
 
-Clustered index - determines order of data storage within table according to
-the keys specified in index. One per table. For example rows with the same
-CustomerID will be stored close to each other on the disk.
+Clustered index determines order of data storage within table according to the
+keys specified in index. One per table. For example rows with the same (or
+close enough) CustomerID value will be stored close to each other on the disk.
 
 PostgreSQL index types:
 B-Tree - can handle equality and range comparison on data that can be sorted
@@ -1169,11 +1344,11 @@ changes.
 LAYOUT                                  *rust:layout*
 See: alignment.
 In Rust, those are ways to lay out composite data:
-- struct
-- tuples
-- arrays
-- enums (tagged unions)
-- unions (untagged unions)
+• struct
+• tuples
+• arrays
+• enums (tagged unions)
+• unions (untagged unions)
 
 By default, composite data has an alignment equal to the maximum of its
 fields' alignments. In below example, Composite struct will be 32-bit aligned.
@@ -1201,7 +1376,7 @@ their fields laid out the same way but not guarantees that such instances will
 have be padded or have fields in the same order - due to monomorphization.
 
 Besides repr(rust) there are other supported layouts.
-https://doc.rust-lang.org/reference/type-layout.html
+——— https://doc.rust-lang.org/reference/type-layout.html
 
 repr(c)                                 *rust:repr-c*
 Do whatever C does to correctly pass a type through FFI boundary.
@@ -1260,23 +1435,35 @@ Uses dynamic dispatch approach for invoking methods.
 
 COERCION SITE                           *rust:coercion-site*
 A place where implicit change of type of a value occurs:
-- let statements with explicit type given
-- static and const item declarations
-- arguments for function calls
-- instantiation of struct, union or enum variant fields
-- function results
+• let statements with explicit type given
+• static and const item declarations
+• arguments for function calls
+• instantiation of struct, union or enum variant fields
+• function results
+
 >rust
     fn as_display(input: &u8) -> &dyn Display {
-        input
+        input /* coerced */
     }
 <
 
 TRAIT BOUND                             *rust:trait-bound*
 Specifies a set of implementation requirements for generic type. That is, in
-order to provide a type as generic type parameter it must satisfy the bound.
+order to provide a type as generic type parameter it must implement traits
+specified in the bound.
+
 >rust
-    fn allow_only_display_types<T: Display>() {}
+    fn allow_only_display_types<T: Display>(show: T) {}
 <
+
+LIFETIME BOUND                          *rust:lifetime-bound*
+Specifies a set of lifetime requirements for generic type. Similar to
+|rust:trait-bound| but uses lifetimes instead of traits.
+
+Examples:
+T: 'a - all references in type T must outlive lifetime 'a
+T: Trait + 'a - type must implement trait Trait and all references in type T
+must outlive lifetime 'a
 
 HIGHER RANK TRAIT BOUND                 *rust:higher-rank-trait-bound*
 A bound on trait bound in the form of `for <'a>:` - introduced mostly because
@@ -1302,18 +1489,18 @@ then it's borrowed data must outlive it because drop implementation can
 potentially access said data.
 For a generic type to soundly implement drop, its generics arguments must
 strictly outlive it.
---- https://doc.rust-lang.org/nomicon/dropck.html
+——— https://doc.rust-lang.org/nomicon/dropck.html
 
 LIFETIME ELISION                        *rust:lifetime-elision*
 Allows to skip naming lifetime parameter for reference in function signatures.
 Lifetime positions can appear on input or output positions.
 Rules:
-- each elided lifetime in input position becomes a distinct lifetime parameter
-- if there is exactly one input lifetime position, that lifetime is assigned
+• each elided lifetime in input position becomes a distinct lifetime parameter
+• if there is exactly one input lifetime position, that lifetime is assigned
   to all elided output lifetimes
-- if there are multiple input lifetime positions, but one of them is &self or
+• if there are multiple input lifetime positions, but one of them is &self or
   &mut self, the lifetime of self is assigned to all output lifetimes
-- otherwise, it is an error to elide output lifetime
+• otherwise, it is an error to elide output lifetime
 
 ORPHAN RULE                             *rust:orphan-rule*
 In order to implement a trait for a type at least one of those must be defined
@@ -1332,8 +1519,8 @@ return type indicating that a function will never return.
 STATIC LIFETIME                         *rust:static-lifetime*
 A static reference (&'static) indicates that pointee will live as long as the
 process - still can be coerced to shorter lifetime.
-A static trait bound (T: 'static) indicates that a type does not contain any
-references that are not static.
+A static |rust:lifetime-bound| (T: 'static) indicates that a type can not
+contain any references that are shorter than static.
 
 IMPL TRAIT                              *rust:impl-trait*
 A shorthand for "a concrete type that implements given trait".
@@ -1406,6 +1593,80 @@ Marks type for which it is safe to share references between threads.
 
 Unpin                                   *rust:unpin*
 Marks type that can be safelly moved after being pinned.
+
+FUTURE                                  *rust:future*
+Representation of some operation which will complete in the future.
+Implemented using |Generator|s. In other words: Futures are state machines.
+>rust
+    trait Future {
+        type Output;
+
+        fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>)
+            -> Poll<Self::Output>;
+    }
+
+    enum Poll<T> {
+        Ready(T),
+        Pending,
+    }
+<
+
+The trait is quite simple, Future has a single method - poll - which returns
+the "state of completion" of itself. If the Future still needs to do some work
+or wait for a resource it returns `Poll:Pending`. Once the operation is
+completed it returns `Poll::Ready(T)`.
+
+RUST ASYNC                              *rust:async*
+`async` keyword                         *rust:async-keyword* *rust:async-fn*
+Async function or closure returns anonymous type implementing Future trait
+when invoked. Body of a function is evaluated only when the returned Future
+is polled.
+Async block immediately evaluates to a type implementing Future.
+>rust
+    async fn count_chars(s: &str) -> u8 {
+        /* impl */
+        0
+    }
+
+    // Equivalent non-async function, note the |rust:lifetime-bound|.
+    fn count_chars<'a>(s: &'a str) -> impl Future<Output = u8> + 'a {
+        /* impl */
+        async { 0 }
+    }
+<
+
+                                        *rust:async-overview*
+1. An object implementing Future trait is created.
+2. Future object is polled. Polled object have three phases:
+  • Poll phase - executing until no progress can be made
+  • Wait phase - Future waits for notification that it can resume work
+  • Wake phase - Future was woken up and can continue work until next
+    blocking point is encountered or it returns
+3. Future returns Output value.
+
+What handles the second step - drives the Future to completion - is a runtime.
+Rust does not ship its own Future runtime, instead a user must use third party
+code to drive Futures to completion (Tokio.rs, async-std, smol).
+Usually, a runtime will provide Future Executor and Reactor that will handle
+the IO.
+
+Waker - a std struct that is constructed by Executor, passed down as argument
+to Future::poll wrapped in a Context. It is used to "wake" future once it can
+make progress.
+
+Executor - responsible for calling Future::poll method, letting futures do
+their job and eventually driving them to completion (until Poll::Ready is
+returned).
+
+Reactor - will notify about resource being available by calling the
+Waker::wake method on waker object for waiting Future. So basically the part
+that will ask OS for a resource and invoke waker method once the resource is
+available.
+
+Rules that apply to any other async runtime also apply here. So, doing CPU
+intensive work inside the Future will effectively be run on Executor - and all
+other ready (that can make progress) Futures will have to wait before they can
+make progress until the current one is executed.
 
  vim: tw=78 sw=4 ts=4 ft=help norl cc=41,78 cole=0 isk+=- isk+=\\:
  vim: nu rnu tags+=$VIMRUNTIME/doc/tags tc=ignore

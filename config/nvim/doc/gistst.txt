@@ -34,15 +34,21 @@ Open help files in new tab: >
 ------------------------------------------------------------------------------
 CLI Gists                               *cligists*
 
-Remove docker containers matching pattern >sh
+Docker: >sh
+    # Remove docker containers matching pattern
     docker ps -a | grep <pattern> | sd '^(\w+)\s.*$' '$1' | xargs docker rm
+
+    #View Image History
+    docker image history
 <
 
-Manual cargo expand >sh
+Cargo: >sh
+    # Manual cargo expand
     cargo rustc --profile release --example X -- -o $PWD/out_file -Zunpretty=expanded
 <
 
-Summarise output of git log: >sh
+Git: >sh
+    # Summarise output of git log
     git shortlog
 <
 
