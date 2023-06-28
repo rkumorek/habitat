@@ -73,36 +73,6 @@ local function current_line_file_move()
     path_move(path, new_path)
 end
 
--- Handle file rename for paths in arglist.
-local function argv_file_move(argc)
-    local argv = vim.fn.argv()
-    local index = 1
-
-    print('Type "q" to exit.\n')
-
-    while index <= argc do
-        local path = argv[index]
-        local prompt = string.format('[%d/%d] Move to: ', index, argc)
-        local new_path = vim.fn.input({
-            prompt = prompt,
-            default = path,
-            completion = 'file'
-        })
-
-        if new_path == 'q' then break end
-
-        local is_path_valid = new_path ~= path or string.len(new_path) ~= 0
-
-        if is_path_valid then
-            local res = path_move(path, new_path)
-
-            if res then vim.cmd('argdelete ' .. path) end
-        end
-
-        index = index + 1
-    end
-end
-
 -- Remove provided path.
 -- @param path - string
 -- @return status code
@@ -184,7 +154,7 @@ _G.usr.dirvish_rename = function()
     if argc == 0 then
         current_line_file_move()
     else
-        argv_file_move(argc)
+        -- vim.cmd('Shdo! mv %{} %{}')
     end
 
     vim.cmd('Dirvish %')
