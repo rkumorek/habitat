@@ -25,27 +25,17 @@
 " │ 14    │ #8ec07c           │ #427b58           │ Alt Aqua
 " │ 15    │ #fbf1c7           │ #282828           │ Foreground (Fg0)
 " │ __    │ _______           │ _______           │ __________
-" │ 52    │ #4f2f2f           │ #e7c9c6           │ Diff Remove
-" │ 58    │ #3e4f37           │ #cde3be           │ Diff Add
-" │ 60    │ #274f4a           │ #d3e3df           │ Diff Change
+" │ 136   │ #3c3836           │ #ebdbb2           │ Bg1
+" │ 137   │ #504945           │ #d5c4a1           │ Bg2
+" │ 138   │ #665c54           │ #bdae93           │ Bg3
+" │ 139   │ #7c6f64           │ #a89984           │ Bg4
 " │ __    │ _______           │ _______           │ __________
 " │ 166   │ #d65d0e           │ #d65d0e           │ Orange
 " │ __    │ _______           │ _______           │ __________
-" │ 232   │ #1d2021           │ #f9f5d7           │ Bg0_Hard
-" │ 233   │ #282828           │ #fbf1c7           │ Bg0
-" │ 234   │ #32302f           │ #f2e5bc           │ Bg0_Soft
-" │ 235   │ #3c3836           │ #ebdbb2           │ Bg1
-" │ 236   │ #504945           │ #d5c4a1           │ Bg2
-" │ 237   │ #665c54           │ #bdae93           │ Bg3
-" │ 238   │ #7c6f64           │ #a89984           │ Bg4
-" │ __    │ _______           │ _______           │ __________
-" │ 244   │ #fbf1c7           │ #282828           │ Fg0
-" │ 245   │ #ebdbb2           │ #3c3836           │ Fg1
-" │ 246   │ #d5c4a1           │ #504945           │ Fg2
-" │ 247   │ #bdae93           │ #665c54           │ Fg3
-" │ 248   │ #a89984           │ #7c6f64           │ Fg4
-" │ 249   │ #ebcf9d           │ #6b4900           │ String
-" │ 250   │ #c2aa86           │ #5d503c           │ Comment
+" │ 172   │ #ebdbb2           │ #3c3836           │ Fg1
+" │ 173   │ #d5c4a1           │ #504945           │ Fg2
+" │ 174   │ #bdae93           │ #665c54           │ Fg3
+" │ 175   │ #a89984           │ #7c6f64           │ Fg4
 " │ __    │ #______           │ #______           │ __________
 "
 " Default colors stay the same on both themes.
@@ -65,10 +55,10 @@ let g:colors_name='tired'
 
 let s:none        = 'NONE'
 let s:bg0         = 0
-let s:bg1         = 235
-let s:bg2         = 236
-let s:bg3         = 237
-let s:bg4         = 238
+let s:bg1         = 136
+let s:bg2         = 137
+let s:bg3         = 138
+let s:bg4         = 139
 let s:red         = 1
 let s:green       = 2
 let s:yellow      = 3
@@ -84,15 +74,11 @@ let s:a_blue      = 12
 let s:a_purple    = 13
 let s:a_aqua      = 14
 let s:fg0         = 15
-let s:fg1         = 245
-let s:fg2         = 246
-let s:fg3         = 247
-let s:fg4         = 248
-let s:brown       = 249
-let s:comment     = 250
-let s:diff_add    = 58
-let s:diff_change = 60
-let s:diff_remove = 52
+let s:fg1         = 172
+let s:fg2         = 173
+let s:fg3         = 174
+let s:fg4         = 175
+let s:orange      = 166
 let s:guisp_yellow =  '#d79921'
 let s:guisp_red =     '#cc241d'
 let s:guisp_gray =    '#928374'
@@ -193,7 +179,7 @@ call s:Clear('FoldColumn')
 
 call s:Link('Boolean', 'Normal')
 call s:Link('Character', 'Normal')
-call s:Highlight('Comment', s:comment, s:none, 'italic')
+call s:Highlight('Comment', s:a_yellow, s:none, 'italic')
 call s:Link('Conditional', 'Normal')
 call s:Link('Constant', 'Normal')
 call s:Link('Debug', 'Normal')
@@ -217,7 +203,7 @@ call s:Highlight('SpecialChar', s:purple, s:none, 'NONE')
 call s:Link('SpecialComment', 'Comment') " It is not currently used in nvim-treesitter queries.
 call s:Link('Statement', 'Normal')
 call s:Link('StorageClass', 'Normal')
-call s:Highlight('String', s:brown, s:none, 'NONE')
+call s:Highlight('String', s:a_aqua, s:none, 'NONE')
 call s:Link('Todo', 'Normal')
 call s:Link('Type', 'Normal')
 call s:Link('Typedef', 'Normal')
@@ -266,7 +252,7 @@ call s:Highlight('DirvishArg', s:yellow, s:none, 'NONE')
 " Telescope.nvim: {{{
 
 call s:Highlight('TelescopeMatching', s:none, s:none, 'bold,underline', s:guisp_fg)
-call s:Highlight('TelescopeMultiSelection', s:comment, s:none, 'bold')
+call s:Highlight('TelescopeMultiSelection', s:a_aqua, s:none, 'bold')
 
 " }}}
 " Fugitive: {{{
@@ -280,16 +266,16 @@ call s:Highlight('fugitiveUnstagedHeading', s:none, s:none, 'bold')
 " FILETYPES
 " Diff: {{{
 
-call s:Highlight('DiffAdd', s:none, s:diff_add, 'NONE')
-call s:Highlight('DiffDelete', s:none, s:diff_remove, 'NONE')
-call s:Highlight('DiffChange', s:none, s:bg1, 'NONE')
-call s:Highlight('DiffText', s:none, s:diff_change, 'NONE')
+call s:Highlight('DiffAdd', s:blue, s:bg1, 'NONE')
+call s:Highlight('DiffDelete', s:red, s:bg1, 'NONE')
+call s:Highlight('DiffChange', s:none, s:none, 'NONE')
+call s:Highlight('DiffText', s:orange, s:bg1, 'NONE')
 
-call s:Highlight('diffAdded', s:none, s:diff_add, 'NONE')
-call s:Highlight('diffRemoved', s:none, s:diff_remove, 'NONE')
-call s:Highlight('diffChanged', s:none, s:diff_change, 'NONE')
-call s:Highlight('diffLine', s:brown, s:bg2, 'bold')
-call s:Highlight('diffSubname', s:none, s:bg2, 'NONE')
+call s:Highlight('diffAdded', s:a_blue, s:bg1, 'NONE')
+call s:Highlight('diffRemoved', s:a_red, s:bg1, 'NONE')
+call s:Highlight('diffChanged', s:none, s:none, 'NONE')
+call s:Highlight('diffLine', s:a_green, s:bg2, 'bold')
+call s:Highlight('diffSubname', s:none, s:bg2, 'bold')
 
 " }}}
 " Markdown: {{{
@@ -303,6 +289,7 @@ call s:Highlight('markdownLinkText', s:none, s:none, 'NONE')
 " Git: {{{
 
 call s:Highlight('gitKeyword', s:none, s:none, 'bold')
+call s:Highlight('gitHash', s:a_green, s:none, 'NONE')
 call s:Highlight('gitIdentityKeyword', s:none, s:none, 'bold')
 
 " }}}

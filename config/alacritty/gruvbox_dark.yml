@@ -29,21 +29,12 @@ bright:
   cyan:    '#8ec07c'
   white:   '#fbf1c7'
 indexed_colors:
-  - { index:  52, color: '#4f2f2f' } # Diff Remove
-  - { index:  58, color: '#3e4f37' } # Diff Add
-  - { index:  60, color: '#274f4a' } # Diff Change
   - { index: 166, color: '#d65d0c' } # Orange
-  - { index: 232, color: '#1d2021' } # Bg
-  - { index: 233, color: '#282828' }
-  - { index: 234, color: '#32302f' }
-  - { index: 235, color: '#3c3836' }
-  - { index: 236, color: '#504945' }
-  - { index: 237, color: '#665c54' }
-  - { index: 238, color: '#7c6f64' }
-  - { index: 244, color: '#fbf1c7' } # Fg
-  - { index: 245, color: '#ebdbb2' }
-  - { index: 246, color: '#d5c4a1' }
-  - { index: 247, color: '#bdae93' }
-  - { index: 248, color: '#a89984' }
-  - { index: 249, color: '#ebcf9d' }
-  - { index: 250, color: '#c2aa86' }
+  - { index: 136, color: '#3c3836' } # Bg
+  - { index: 137, color: '#504945' }
+  - { index: 138, color: '#665c54' }
+  - { index: 139, color: '#7c6f64' }
+  - { index: 172, color: '#ebdbb2' } # Fg
+  - { index: 173, color: '#d5c4a1' }
+  - { index: 174, color: '#bdae93' }
+  - { index: 175, color: '#a89984' }
