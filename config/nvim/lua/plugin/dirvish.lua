@@ -154,7 +154,8 @@ _G.usr.dirvish_rename = function()
     if argc == 0 then
         current_line_file_move()
     else
-        -- vim.cmd('Shdo! mv %{} %{}')
+        vim.cmd('Shdo! mv {}')
+        vim.cmd('argdelete *')
     end
 
     vim.cmd('Dirvish %')
