@@ -1,6 +1,14 @@
 function fish_terminal_theme -a theme
     if test $TERM = alacritty
-        alacritty msg -s $ALACRITTY_SOCKET config "colors=$(cat $XDG_CONFIG_HOME/alacritty/gruvbox_$theme.yml)" -w $ALACRITTY_WINDOW_ID
+        switch $theme
+            case -l --list
+                set -l list (string replace ".yml" "" (ls $XDG_CONFIG_HOME/alacritty/))
+                for theme in $list
+                    echo $theme
+                end
+            case '*'
+                alacritty msg -s $ALACRITTY_SOCKET config "colors=$(cat $XDG_CONFIG_HOME/alacritty/$theme.yml)" -w $ALACRITTY_WINDOW_ID
+        end
     end
 end
 
@@ -29,7 +37,7 @@ function fish_theme_init_fish_colors
     set -U fish_color_status                normal
     set -U fish_color_cancel                -r
     set -U fish_pager_color_progress        normal
-    set -U fish_pager_color_prefix          normal --bold
-    set -U fish_pager_color_completion      normal --underline
+    set -U fish_pager_color_prefix          --bold
+    set -U fish_pager_color_completion      --underline
     set -U fish_pager_color_description     normal
 end
