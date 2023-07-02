@@ -1,0 +1,30 @@
+cursor:
+  text: '#000000'
+  cursor: '#e0d3f4'
+vi_mode_cursor:
+  text: '#000000'
+  cursor: '#e0d3f4'
+selection:
+  text: CellBackground
+  background: '#a89984'
+primary:
+  background: '#191724'
+  foreground: '#e0d3f4'
+normal:
+  black:   '#191724'
+  red:     '#eb6f92'
+  green:   '#9ccfd8'
+  yellow:  '#f6c177'
+  blue:    '#31748f'
+  magenta: '#c4a7e7'
+  cyan:    '#ebbcba'
+  white:   '#e0def4'
+bright:
+  black:   '#6e6a86'
+  red:     '#eb6f92'
+  green:   '#9ccfd8'
+  yellow:  '#f6c177'
+  blue:    '#31748f'
+  magenta: '#c4a7e7'
+  cyan:    '#ebbcba'
+  white:   '#e0def4'

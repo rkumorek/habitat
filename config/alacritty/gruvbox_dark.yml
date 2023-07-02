@@ -11,30 +11,22 @@ primary:
   background: '#282828'
   foreground: '#fbf1c7'
 normal:
-  black:   '#282828'
+  black:   '#282828' # Bg0
   red:     '#cc241d'
   green:   '#98971a'
   yellow:  '#d79921'
   blue:    '#458588'
   magenta: '#b16286'
   cyan:    '#689d6a'
-  white:   '#a89984'
+  white:   '#d5c4a1' # Fg2
 bright:
-  black:   '#928374'
+  black:   '#504945' # Bg2
   red:     '#fb4934'
   green:   '#b8bb26'
   yellow:  '#fabd2f'
   blue:    '#83a598'
   magenta: '#d3869b'
   cyan:    '#8ec07c'
-  white:   '#fbf1c7'
+  white:   '#fbf1c7' # Fg0
 indexed_colors:
   - { index: 166, color: '#d65d0c' } # Orange
-  - { index: 136, color: '#3c3836' } # Bg
-  - { index: 137, color: '#504945' }
-  - { index: 138, color: '#665c54' }
-  - { index: 139, color: '#7c6f64' }
-  - { index: 172, color: '#ebdbb2' } # Fg
-  - { index: 173, color: '#d5c4a1' }
-  - { index: 174, color: '#bdae93' }
-  - { index: 175, color: '#a89984' }

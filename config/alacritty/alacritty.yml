@@ -24,7 +24,7 @@ font:
     style: Light
   bold:
     family: Iosevka
-    style: Medium
+    style: Regular
   italic:
     family: Iosevka
     style: "Light Italic"

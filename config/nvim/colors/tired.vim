@@ -178,7 +178,7 @@ call s:Clear('FoldColumn')
 " https://github.com/nvim-treesitter/nvim-treesitter/blob/557123a6168936983d7b980df195057ca6b370ed/lua/nvim-treesitter/highlight.lua#L190-L270
 
 call s:Link('Boolean', 'Normal')
-call s:Link('Character', 'Normal')
+call s:Link('Character', 'String')
 call s:Highlight('Comment', s:a_yellow, s:none, 'italic')
 call s:Link('Conditional', 'Normal')
 call s:Link('Constant', 'Normal')
