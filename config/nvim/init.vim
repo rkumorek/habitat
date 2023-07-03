@@ -60,8 +60,8 @@ nnoremap <Leader>vs :source %<CR>
 nnoremap <Leader>vu :lua usr.sync_plugins()<CR>
 nnoremap <Leader>vt :TSToggle highlight<CR>
 
-nnoremap [ob :silent !fish -c "fish_terminal_theme light"<CR>
-nnoremap ]ob :silent !fish -c "fish_terminal_theme dark"<CR>
+nnoremap [ob :silent !fish -c "fish_terminal_theme gruvbox_light"<CR>
+nnoremap ]ob :silent !fish -c "fish_terminal_theme gruvbox_dark"<CR>
 nnoremap [ol :set list<CR>
 nnoremap ]ol :set nolist<CR>
 
