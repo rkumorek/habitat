@@ -2,7 +2,7 @@ function fish_terminal_theme -a theme
     if test $TERM = alacritty
         switch $theme
             case -l --list
-                set -l list (string replace ".yml" "" (ls $XDG_CONFIG_HOME/alacritty/))
+                set -l list (ls $XDG_CONFIG_HOME/alacritty/ | sed -E "/alacritty.yml/d;s/\.yml//g")
                 for theme in $list
                     echo $theme
                 end
